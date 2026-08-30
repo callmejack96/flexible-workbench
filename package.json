@@ -1,0 +1,45 @@
+{
+  "name": "flexible-workbench",
+	"version": "2.2.0",
+  "description": "A personal, flexible Obsidian workbench forked from Hearth.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/callmejack96/flexible-workbench.git"
+  },
+  "bugs": {
+    "url": "https://github.com/callmejack96/flexible-workbench/issues"
+  },
+  "homepage": "https://github.com/callmejack96/flexible-workbench#readme",
+	"main": "main.js",
+	"scripts": {
+		"dev": "node esbuild.config.mjs",
+		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
+		"typecheck": "tsc -noEmit -skipLibCheck",
+		"lint": "eslint src test",
+		"lint:fix": "eslint src test --fix",
+		"test": "vitest run",
+		"verify:manifests": "node scripts/verify-manifests.mjs"
+	},
+	"keywords": [
+		"obsidian",
+		"obsidian-plugin",
+		"dashboard",
+		"home",
+		"launcher"
+	],
+	"author": "ondreu",
+	"license": "MIT",
+	"devDependencies": {
+		"@stratejya/operon-cli": "^1.0.8",
+		"@types/node": "^20.11.0",
+		"esbuild": "^0.28.1",
+		"eslint": "^9.39.5",
+		"eslint-plugin-obsidianmd": "^0.4.1",
+		"moment": "2.29.4",
+		"obsidian": "latest",
+		"tslib": "^2.6.2",
+		"typescript": "^5.4.0",
+		"typescript-eslint": "^8.63.0",
+		"vitest": "^4.1.10"
+	}
+}

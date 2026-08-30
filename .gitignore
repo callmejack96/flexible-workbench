@@ -1,0 +1,15 @@
+# build / deps
+node_modules/
+main.js
+*.js.map
+
+# editor / os
+.DS_Store
+.idea/
+.vscode/
+
+# obsidian local test vault (if any)
+test-vault/
+
+# obsidian plugin runtime data (local install state, not source)
+data.json
