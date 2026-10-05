@@ -6,7 +6,7 @@ import { QueryFilter, QueryHit } from "./query";
 /** The community-plugin id Omnisearch registers itself under. */
 export const OMNISEARCH_PLUGIN_ID = "omnisearch";
 
-/** A single result from Omnisearch's public search API. Only the fields Hearth
+/** A single result from Omnisearch's public search API. Only the fields Flexible Workbench
  * uses are declared; Omnisearch returns a few more. */
 interface OmnisearchResult {
 	score: number;
@@ -15,11 +15,11 @@ interface OmnisearchResult {
 	/** The words that matched, lower-cased. */
 	foundWords: string[];
 	/** A short body snippet around the best match (may contain <mark> markup,
-	 * which Hearth strips — it renders its own highlighting). */
+	 * which Flexible Workbench strips — it renders its own highlighting). */
 	excerpt: string;
 }
 
-/** The slice of Omnisearch's public API Hearth calls. Exposed by the plugin at
+/** The slice of Omnisearch's public API Flexible Workbench calls. Exposed by the plugin at
  * `app.plugins.plugins.omnisearch.api` once Omnisearch is enabled. */
 interface OmnisearchApi {
 	search(query: string): Promise<OmnisearchResult[]>;
@@ -45,7 +45,7 @@ export function isOmnisearchAvailable(app: App): boolean {
 
 /**
  * Turn an Omnisearch excerpt into the same readable one-liner a built-in body
- * hit produces: its own `<mark>` markup comes out (Hearth highlights the result
+ * hit produces: its own `<mark>` markup comes out (Flexible Workbench highlights the result
  * row itself), then the shared cleaner deals with everything else the raw note
  * text dragged along — HTML, entities, frontmatter, markdown markers.
  *
@@ -87,7 +87,7 @@ function markedWords(excerpt: string): string[] {
 }
 
 /**
- * Run a vault search through Omnisearch and adapt its results to Hearth's
+ * Run a vault search through Omnisearch and adapt its results to Flexible Workbench's
  * {@link QueryHit} shape.
  *
  * Resolves to `null` — not an empty list — when Omnisearch can't answer at all

@@ -18,7 +18,7 @@ import { t } from "./i18n";
 /** Recently opened-via-search files, kept in the vault's local storage (never
  * in settings/data.json) so it stays out of the settings UI and layout
  * export entirely — a quiet convenience, not a feature to configure. */
-const HISTORY_KEY = "hearth-search-history";
+const HISTORY_KEY = "flexible-workbench-search-history";
 const HISTORY_MAX = 6;
 
 const MAX_RESULTS = 40;
@@ -40,7 +40,7 @@ export class SearchSection {
 
 	private inputEl!: HTMLInputElement;
 	private resultsEl!: HTMLElement;
-	private resultsId = `hearth-results-${resultsIdSeq++}`;
+	private resultsId = `flexible-workbench-results-${resultsIdSeq++}`;
 	/** The whole search section (bar + results + filters) — used to decide when
 	 * a click counts as "outside" and should close the dropdown. */
 	private rootEl: HTMLElement | null = null;
@@ -63,12 +63,12 @@ export class SearchSection {
 	 * back to it, so clearing the field in the card editor restores the default
 	 * rather than leaving the bar unlabelled. */
 	renderBar(parent: HTMLElement, opts: { placeholder?: string } = {}): HTMLElement {
-		const bar = parent.createDiv("hearth-search-bar");
-		const icon = bar.createDiv("hearth-search-icon");
+		const bar = parent.createDiv("flexible-workbench-search-bar");
+		const icon = bar.createDiv("flexible-workbench-search-icon");
 		setIcon(icon, "search");
 
 		this.inputEl = bar.createEl("input", {
-			cls: "hearth-search-input",
+			cls: "flexible-workbench-search-input",
 			attr: {
 				type: "text",
 				placeholder:
@@ -97,7 +97,7 @@ export class SearchSection {
 		if (Platform.isMobile) {
 			const root = this.view.contentEl;
 			this.inputEl.addEventListener("focus", () => {
-				root.addClass("hearth-search-active");
+				root.addClass("flexible-workbench-search-active");
 				// Pull the field to the top of the scroll area once the keyboard has
 				// animated up, so the results dropdown below it lands in the visible
 				// area above the keyboard instead of behind it. The delay lets the
@@ -117,7 +117,7 @@ export class SearchSection {
 				// shifts back (blur precedes the result's click on the same tap).
 				window.setTimeout(() => {
 					if (root.ownerDocument.activeElement !== this.inputEl) {
-						root.removeClass("hearth-search-active");
+						root.removeClass("flexible-workbench-search-active");
 					}
 				}, 200);
 			});
@@ -140,7 +140,7 @@ export class SearchSection {
 	): void {
 		this.hiddenFilters = opts.hiddenFilters ?? [];
 		this.rootEl = boundary;
-		this.resultsEl = overlayParent.createDiv("hearth-search-results");
+		this.resultsEl = overlayParent.createDiv("flexible-workbench-search-results");
 		this.resultsEl.id = this.resultsId;
 		this.resultsEl.setAttribute("role", "listbox");
 		this.resultsEl.hide();
@@ -210,23 +210,23 @@ export class SearchSection {
 		const groups = this.detectGroups();
 		if (groups.length === 0) return;
 
-		const row = parent.createDiv("hearth-filters");
+		const row = parent.createDiv("flexible-workbench-filters");
 		// The column-gap splits the row's leftover space between the chips, so
 		// the stylesheet needs the chip count. We know it exactly here, so set
 		// it directly: deriving it in CSS took a ladder of :has() rules, which
 		// carries a broad selector-invalidation cost and capped out at 14 chips.
 		row.style.setProperty("--n", String(groups.length));
 		for (const group of groups) {
-			const chip = row.createDiv("hearth-filter");
+			const chip = row.createDiv("flexible-workbench-filter");
 			chip.toggleClass("is-active", this.activeFilter === group.id);
-			setIcon(chip.createDiv("hearth-filter-icon"), group.icon);
+			setIcon(chip.createDiv("flexible-workbench-filter-icon"), group.icon);
 			chip.setAttribute("aria-label", fileTypeLabel(group));
 			chip.setAttribute("role", "button");
 			chip.setAttribute("tabindex", "0");
 			chip.setAttribute("aria-pressed", String(this.activeFilter === group.id));
 			const toggle = () => {
 				this.activeFilter = this.activeFilter === group.id ? null : group.id;
-				parent.querySelectorAll(".hearth-filter").forEach((c) => {
+				parent.querySelectorAll(".flexible-workbench-filter").forEach((c) => {
 					c.removeClass("is-active");
 					c.setAttribute("aria-pressed", "false");
 				});
@@ -384,13 +384,13 @@ export class SearchSection {
 		hits.forEach((hit, i) => {
 			// A badge icon says why the file matched, so it outranks the file's own.
 			const row = this.newRow(i, hit.badge?.icon ?? resolveFileIcon(this.view.app, hit.file, icons));
-			const text = row.createDiv("hearth-result-text");
+			const text = row.createDiv("flexible-workbench-result-text");
 			const name = hit.file instanceof TFile ? hit.file.basename : hit.file.name;
-			renderHighlighted(text.createDiv("hearth-result-name"), name || "/", hit.matches);
+			renderHighlighted(text.createDiv("flexible-workbench-result-name"), name || "/", hit.matches);
 			// Tag/property/body hits show what actually matched instead of the
 			// folder path — the badge makes the match reason visible.
 			if (hit.badge) {
-				const badge = text.createDiv("hearth-result-badge");
+				const badge = text.createDiv("flexible-workbench-result-badge");
 				// A body excerpt is a sentence of context, not a short chip: it
 				// renders muted, wrapped over two lines, with only the matched
 				// words picked out. The row is flagged too so it can top-align —
@@ -401,7 +401,7 @@ export class SearchSection {
 			} else {
 				const parentPath = hit.file.parent?.path;
 				if (parentPath && parentPath !== "/") {
-					text.createDiv("hearth-result-path").setText(parentPath);
+					text.createDiv("flexible-workbench-result-path").setText(parentPath);
 				}
 			}
 			this.commitRow(row, () => this.openFile(hit.file));
@@ -417,7 +417,7 @@ export class SearchSection {
 		}
 		commands.forEach((command, i) => {
 			const row = this.newRow(i, "terminal-square");
-			row.createDiv("hearth-result-text").createDiv("hearth-result-name").setText(command.name);
+			row.createDiv("flexible-workbench-result-text").createDiv("flexible-workbench-result-name").setText(command.name);
 			this.commitRow(row, () => {
 				this.hide();
 				this.view.app.commands.executeCommandById(command.id);
@@ -427,11 +427,11 @@ export class SearchSection {
 	}
 
 	private newRow(index: number, icon: ResolvedIcon | string): HTMLElement {
-		const row = this.resultsEl.createDiv("hearth-result");
+		const row = this.resultsEl.createDiv("flexible-workbench-result");
 		row.id = `${this.resultsId}-opt-${index}`;
 		row.setAttribute("role", "option");
 		row.setAttribute("aria-selected", "false");
-		applyFileIcon(row.createDiv("hearth-result-icon"), icon);
+		applyFileIcon(row.createDiv("flexible-workbench-result-icon"), icon);
 		return row;
 	}
 
@@ -441,7 +441,7 @@ export class SearchSection {
 	}
 
 	private showEmpty(text: string = t().search.noMatches): void {
-		this.resultsEl.createDiv("hearth-search-empty").setText(text);
+		this.resultsEl.createDiv("flexible-workbench-search-empty").setText(text);
 		this.resultsEl.show();
 		this.placeResults();
 		this.capResultsToViewport();
@@ -466,7 +466,7 @@ export class SearchSection {
 	 */
 	private placeResults(): void {
 		if (Platform.isMobile) return;
-		const rect = (this.inputEl.closest(".hearth-search-bar") ?? this.inputEl).getBoundingClientRect();
+		const rect = (this.inputEl.closest(".flexible-workbench-search-bar") ?? this.inputEl).getBoundingClientRect();
 		const below = window.innerHeight - rect.bottom;
 		this.resultsEl.toggleClass("is-above", below < 200 && rect.top > below);
 	}

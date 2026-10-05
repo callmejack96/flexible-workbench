@@ -8,23 +8,28 @@ import type {
 	GitCommitScope,
 	GitSection,
 } from "./git";
+import type { LocalGitRepository } from "./localgit";
 
 /** The kind of content a dashboard card renders. */
 export type CardKind =
 	| "embed"
 	| "slideshow"
 	| "daily"
+	| "time-reports"
 	| "periodic"
 	| "web"
 	| "bookmarks"
 	| "favorites"
+	| "savedlinks"
 	| "text"
 	| "recent"
 	| "links"
 	| "commands"
 	| "templater"
 	| "clock"
+	| "timer"
 	| "tasks"
+	| "projecttodos"
 	| "calendar"
 	| "schedule"
 	| "stats"
@@ -35,20 +40,47 @@ export type CardKind =
 	| "dataview"
 	| "datacore"
 	| "rss"
+	| "social"
+	| "douyin"
 	| "jira"
 	| "weather"
 	| "git"
 	| "operon"
 	| "leaf"
-	| "pet";
+	| "pet"
+	| "imagearchive"
+	| "knowledge";
+
+export type KnowledgeProvider = "codex" | "claude";
+
+/** Inbox destination and local Codex / Claude Code transcript folders. */
+export interface KnowledgeConfig {
+	inboxFolder: string;
+	codexLogsPath: string;
+	claudeLogsPath: string;
+}
+
+/** Legacy metadata from the earlier in-card CLI runner, preserved when upgrading. */
+export interface KnowledgeSessionRecord {
+	id: string;
+	provider: KnowledgeProvider;
+	title: string;
+	projectPath: string;
+	notePath: string;
+	createdAt: string;
+	updatedAt: string;
+	cliSessionId?: string;
+	lastUsage?: { inputTokens: number; cachedInputTokens: number; outputTokens: number };
+}
 
 /** A refinement control available on a Jira saved-filter card. */
 export type JiraControl =
 	| "status"
 	| "assignee"
+	| "startDate"
+	| "dueDate"
 	| "priority"
 	| "issueType"
-	| "sprint"
 	| "fixVersion";
 
 /** Selected values for each Jira refinement control. Missing keys are unfiltered. */
@@ -66,8 +98,18 @@ export interface JiraConfig {
 	filterId?: string;
 	/** Saved display name for the chosen filter. */
 	filterName?: string;
+	/** Direct JQL query. When present, it takes precedence over a saved filter. */
+	jql?: string;
+	/** Show the Jira Start date field in each issue row. Default true. */
+	showStartDate?: boolean;
+	/** Show End date (falling back to Due date) in each issue row. Default true. */
+	showEndDate?: boolean;
+	/** Override the query order with Due date descending. Default true. */
+	sortDueDateDesc?: boolean;
 	/** Refinement controls shown above the issue list. */
 	controls?: JiraControl[];
+	/** Whether the user has explicitly configured the newer date controls. */
+	dateControlsConfigured?: boolean;
 	/** Persisted multi-select refinements. */
 	selections?: JiraSelections;
 	/** Maximum issues shown by the refined query. Default 50. */
@@ -176,7 +218,7 @@ export interface TemplaterConfig {
 	items?: TemplaterItem[];
 }
 
-/** The Tasks-plugin metadata Hearth's Kanban editor reads and writes on a card.
+/** The Tasks-plugin metadata Flexible Workbench's Kanban editor reads and writes on a card.
  * Dates are YYYY-MM-DD or ""; `priority` is a key ("highest".."lowest") or "";
  * `recurrence` is the raw text written after 🔁 (e.g. "every week") or "". */
 export interface TaskMeta {
@@ -256,7 +298,7 @@ export interface TaskValueMap {
 }
 
 /** One source a field reads. `source` is either `fm:<property>` for a
- * frontmatter property or `builtin:<id>` for something Hearth parses itself
+ * frontmatter property or `builtin:<id>` for something Flexible Workbench parses itself
  * (see `TASK_BUILTIN_SOURCES`). Every key with a value renders. */
 export interface TaskFieldKey {
 	source: string;
@@ -269,7 +311,7 @@ export interface TaskFieldKey {
 	/** Treat this key's value as a date: show it as a relative label
 	 * ("Tomorrow"), colour it by its relation to today, and edit it with a
 	 * calendar rather than a list. Implied for the built-in date sources; a
-	 * frontmatter property has to say so, since Hearth can't know a property
+	 * frontmatter property has to say so, since Flexible Workbench can't know a property
 	 * holds a date rather than text that looks like one. */
 	isDate?: boolean;
 }
@@ -303,12 +345,12 @@ export interface TasksConfig {
 	/** "checkbox" (default) scans plain Markdown `- [ ]` checkboxes anywhere
 	 * in scope. "tasknotes" reads frontmatter from the TaskNotes community
 	 * plugin's task notes instead, using the field-name mapping configured in
-	 * Settings → Hearth (TaskNotes has no stable public API to query, so this
+	 * Settings → Flexible Workbench (TaskNotes has no stable public API to query, so this
 	 * reads its files the same way TaskNotes itself does: frontmatter).
 	 * "kanban" reads a single Kanban-plugin board note, where each `##` heading
 	 * is a column and the checkbox items beneath it are that column's cards. */
 	source?: "checkbox" | "tasknotes" | "kanban";
-	/** Kanban source: path to the board note. When empty, Hearth auto-detects
+	/** Kanban source: path to the board note. When empty, Flexible Workbench auto-detects
 	 * the first note in scope whose frontmatter carries `kanban-plugin`. */
 	kanbanFile?: string;
 	/** Kanban source: when true, parse the Tasks-plugin emoji metadata written
@@ -372,10 +414,10 @@ export interface TasksConfig {
 	/** TaskNotes source: the status values counted as "complete" (case-insensitive).
 	 * When set and non-empty, a task is done when its status is in this list — so,
 	 * e.g., both "done" and "canceled" can be treated as complete. When unset, the
-	 * single global `taskNotesDoneValue` from Settings → Hearth is used. */
+	 * single global `taskNotesDoneValue` from Settings → Flexible Workbench is used. */
 	taskNotesDoneStatuses?: string[];
 	/** TaskNotes source: this card's own frontmatter field names, overriding the
-	 * global mapping in Settings → Hearth. Set by the setup wizard, which reads
+	 * global mapping in Settings → Flexible Workbench. Set by the setup wizard, which reads
 	 * them from TaskNotes itself — a vault that renamed its fields gets a card
 	 * that works on the first render without the wizard reaching into a global
 	 * setting every other card and board also follows. Undefined = follow the
@@ -393,7 +435,7 @@ export interface TasksConfig {
 	 * filter is "active" (and applied) when any field below is set. */
 	taskFilter?: TaskFilterConfig;
 	/** Give this card its own field list instead of following the global one
-	 * from Settings → Hearth → Integrations. Off by default: a card follows the
+	 * from Settings → Flexible Workbench → Integrations. Off by default: a card follows the
 	 * global list. Only consulted while the global `taskFieldsEnabled` master
 	 * switch is on. */
 	taskFieldsEnabled?: boolean;
@@ -429,9 +471,8 @@ export interface TasksConfig {
  */
 export interface OperonConfig {
 	/** What the card draws. "list" is a flat task list, "board" groups tasks
-	 * into pipeline-status columns, "agenda" lists the next few days, "timer"
-	 * shows the running time tracker. */
-	view?: "list" | "board" | "agenda" | "timer";
+	 * into pipeline-status columns, and "agenda" lists the next few days. */
+	view?: "list" | "board" | "agenda";
 	/** List view: which of Operon's own scoped views to read. "query" (default)
 	 * applies the filters below instead; the rest delegate the definition of
 	 * "overdue" or "happening today" to Operon. */
@@ -479,6 +520,48 @@ export interface OperonConfig {
 	showPinned?: boolean;
 	showFile?: boolean;
 }
+
+/** One time-tracking session captured by Flexible Workbench or imported from
+ * the former Operon-backed timer. */
+export interface TimerRecord {
+	id: string;
+	description: string;
+	startedAt: string;
+	/** Marks sessions whose running state is owned by Flexible Workbench. */
+	timerSource?: "workbench" | "operon";
+	/** Start of the current active segment; absent while paused and on older records. */
+	activeSince?: string;
+	/** Time at which the active session was paused, if it is currently paused. */
+	pausedAt?: string;
+	/** Active seconds accumulated before the current segment. */
+	pausedDurationSeconds?: number;
+	/** Exact work intervals. Open intervals have no `endedAt` while the timer runs. */
+	segments?: TimerSegment[];
+	/** Older sessions may have active time from before exact intervals were saved. */
+	segmentsHistoryIncomplete?: boolean;
+	/** Legacy Operon start token retained on histories imported from older versions. */
+	operonStart?: string;
+	endedAt?: string;
+	durationSeconds?: number;
+	summary?: string;
+	/** Saved before the remote stop so the summary can be recovered after a restart. */
+	pendingSummary?: string;
+	/** Temporary row created only to preserve a stop summary for an external timer. */
+	pendingStopOnly?: boolean;
+	/** Dashboard-local todo this session was started from, when applicable. */
+	todoId?: string;
+	/** Snapshot retained after the todo itself has been archived. */
+	todoText?: string;
+}
+
+/** One active interval within a timer session. */
+export interface TimerSegment {
+	startedAt: string;
+	endedAt?: string;
+}
+
+/** @deprecated Use TimerRecord. Retained for plugin consumers of older builds. */
+export type OperonTimerRecord = TimerRecord;
 
 /** An external calendar (ICS/iCal) subscription a "calendar" card overlays on
  * top of its daily-note grid. `url` is an http(s)/webcal `.ics` address; `color`
@@ -858,12 +941,16 @@ export interface DatacoreConfig {
  * Per-card configuration for a "git" card, which shows the state of the vault's
  * repository and runs git operations through the obsidian-git community plugin.
  *
- * Hearth performs no git work of its own — every button is a call into that
+ * Flexible Workbench performs no git work of its own — every button is a call into that
  * plugin, so its remote, credentials and commit-message template all apply. See
  * `src/git.ts`. Only offered by the "Add card" picker when obsidian-git is
  * installed and enabled.
  */
 export interface GitConfig {
+	/** Desktop-only repositories shown as a read-only health overview. When at
+	 * least one valid path is present, the card switches from the vault Git view
+	 * to this multi-repository dashboard. */
+	repositories?: LocalGitRepository[];
 	/** Which sections the card stacks, top to bottom. Absent means the defaults
 	 * (status, actions, changes); an explicitly empty list means none. */
 	sections?: GitSection[];
@@ -950,6 +1037,47 @@ export interface RssConfig {
 	showDate?: boolean;
 	/** Add a leading "All" tab that merges every source, newest first. Default false. */
 	mergeAll?: boolean;
+}
+
+/** Per-card settings for the Douyin self-favorites synchronisation card. */
+export interface DouyinConfig {
+	/** Cookie copied from a logged-in Douyin web session. */
+	cookie?: string;
+	/** Vault path used for the latest synchronisation snapshot. */
+	storagePath?: string;
+	/** Number of saved videos shown in the card. */
+	itemLimit?: number;
+}
+
+export type SocialSource = "rednote" | "wechat" | "douyin" | "zhihu" | "bilibili";
+/** A user-added link shares the same favorites index as synced social content. */
+export type FavoriteSource = SocialSource | "manual";
+
+/** Multi-source favorites hub. Markdown-backed sources read directly from the
+ * vault; Douyin reuses the card's existing local snapshot configuration. */
+export interface SocialConfig {
+	/** Source selected when the card is first rendered. */
+	initialSource?: SocialSource;
+	/** Vault folders containing the Markdown exports for each document source. */
+	rednoteFolder?: string;
+	wechatFolder?: string;
+	douyinFolder?: string;
+	zhihuFolder?: string;
+	bilibiliFolder?: string;
+	/** Maximum Markdown items shown for the active source. */
+	itemLimit?: number;
+	/** Maximum items fetched per source when syncing. Separate from itemLimit,
+	 * which only affects how many are displayed. Defaults high so a Sync grabs
+	 * the whole favorites list rather than being throttled by the display count. */
+	syncLimit?: number;
+	/** Per-platform login Cookie/token. Stored locally and scrubbed from exports. */
+	credentials?: Partial<Record<SocialSource, string>>;
+}
+
+/** kind === "imagearchive": one-click tidy of stray images into a folder. */
+export interface ImageArchiveConfig {
+	/** Folder loose images are moved into. Defaults to "archive/image". */
+	targetFolder?: string;
 }
 
 /** A place a "weather" card shows the forecast for.
@@ -1157,7 +1285,7 @@ export interface PetConfig {
 
 /** A single button in the mobile action bar (shown under the search bar and
  * filters in Mobile mode). Like a launchpad tile, a button can run an Obsidian
- * command, open a vault note/file, or open a URL — chosen by `type`. Hearth's
+ * command, open a vault note/file, or open a URL — chosen by `type`. Flexible Workbench's
  * own defaults (new note, new drawing, record voice, open daily note) are
  * registered as ordinary commands too, so any button can be replaced with any
  * command from any plugin. */
@@ -1222,7 +1350,7 @@ export interface EmbedView {
 	imagePosition?: EmbedImagePosition;
 	/** Edit the embedded note's text in place instead of read-only (Markdown only). */
 	editable?: boolean;
-	/** Edit through Obsidian's own Live Preview editor rather than Hearth's plain
+	/** Edit through Obsidian's own Live Preview editor rather than Flexible Workbench's plain
 	 * raw-Markdown box. Only meaningful together with `editable`. */
 	livePreview?: boolean;
 }
@@ -1283,7 +1411,7 @@ export type SlideshowFit = "cover" | "contain";
  * freshly added card runs with. */
 /** What a Periodic note card shows: always the *current* note of one period,
  * resolved through the Periodic Notes plugin (issue #116). Which folder, name
- * and template that note has is Periodic Notes' business, not Hearth's. */
+ * and template that note has is Periodic Notes' business, not Flexible Workbench's. */
 export interface PeriodicCardConfig {
 	/** The period the card tracks. Omitted means weekly — the daily note has a
 	 * card of its own. */
@@ -1369,7 +1497,7 @@ export interface DashboardCard {
 	commands?: CommandItem[];
 	/** kind === "templater": the new-note-from-template tiles. */
 	templater?: TemplaterConfig;
-	/** kind === "recent": how many recent files to show. Clamped to what Hearth's
+	/** kind === "recent": how many recent files to show. Clamped to what Flexible Workbench's
 	 * own recent-file history can hold (see RECENT_HISTORY_MAX); ignored when
 	 * `recentAuto` is on. */
 	count?: number;
@@ -1384,6 +1512,10 @@ export interface DashboardCard {
 	clock?: ClockConfig;
 	/** kind === "tasks": source, folder scope and display options. */
 	tasks?: TasksConfig;
+	/** kind === "daily": Dashboard-local Todo items. */
+	dailyTodos?: DashboardTodo[];
+	/** Folder for completed Dashboard-local Todo notes; defaults to archive/todos. */
+	dailyArchiveFolder?: string;
 	/** kind === "calendar": week-number and heatmap display options. */
 	calendar?: CalendarConfig;
 	/** kind === "schedule": view, grid and event-source options for the full
@@ -1406,6 +1538,10 @@ export interface DashboardCard {
 	datacore?: DatacoreConfig;
 	/** kind === "rss": feed sources, layout and refresh options. */
 	rss?: RssConfig;
+	/** kind === "douyin": login cookie and local snapshot settings. */
+	douyin?: DouyinConfig;
+	/** kind === "social": social favorites hub settings. */
+	social?: SocialConfig;
 	/** kind === "jira": connection, saved filter, and refinement options. */
 	jira?: JiraConfig;
 	/** kind === "weather": place, style, units and what to display. */
@@ -1418,6 +1554,10 @@ export interface DashboardCard {
 	leafView?: LeafViewConfig;
 	/** kind === "pet": species, colors, name and what feeds its mood. */
 	pet?: PetConfig;
+	/** kind === "imagearchive": where stray images are tidied to. */
+	imagearchive?: ImageArchiveConfig;
+	/** kind === "knowledge": vault folders and default desktop agent settings. */
+	knowledge?: KnowledgeConfig;
 
 	// ---- Live content ----
 	/** Auto-refresh interval in seconds for live content (embed / web). 0 or
@@ -1433,7 +1573,7 @@ export interface DashboardCard {
 	editable?: boolean;
 
 	/** kind === "embed" / "daily" / "periodic": when editing in place, use Obsidian's own
-	 * Live Preview editor (hosted in the card) instead of Hearth's plain
+	 * Live Preview editor (hosted in the card) instead of Flexible Workbench's plain
 	 * raw-Markdown box. Only meaningful together with `editable`. */
 	livePreview?: boolean;
 
@@ -1558,6 +1698,21 @@ export interface DashboardCard {
 	mobile?: MobileCardOptions;
 }
 
+/** A checkable item stored directly on the Dashboard Todo List card. */
+export interface DashboardTodo {
+	id: string;
+	text: string;
+	done?: boolean;
+}
+
+/** Durable source data for Todo completion reports; the Markdown archive path remains user-editable. */
+export interface TodoCompletionRecord {
+	todoId: string;
+	text: string;
+	completedAt: string;
+	archivePath?: string;
+}
+
 /**
  * A card's overrides for the stacked layout used on a narrow board.
  *
@@ -1589,7 +1744,7 @@ export interface MobileCardOptions {
 	collapsed?: boolean;
 }
 
-/** Background mode for the home view. "default" uses Hearth's bundled
+/** Background mode for the home view. "default" uses Flexible Workbench's bundled
  * background (a curated image shipped with a release); "weather" paints the
  * live sky for a place (see sky.ts); the other kinds use the user's own
  * value. */
@@ -1602,7 +1757,7 @@ export type BackgroundKind =
 	| "weather";
 
 /** The flat backdrop the `minimal` tier paints instead of the wallpaper: a muted
- * grey-purple that sits close to Hearth's brand colour without any image
+ * grey-purple that sits close to Flexible Workbench's brand colour without any image
  * decode, opacity layer or blur behind it. */
 export const LOW_POWER_BACKGROUND = "#4a4459";
 
@@ -1642,7 +1797,7 @@ export const PERFORMANCE_TIERS: readonly PerformanceTier[] = [
 /**
  * Where the background is painted.
  *
- * "full" is the classic Hearth board: the backdrop fills the whole view and the
+ * "full" is the classic Flexible Workbench board: the backdrop fills the whole view and the
  * cards float on top of it. "banner" turns the same backdrop into a strip
  * across the top of the content — a cover image, the way a note's banner works
  * — and leaves the rest of the board on the theme's own surface, so the cards
@@ -1732,12 +1887,12 @@ export interface DashboardHeaderConfig {
 	title?: string;
 	/** Override the global title icon for this dashboard: a Lucide id, an emoji
 	 * or short text, a vault image path, or an image URL (see `titleicon.ts`).
-	 * An empty string is a real override meaning "the Hearth crystal on this
+	 * An empty string is a real override meaning "the Flexible Workbench workbench mark on this
 	 * board"; undefined follows {@link HomeSettings.titleIcon}. */
 	titleIcon?: string;
 	/** Override which parts of this board's brand mark follow the theme's icon
 	 * colour (undefined = use the global {@link HomeSettings.themeColorTarget}).
-	 * Scoped to the board's own title block; Hearth's tab and ribbon icons are
+	 * Scoped to the board's own title block; Flexible Workbench's tab and ribbon icons are
 	 * app-level and keep following the global setting. */
 	themeColorTarget?: HomeSettings["themeColorTarget"];
 	/** Align only the title block; the search section below has its own
@@ -1798,7 +1953,7 @@ export interface Dashboard extends BannerOverrides {
 	/** Name of a core-Workspace; loading that workspace auto-switches to this
 	 * dashboard (one-way, workspace → dashboard). Undefined = not linked. */
 	linkedWorkspace?: string;
-	/** Marks this board as the one to open on phones/tablets. When Hearth loads
+	/** Marks this board as the one to open on phones/tablets. When Flexible Workbench loads
 	 * on mobile it switches to the first dashboard with this flag, so a board
 	 * tuned for a small screen can be the mobile default without being the
 	 * desktop default. Undefined/false = not a mobile default. */
@@ -1808,9 +1963,9 @@ export interface Dashboard extends BannerOverrides {
 export type ChromeVisibility = "always" | "hover";
 
 /**
- * Where Hearth puts a note when you open one from the home view.
+ * Where Flexible Workbench puts a note when you open one from the home view.
  *
- * `"same"` reuses the tab Hearth itself is in, so the note replaces the home
+ * `"same"` reuses the tab Flexible Workbench itself is in, so the note replaces the home
  * view exactly like clicking a link inside a normal editor tab (#106). The
  * other three map straight onto Obsidian's own pane types — a new tab (the
  * historical behaviour, and still the default), a split beside the current
@@ -1829,7 +1984,7 @@ export const OPEN_IN_MODES: readonly OpenIn[] = ["tab", "same", "split", "window
  * - `search` — a result from the search bar or the Search card
  * - `card` — a note listed by a card (Recent, Bookmarks, Favourites, Calendar,
  *   Heatmap, Tasks) or by a mobile action button
- * - `newNote` — a note Hearth has just created (new note, daily note, event
+ * - `newNote` — a note Flexible Workbench has just created (new note, daily note, event
  *   note), which is opened for editing straight away
  */
 export type OpenSource = "link" | "search" | "card" | "newNote";
@@ -1842,17 +1997,17 @@ export const OPEN_SOURCES: readonly OpenSource[] = ["link", "search", "card", "n
 export type OpenInRule = OpenIn | "default";
 
 /**
- * What happens to a focused Hearth tab when a note is opened by something
- * Hearth doesn't control — the file explorer, the quick switcher, the graph, or
+ * What happens to a focused Flexible Workbench tab when a note is opened by something
+ * Flexible Workbench doesn't control — the file explorer, the quick switcher, the graph, or
  * a view embedded in a card that opens links itself (an embedded Bases table).
  *
- * Obsidian makes that call, not Hearth: it reuses the focused tab when the view
+ * Obsidian makes that call, not Flexible Workbench: it reuses the focused tab when the view
  * in it reports itself navigable, so this is expressed by flipping
  * `View.navigation` rather than by picking a leaf. Only two outcomes are
- * possible — Hearth is taken over (`"same"`) or it is left alone and the note
+ * possible — Flexible Workbench is taken over (`"same"`) or it is left alone and the note
  * goes to another tab (`"tab"`) — plus `"default"` to follow
  * {@link HomeSettings.openIn}, where anything but "same tab" counts as leaving
- * Hearth alone.
+ * Flexible Workbench alone.
  */
 export type OpenOutsideRule = "default" | "same" | "tab";
 
@@ -1865,15 +2020,15 @@ export interface HomeSettings {
 	showTitle: boolean;
 	/** The mark drawn beside the title. One field holding any of five things —
 	 * a Lucide id (`"flame"`), an emoji or short text, a vault image path, an
-	 * image URL, or empty for the Hearth crystal; `titleicon.ts` decides which
+	 * image URL, or empty for the Flexible Workbench workbench mark; `titleicon.ts` decides which
 	 * a value is. Each dashboard can override it — see
 	 * {@link DashboardHeaderConfig.titleIcon}. */
 	titleIcon: string;
-	/** A Lucide icon id used for Hearth's tab header and ribbon button instead of
-	 * the Hearth crystal. Empty = the crystal. */
+	/** A Lucide icon id used for Flexible Workbench's tab header and ribbon button instead of
+	 * the Flexible Workbench workbench mark. Empty = the workbench mark. */
 	tabIcon: string;
-	/** What follows the theme's icon color: nothing (brand-purple crystal and
-	 * normal title text, the historical look), the crystal icon, the title
+	/** What follows the theme's icon color: nothing (brand-purple workbench mark and
+	 * normal title text, the historical look), the workbench mark icon, the title
 	 * text, or both. */
 	themeColorTarget: "none" | "icon" | "title" | "both";
 	/** Show the search/command section on every board that doesn't override it
@@ -1881,6 +2036,8 @@ export interface HomeSettings {
 	showSearch: boolean;
 	searchPlaceholder: string;
 	showNewNoteButton: boolean;
+	/** Show a separate quick action that opens TaskNotes' create-task flow. */
+	showNewTaskButton: boolean;
 	/** What the single button beside the search bar does: create a new note, or
 	 * run a web search for the current search-field contents. */
 	newNoteButtonMode: "newNote" | "searchOnline";
@@ -1898,9 +2055,9 @@ export interface HomeSettings {
 	newNoteFilename: string;
 	/** Also search inside note bodies (full-text), not just names/tags/properties. */
 	searchContents: boolean;
-	/** Which engine powers the search bar: Hearth's built-in vault search, or the
+	/** Which engine powers the search bar: Flexible Workbench's built-in vault search, or the
 	 * Omnisearch community plugin (only usable when Omnisearch is installed and
-	 * enabled — Hearth falls back to the built-in engine otherwise). */
+	 * enabled — Flexible Workbench falls back to the built-in engine otherwise). */
 	searchEngine: "builtin" | "omnisearch";
 
 	// ---- Background ----
@@ -1929,7 +2086,7 @@ export interface HomeSettings {
 	openOnStartup: boolean;
 	replaceNewTabs: boolean;
 	/** Place keyboard focus in the search field whenever a home view opens, so a
-	 * new Hearth tab can be typed into straight away without reaching for the
+	 * new Flexible Workbench tab can be typed into straight away without reaching for the
 	 * mouse. Desktop only — auto-focusing on mobile would pop the on-screen
 	 * keyboard on every open. */
 	focusSearchOnOpen: boolean;
@@ -1953,21 +2110,21 @@ export interface HomeSettings {
 	 * (a quarter-width card is ~90px on a phone), so the alternative is a board
 	 * nobody can read. Turn it off to keep the scaled free-form layout. */
 	stackOnNarrow: boolean;
-	/** Block all outbound network requests Hearth would otherwise make. The only
+	/** Block all outbound network requests Flexible Workbench would otherwise make. The only
 	 * requests are configured live-content cards (including Jira) and the
 	 * calculator's key-less, ECB-backed currency-rate fetch. */
 	disableExternalCalls: boolean;
 
 	// ---- Opening notes ----
-	/** Where every note Hearth opens goes by default (#106). `"tab"` is the
+	/** Where every note Flexible Workbench opens goes by default (#106). `"tab"` is the
 	 * historical behaviour. */
 	openIn: OpenIn;
 	/** Per-source exceptions to {@link openIn}. Every source defaults to
 	 * `"default"` (follow the global choice), so the single dropdown above is
 	 * enough for anyone who doesn't want the detail. */
 	openInOverrides: Record<OpenSource, OpenInRule>;
-	/** Whether a note opened from outside Hearth may take over a focused Hearth
-	 * tab. Defaults to `"same"` — the behaviour Hearth has had since #84, where
+	/** Whether a note opened from outside Flexible Workbench may take over a focused Flexible Workbench
+	 * tab. Defaults to `"same"` — the behaviour Flexible Workbench has had since #84, where
 	 * the dashboard acts like an ordinary tab and the file explorer's selection
 	 * tracks what you open. Deliberately *not* `"default"`: following the global
 	 * choice would flip this for everyone on upgrade. */
@@ -1993,8 +2150,8 @@ export interface HomeSettings {
 	 *
 	 * Separate because the trade-off genuinely differs by device rather than by
 	 * taste: the animated sky and the frosted glass are the two most expensive
-	 * things Hearth draws, and a phone pays for them out of a battery while
-	 * showing them on the smallest screen Hearth runs on. Defaults to
+	 * things Flexible Workbench draws, and a phone pays for them out of a battery while
+	 * showing them on the smallest screen Flexible Workbench runs on. Defaults to
 	 * `"balanced"`, which thins the sky and changes nothing else.
 	 */
 	mobilePerformanceTier: PerformanceTier | "match";
@@ -2004,9 +2161,9 @@ export interface HomeSettings {
 	/**
 	 * Hold every animation while the Obsidian window is not the one being used.
 	 *
-	 * A Hearth tab the workspace has hidden already costs nothing — Obsidian
+	 * A Flexible Workbench tab the workspace has hidden already costs nothing — Obsidian
 	 * takes an inactive leaf out of layout, and the browser stops animating a
-	 * subtree that isn't laid out. A *visible* Hearth tab in an unfocused window
+	 * subtree that isn't laid out. A *visible* Flexible Workbench tab in an unfocused window
 	 * is the gap this closes: side by side with a browser, or on a second
 	 * monitor, the board keeps animating at the full frame rate for nobody.
 	 *
@@ -2051,6 +2208,16 @@ export interface HomeSettings {
 	rowHeight: number;
 	/** Curated note paths shown by "favorites" cards. */
 	favorites: string[];
+	/** Legacy in-card agent session index, retained for settings compatibility. */
+	knowledgeSessions: KnowledgeSessionRecord[];
+	/** Last reviewed modification time for each Codex or Claude JSONL transcript. */
+	knowledgeReviewedLogs: Record<string, number>;
+	/** Whether existing log files have been seeded as historical on first use. */
+	knowledgeLogBaselineInitialized: boolean;
+	/** Local midnight cutoff used to treat older logs as historical on first use. */
+	knowledgeLogBaselineAt: number;
+	/** Local date on which the daily pending-log reminder was last shown. */
+	knowledgeReviewReminderDate: string;
 	/** Fit the dashboard to one screen (no scroll) vs. allow scrolling. */
 	fitToPage: boolean;
 
@@ -2078,7 +2245,7 @@ export interface HomeSettings {
 
 	// ---- File icons / Iconic / Iconize ----
 	/** Show the per-file icons set with the Iconic or Iconize community plugins
-	 * wherever Hearth draws a file icon, instead of Hearth's file-type icon.
+	 * wherever Flexible Workbench draws a file icon, instead of Flexible Workbench's file-type icon.
 	 * Harmless with neither plugin installed — there is simply nothing to read,
 	 * and every file keeps its type icon. */
 	customFileIcons: boolean;
@@ -2088,18 +2255,22 @@ export interface HomeSettings {
 	iconizeIconProperty: string;
 
 	// ---- Operon ----
-	/** Let Hearth talk to the Operon plugin's Developer API. Turning this off
-	 * is a kill switch: Operon cards stop reading and no capability grant is
-	 * ever requested. On by default, but nothing happens until an Operon card
-	 * is added — the session is only opened when one renders. */
+	/** Let Flexible Workbench talk to the Operon plugin's Developer API. Turning this off
+	 * is a kill switch: Operon task cards stop reading and no capability grant is
+	 * ever requested. On by default, but nothing happens until an Operon task,
+	 * board or agenda card is added — the session is only opened when one renders. */
 	operonIntegration: boolean;
 
-	/** Let Hearth *change* Operon tasks: dragging a card between board columns,
-	 * and the card's "+". Off by default, and separate from the switch above
+	/** Let Flexible Workbench change Operon tasks: dragging a card between board columns
+	 * or using the card's "+". Off by default, and separate from the switch above
 	 * because Operon's grant is all-or-nothing — turning this on widens what
-	 * Hearth asks for and needs a fresh approval in Operon's settings, so it is
+	 * Flexible Workbench asks for and needs a fresh approval in Operon's settings, so it is
 	 * never done on a vault's behalf. */
 	operonWrites: boolean;
+	/** Completed and in-progress sessions recorded by Flexible Workbench's timer. */
+	timerRecords: TimerRecord[];
+	/** Completion index for dashboard-local todos, used to rebuild period reports immediately. */
+	todoCompletions: TodoCompletionRecord[];
 
 	// ---- Layout ----
 	/** The widest the content column may grow, in pixels. It is a ceiling, not a
@@ -2129,7 +2300,7 @@ export interface HomeSettings {
  *   (see `migrateSettings`): an existing dashboard must never be interrupted by
  *   a wizard offering to rebuild it.
  * - `skipped` — the wizard was offered and dismissed. Behaves like `done`, but
- *   is kept distinct so "Set up Hearth" in settings can still read as an
+ *   is kept distinct so "Set up Flexible Workbench" in settings can still read as an
  *   invitation rather than a redo.
  */
 export type SetupStatus = "pending" | "done" | "skipped";
@@ -2137,14 +2308,15 @@ export type SetupStatus = "pending" | "done" | "skipped";
 export const DEFAULT_SETTINGS: HomeSettings = {
 	title: "Obsidian",
 	showTitle: true,
-	// Empty => the Hearth crystal icon is shown as the brand mark.
+	// Empty => the Flexible Workbench workbench mark icon is shown as the brand mark.
 	titleIcon: "",
-	// Empty => the Hearth crystal is the tab and ribbon icon.
+	// Empty => the Flexible Workbench workbench mark is the tab and ribbon icon.
 	tabIcon: "",
 	themeColorTarget: "none",
 	showSearch: true,
 	searchPlaceholder: "Search or command",
 	showNewNoteButton: true,
+	showNewTaskButton: true,
 	newNoteButtonMode: "newNote",
 	newNoteButtonLabel: "",
 	newNoteTemplate: "",
@@ -2160,7 +2332,7 @@ export const DEFAULT_SETTINGS: HomeSettings = {
 	 * the image is still recognizable, not a wash of colour. */
 	backgroundOpacity: 0.35,
 	backgroundBlur: 2,
-	/* The wallpaper board is what Hearth has always been, so it stays the
+	/* The wallpaper board is what Flexible Workbench has always been, so it stays the
 	 * default; the banner is a choice, not an upgrade. */
 	backgroundLayout: "full",
 	bannerHeight: BANNER_HEIGHT_DEFAULT,
@@ -2179,7 +2351,7 @@ export const DEFAULT_SETTINGS: HomeSettings = {
 	stackOnNarrow: true,
 	disableExternalCalls: false,
 
-	// A new tab is what Hearth has always done; existing vaults must not change
+	// A new tab is what Flexible Workbench has always done; existing vaults must not change
 	// behaviour on upgrade, so both the global default and every per-source rule
 	// start out as "open a new tab".
 	openIn: "tab",
@@ -2224,6 +2396,11 @@ export const DEFAULT_SETTINGS: HomeSettings = {
 	gridColumns: 12,
 	rowHeight: 92,
 	favorites: [],
+	knowledgeSessions: [],
+	knowledgeReviewedLogs: {},
+	knowledgeLogBaselineInitialized: false,
+	knowledgeLogBaselineAt: 0,
+	knowledgeReviewReminderDate: "",
 	fitToPage: true,
 
 	taskNotesStatusField: "status",
@@ -2245,6 +2422,8 @@ export const DEFAULT_SETTINGS: HomeSettings = {
 	// Reading is the default; writing is a decision, since it widens the grant
 	// the user has to approve in Operon.
 	operonWrites: false,
+	timerRecords: [],
+	todoCompletions: [],
 
 	maxWidth: 1600,
 	fullWidth: false,
@@ -2274,7 +2453,7 @@ function starterCards(): DashboardCard[] {
 		{
 			id: "card-daily",
 			kind: "daily",
-			title: "Today",
+			title: "Todo List",
 			x: 0, y: 3, w: 7, h: 6,
 			fx: 0.6309840425531915,
 			fw: 0.3690159574468085,
@@ -2315,15 +2494,15 @@ function starterCards(): DashboardCard[] {
 	];
 }
 
-/** The mobile action bar's default buttons. Each `target` is a command Hearth
+/** The mobile action bar's default buttons. Each `target` is a command Flexible Workbench
  * registers itself, so replacing one via the command picker works exactly like
  * swapping in any other plugin's command. */
 export function defaultMobileActionButtons(): MobileActionButton[] {
 	return [
-		{ id: "action-new-note", label: "New note", icon: "plus", type: "command", target: "hearth:new-note" },
-		{ id: "action-new-drawing", label: "New drawing", icon: "pen-tool", type: "command", target: "hearth:new-drawing" },
-		{ id: "action-record-voice", label: "Record voice", icon: "mic", type: "command", target: "hearth:record-voice" },
-		{ id: "action-daily-note", label: "Daily note", icon: "calendar", type: "command", target: "hearth:open-daily-note" },
+		{ id: "action-new-note", label: "New note", icon: "plus", type: "command", target: "flexible-workbench:new-note" },
+		{ id: "action-new-drawing", label: "New drawing", icon: "pen-tool", type: "command", target: "flexible-workbench:new-drawing" },
+		{ id: "action-record-voice", label: "Record voice", icon: "mic", type: "command", target: "flexible-workbench:record-voice" },
+		{ id: "action-daily-note", label: "Daily note", icon: "calendar", type: "command", target: "flexible-workbench:open-daily-note" },
 	];
 }
 
@@ -2407,8 +2586,8 @@ export function effectiveTitle(s: HomeSettings): string {
 }
 
 /** The title icon for the active board — a Lucide id, emoji/text, a vault image
- * path or an image URL; `titleicon.ts` decides which. Empty = the Hearth
- * crystal, and a board's own empty string wins over a global icon: that is how
+ * path or an image URL; `titleicon.ts` decides which. Empty = the Flexible Workbench
+ * workbench mark, and a board's own empty string wins over a global icon: that is how
  * a single board opts back out of it. */
 export function effectiveTitleIcon(s: HomeSettings): string {
 	return activeDashboard(s).header?.titleIcon ?? s.titleIcon;
@@ -2511,7 +2690,7 @@ function tierRank(s: HomeSettings): number {
  * transition and hover lift.
  *
  * False from `reduced` down. This is the predicate that matters for power —
- * animation is the single most expensive thing Hearth does.
+ * animation is the single most expensive thing Flexible Workbench does.
  */
 export function motionAllowed(s: HomeSettings): boolean {
 	return tierRank(s) < PERFORMANCE_TIERS.indexOf("reduced");
@@ -2622,7 +2801,7 @@ export const CARD_BORDER_WIDTH_MAX = 8;
 
 /** Effective card corner radius (px) for the active board (per-dashboard
  * override or global), clamped to [0, CARD_RADIUS_MAX]. Applied board-wide via
- * the --hearth-card-radius CSS variable so every card (and the frost mask)
+ * the --flexible-workbench-card-radius CSS variable so every card (and the frost mask)
  * rounds by the same amount. */
 export function effectiveCardRadius(s: HomeSettings): number {
 	const v = activeDashboard(s).cardRadius ?? s.cardRadius;
@@ -2838,6 +3017,13 @@ export function migrateSettings(s: HomeSettings, raw: Record<string, unknown>): 
 	// respect whatever the user chose.
 	if (typeof raw.backgroundKind !== "string") s.backgroundKind = "default";
 	if (!Array.isArray(s.pinnedCards)) s.pinnedCards = [];
+	if (!Array.isArray(s.todoCompletions)) s.todoCompletions = [];
+	if (!s.knowledgeReviewedLogs || typeof s.knowledgeReviewedLogs !== "object" || Array.isArray(s.knowledgeReviewedLogs)) {
+		s.knowledgeReviewedLogs = {};
+	}
+	if (typeof s.knowledgeLogBaselineInitialized !== "boolean") s.knowledgeLogBaselineInitialized = false;
+	if (typeof s.knowledgeLogBaselineAt !== "number" || !Number.isFinite(s.knowledgeLogBaselineAt)) s.knowledgeLogBaselineAt = 0;
+	if (typeof s.knowledgeReviewReminderDate !== "string") s.knowledgeReviewReminderDate = "";
 	// Seed the default buttons only if the field was never persisted, so an
 	// intentionally emptied list (all buttons removed) isn't reset on reload.
 	if (!Array.isArray(raw.mobileActionButtons)) {
@@ -2897,9 +3083,62 @@ export function migrateSettings(s: HomeSettings, raw: Record<string, unknown>): 
 	// whose action is chosen here; fall back to the original New-note behaviour.
 	if ((s.newNoteButtonMode as string) === "split") s.newNoteButtonMode = "newNote";
 	const migratedTitleIcon = migrateTitleIcon(s, raw);
+	const migratedTodoList = migrateDailyCardsToTodoLists(s);
+	const migratedTimerRecords = migrateTimerRecords(s, raw);
+	const migratedTimerCards = migrateOperonTimerCards(s);
 	// Drop the obsolete single-board field so it can't shadow the dashboards.
 	delete (s as unknown as { cards?: unknown }).cards;
-	return migratedCommandId || migratedLowPower || migratedTitleIcon;
+	return migratedCommandId || migratedLowPower || migratedTitleIcon || migratedTodoList || migratedTimerRecords || migratedTimerCards;
+}
+
+/** Move the former Operon timer history to the plugin-owned timer key. The
+ * record shape is intentionally retained so descriptions, summaries and todo
+ * links survive without rewriting individual entries. */
+function migrateTimerRecords(s: HomeSettings, raw: Record<string, unknown>): boolean {
+	const stored = s as unknown as Record<string, unknown>;
+	if (Array.isArray(raw.timerRecords)) {
+		s.timerRecords = raw.timerRecords as TimerRecord[];
+	} else if (Array.isArray(raw.operonTimerRecords)) {
+		s.timerRecords = raw.operonTimerRecords as TimerRecord[];
+	} else if (!Array.isArray(s.timerRecords)) {
+		s.timerRecords = [];
+	}
+	if (!Object.prototype.hasOwnProperty.call(stored, "operonTimerRecords")) return false;
+	delete stored.operonTimerRecords;
+	return true;
+}
+
+/** Convert the old timer view into a native card without changing its slot or
+ * custom title. Its history is migrated separately under `timerRecords`. */
+function migrateOperonTimerCards(s: HomeSettings): boolean {
+	let migrated = false;
+	const formerDefaultTitles = new Set(["Operon timer", "Operon Timer", "Operon 计时器"]);
+	for (const dashboard of s.dashboards) {
+		for (const card of dashboard.cards) {
+			if (card.kind !== "operon" || (card.operon?.view as string | undefined) !== "timer") continue;
+			card.kind = "timer";
+			delete card.operon;
+			if (formerDefaultTitles.has(card.title ?? "")) card.title = "Time tracker";
+			migrated = true;
+		}
+	}
+	return migrated;
+}
+
+/** Turn the former starter daily-note card into the dashboard Todo List while
+ * leaving intentionally customised card titles alone. */
+function migrateDailyCardsToTodoLists(s: HomeSettings): boolean {
+	let migrated = false;
+	for (const dashboard of s.dashboards) {
+		for (const card of dashboard.cards) {
+			if (card.kind !== "daily") continue;
+			if (card.title === "Today" || card.title === "今天" || card.title === "今日笔记") {
+				card.title = "Todo List";
+				migrated = true;
+			}
+		}
+	}
+	return migrated;
 }
 
 /** The pre-2.2 title mark: an emoji/text `logo` beside a Lucide `logoIcon` that
@@ -2945,7 +3184,7 @@ export function legacyTitleIcon(
  * reaches it.
  *
  * This does NOT round-trip: downgrading below 2.2.0 after it has run shows the
- * Hearth crystal again until the logo fields are set anew. See CHANGELOG.
+ * Flexible Workbench workbench mark again until the logo fields are set anew. See CHANGELOG.
  */
 function migrateTitleIcon(s: HomeSettings, raw: Record<string, unknown>): boolean {
 	let migrated = false;

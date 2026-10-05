@@ -37,7 +37,7 @@ export interface PlacePickerOptions {
 	onPick: (place: WeatherPlace | undefined) => void;
 	/** Rebuild the surrounding pane, so the picker can show what changed. */
 	rerender: () => void;
-	/** True while Hearth's privacy setting blocks outbound requests: the search
+	/** True while Flexible Workbench's privacy setting blocks outbound requests: the search
 	 * is disabled and says so, but coordinates can still be typed. */
 	disabled: boolean;
 	/** Per-open scratch space that survives `rerender()` but not a reopen. */
@@ -88,7 +88,7 @@ function currentRow(containerEl: HTMLElement, opts: PlacePickerOptions): void {
 				.filter(Boolean)
 				.join(" · "),
 		)
-		.setClass("hearth-weather-current-place")
+		.setClass("flexible-workbench-weather-current-place")
 		.addExtraButton((b) =>
 			b
 				.setIcon("trash-2")
@@ -134,14 +134,14 @@ function suggestionRow(containerEl: HTMLElement, opts: PlacePickerOptions): void
 }
 
 /** The name search: type a name, hit Search, pick one of the matches. This is
- * the only lookup Hearth ever does, and only when asked. */
+ * the only lookup Flexible Workbench ever does, and only when asked. */
 function searchRows(containerEl: HTMLElement, opts: PlacePickerOptions): void {
 	const strings = t().editors.weather;
 
 	const search = new Setting(containerEl)
 		.setName(strings.search)
 		.setDesc(opts.disabled ? strings.searchDisabled : strings.searchDesc)
-		.setClass("hearth-weather-search");
+		.setClass("flexible-workbench-weather-search");
 
 	search.addText((txt) => {
 		txt
@@ -150,7 +150,7 @@ function searchRows(containerEl: HTMLElement, opts: PlacePickerOptions): void {
 			.onChange((v) => {
 				opts.session[QUERY] = v;
 			});
-		txt.inputEl.addClass("hearth-weather-search-input");
+		txt.inputEl.addClass("flexible-workbench-weather-search-input");
 	});
 
 	const run = async (button: { setDisabled(v: boolean): unknown }): Promise<void> => {
@@ -187,7 +187,7 @@ function searchRows(containerEl: HTMLElement, opts: PlacePickerOptions): void {
 	const results = (opts.session[RESULTS] as GeoResult[] | undefined) ?? [];
 	if (opts.session[SEARCHED] && !results.length) {
 		containerEl.createDiv({
-			cls: "hearth-weather-search-empty setting-item-description",
+			cls: "flexible-workbench-weather-search-empty setting-item-description",
 			text: strings.searchNoResults,
 		});
 	}
@@ -195,7 +195,7 @@ function searchRows(containerEl: HTMLElement, opts: PlacePickerOptions): void {
 		new Setting(containerEl)
 			.setName(result.name)
 			.setDesc(result.region || `${result.lat.toFixed(2)}, ${result.lon.toFixed(2)}`)
-			.setClass("hearth-weather-result")
+			.setClass("flexible-workbench-weather-result")
 			.addButton((b) =>
 				b.setButtonText(strings.usePlace).onClick(() => {
 					opts.onPick({
@@ -251,13 +251,13 @@ function coordinateRows(containerEl: HTMLElement, opts: PlacePickerOptions): voi
 	const coords = new Setting(containerEl)
 		.setName(strings.coordinates)
 		.setDesc(strings.coordinatesDesc)
-		.setClass("hearth-weather-coords");
+		.setClass("flexible-workbench-weather-coords");
 	coords.addText((txt) => {
 		txt
 			.setPlaceholder(strings.latPlaceholder)
 			.setValue(opts.current ? String(opts.current.lat) : "")
 			.onChange((v) => setCoord("lat", v));
-		txt.inputEl.addClass("hearth-weather-coord-input");
+		txt.inputEl.addClass("flexible-workbench-weather-coord-input");
 		txt.inputEl.inputMode = "decimal";
 	});
 	coords.addText((txt) => {
@@ -265,7 +265,7 @@ function coordinateRows(containerEl: HTMLElement, opts: PlacePickerOptions): voi
 			.setPlaceholder(strings.lonPlaceholder)
 			.setValue(opts.current ? String(opts.current.lon) : "")
 			.onChange((v) => setCoord("lon", v));
-		txt.inputEl.addClass("hearth-weather-coord-input");
+		txt.inputEl.addClass("flexible-workbench-weather-coord-input");
 		txt.inputEl.inputMode = "decimal";
 	});
 

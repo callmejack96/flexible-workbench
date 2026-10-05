@@ -34,10 +34,10 @@ export function renderSearchBar(
 	// One positioned wrapper holds the bar, the chip row and the results
 	// overlay, mirroring the header's search column — the overlay is absolutely
 	// positioned against it, so the dropdown spans the card's width.
-	const wrap = body.createDiv("hearth-searchbar-card");
+	const wrap = body.createDiv("flexible-workbench-searchbar-card");
 	// The bar and its button share a row so the button sits beside the field
 	// rather than above the chips, exactly as in the header.
-	const row = wrap.createDiv("hearth-searchbar-row");
+	const row = wrap.createDiv("flexible-workbench-searchbar-row");
 	const bar = search.renderBar(row, { placeholder: cfg.placeholder });
 	if (cfg.button && cfg.button !== "none") {
 		row.append(createSearchBarButton(view, bar, cfg.button));
@@ -139,7 +139,7 @@ export function searchBarEditor(ctx: CardEditorContext, containerEl: HTMLElement
 	// card's. Say so here — it isn't discoverable from a settings pane that has
 	// no slider for it.
 	const note = new Setting(containerEl).setDesc(t().editors.searchBar.sizeNote);
-	note.settingEl.addClass("hearth-setting-note");
+	note.settingEl.addClass("flexible-workbench-setting-note");
 }
 
 /** A live search field, optionally without any card frame around it. */

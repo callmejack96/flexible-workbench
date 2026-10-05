@@ -1,4 +1,4 @@
-/* Harness entry: builds the real Hearth board DOM in a plain browser using the
+/* Harness entry: builds the real Flexible Workbench board DOM in a plain browser using the
  * plugin's own drawSky() and updateFrostLayers(), so the measurements below are
  * of the shipped code path rather than a mock-up. */
 import { installDomShim } from "./dom-shim";
@@ -7,7 +7,7 @@ import { applyEdgeMerging, updateFrostLayers } from "../../../src/grid";
 
 installDomShim();
 
-/** Hearth's shipped defaults (DEFAULT_SETTINGS in src/types.ts). */
+/** Flexible Workbench's shipped defaults (DEFAULT_SETTINGS in src/types.ts). */
 const DEFAULTS = {
 	backgroundOpacity: 0.35,
 	backgroundBlur: 2,
@@ -45,11 +45,11 @@ export interface Scenario {
 
 function makeBoard(root: HTMLElement, s: Scenario): void {
 	root.empty();
-	root.setAttribute("class", "hearth-view");
+	root.setAttribute("class", "flexible-workbench-view");
 
 	// ---- Wallpaper layer, exactly as background.ts paints it ----
 	if (s.bg !== "none") {
-		const layer = root.createDiv("hearth-bg");
+		const layer = root.createDiv("flexible-workbench-bg");
 		layer.style.opacity = String(DEFAULTS.backgroundOpacity);
 		if (s.bgBlur > 0) layer.style.filter = `blur(${s.bgBlur}px)`;
 		if (s.bg === "color") {
@@ -70,18 +70,18 @@ function makeBoard(root: HTMLElement, s: Scenario): void {
 		}
 	}
 
-	const scroll = root.createDiv("hearth-scroll");
-	const inner = scroll.createDiv("hearth-inner");
-	const dash = inner.createDiv("hearth-dashboard");
-	const grid = dash.createDiv("hearth-grid");
+	const scroll = root.createDiv("flexible-workbench-scroll");
+	const inner = scroll.createDiv("flexible-workbench-inner");
+	const dash = inner.createDiv("flexible-workbench-dashboard");
+	const grid = dash.createDiv("flexible-workbench-grid");
 	grid.style.setProperty("--card-opacity", String(DEFAULTS.cardOpacity));
-	grid.style.setProperty("--hearth-card-radius", `${DEFAULTS.cardRadius}px`);
+	grid.style.setProperty("--flexible-workbench-card-radius", `${DEFAULTS.cardRadius}px`);
 	grid.style.setProperty("--card-border-width", "1px");
 	grid.style.position = "relative";
 	grid.style.height = "600px";
 
 	for (const c of CARDS) {
-		const el = grid.createDiv("hearth-card");
+		const el = grid.createDiv("flexible-workbench-card");
 		el.style.position = "absolute";
 		el.style.left = `${c.x}px`;
 		el.style.top = `${c.y}px`;
@@ -91,9 +91,9 @@ function makeBoard(root: HTMLElement, s: Scenario): void {
 			el.addClass("has-blur");
 			el.dataset.blur = String(s.cardBlur);
 		}
-		const head = el.createDiv("hearth-card-head");
-		head.createDiv({ cls: "hearth-card-title", text: "Card" });
-		const body = el.createDiv("hearth-card-body");
+		const head = el.createDiv("flexible-workbench-card-head");
+		head.createDiv({ cls: "flexible-workbench-card-title", text: "Card" });
+		const body = el.createDiv("flexible-workbench-card-body");
 		body.createDiv({ text: "Some representative card content." });
 	}
 
@@ -103,7 +103,7 @@ function makeBoard(root: HTMLElement, s: Scenario): void {
 
 declare global {
 	interface Window {
-		hearthBench: {
+		flexibleWorkbenchBench: {
 			build: (s: Scenario) => void;
 			countAnimated: () => number;
 			frostMaskBytes: () => number;
@@ -114,20 +114,20 @@ declare global {
 
 const root = document.getElementById("root") as HTMLElement;
 
-window.hearthBench = {
+window.flexibleWorkbenchBench = {
 	build: (s: Scenario) => makeBoard(root, s),
 	/** How many elements currently have a running CSS animation. */
 	countAnimated: () => document.getAnimations().length,
 	/** Total bytes of the inline SVG data-URI masks on the frost layers. */
 	frostMaskBytes: () => {
 		let n = 0;
-		for (const l of Array.from(document.querySelectorAll<HTMLElement>(".hearth-frost"))) {
+		for (const l of Array.from(document.querySelectorAll<HTMLElement>(".flexible-workbench-frost"))) {
 			n += (l.style.getPropertyValue("mask-image") || "").length;
 		}
 		return n;
 	},
 	rebuildFrost: () => {
-		const grid = document.querySelector<HTMLElement>(".hearth-grid");
+		const grid = document.querySelector<HTMLElement>(".flexible-workbench-grid");
 		if (grid) updateFrostLayers(grid);
 	},
 };

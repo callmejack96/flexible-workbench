@@ -28,7 +28,7 @@ import {
 import type { OperonPolicies, OperonTask } from "../src/operon/types";
 
 /**
- * The rules behind Hearth's two Operon writes.
+ * The rules behind Flexible Workbench's two Operon writes.
  *
  * Three of them are the ones that would do real damage if they drifted:
  *
@@ -285,7 +285,7 @@ describe("createIntent", () => {
 		const spec = (intent: ReturnType<typeof createIntent>) =>
 			(intent.spec as unknown as { items: { target: Record<string, unknown> }[] }).items[0].target;
 		// Still Operon's configured path in every case — only the representation
-		// is ever Hearth's to state.
+		// is ever Flexible Workbench's to state.
 		expect(spec(createIntent({ description: "x" }))).toEqual({ mode: "configured-default" });
 		expect(spec(createIntent({ description: "x", createAs: "file" }))).toEqual({
 			representation: "file",
@@ -334,7 +334,7 @@ describe("createTarget", () => {
 	it("names the daily note when that is Operon's inline target", () => {
 		// The case behind "Configured Daily Note target is unavailable or
 		// invalid": without this, the refusal names a setting the user has no
-		// way to identify from Hearth.
+		// way to identify from Flexible Workbench.
 		expect(createTarget(policies({ inlineTaskSaveMode: "daily-notes" }))).toEqual({ kind: "daily" });
 	});
 

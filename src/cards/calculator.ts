@@ -62,10 +62,10 @@ export function renderCalculator(view: HomeView, card: DashboardCard, body: HTML
 	const cfg = (card.calculator ??= {});
 	const angleUnit = cfg.angleUnit ?? "deg";
 
-	const wrap = body.createDiv("hearth-calc");
+	const wrap = body.createDiv("flexible-workbench-calc");
 
 	const input = wrap.createEl("input", {
-		cls: "hearth-calc-input",
+		cls: "flexible-workbench-calc-input",
 		attr: {
 			type: "text",
 			placeholder: t().cards.calculator.placeholder,
@@ -75,9 +75,9 @@ export function renderCalculator(view: HomeView, card: DashboardCard, body: HTML
 	});
 	input.value = cfg.lastInput ?? "";
 
-	const resultEl = wrap.createDiv("hearth-calc-result");
-	const noteEl = wrap.createDiv("hearth-calc-note");
-	const keysEl = wrap.createDiv("hearth-calc-keys");
+	const resultEl = wrap.createDiv("flexible-workbench-calc-result");
+	const noteEl = wrap.createDiv("flexible-workbench-calc-note");
+	const keysEl = wrap.createDiv("flexible-workbench-calc-keys");
 
 	// Currency conversions need exchange rates. To stay local-first, rates are
 	// only fetched lazily — the first time a query actually needs them (see the
@@ -176,7 +176,7 @@ export function renderCalculator(view: HomeView, card: DashboardCard, body: HTML
 		const keys = tier === "scientific" ? [...CALC_SCI_KEYS, ...CALC_BASIC_KEYS] : CALC_BASIC_KEYS;
 		for (const key of keys) {
 			const btn = keysEl.createEl("button", {
-				cls: `hearth-calc-key${key.cls ? " " + key.cls : ""}`,
+				cls: `flexible-workbench-calc-key${key.cls ? " " + key.cls : ""}`,
 				text: key.label,
 				attr: { type: "button" },
 			});

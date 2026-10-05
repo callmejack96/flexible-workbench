@@ -1,16 +1,17 @@
 import { addIcon, debounce, Platform, Plugin, setIcon, WorkspaceLeaf, Notice } from "obsidian";
 import { HomeView, VIEW_TYPE_HOME } from "./view";
-import { DEFAULT_SETTINGS, fillMissingDefaults, HomeSettings, migrateSettings, timersAllowed } from "./types";
+import { activeDashboard, DEFAULT_SETTINGS, fillMissingDefaults, HomeSettings, migrateSettings, timersAllowed } from "./types";
 import { HomeSettingTab } from "./settings";
 import {
-	HEARTH_ICON_ID,
-	HEARTH_ICON_SVG,
-	HEARTH_ICON_THEMED_ID,
-	HEARTH_ICON_THEMED_SVG,
+	FLEXIBLE_WORKBENCH_ICON_ID,
+	FLEXIBLE_WORKBENCH_ICON_SVG,
+	FLEXIBLE_WORKBENCH_ICON_THEMED_ID,
+	FLEXIBLE_WORKBENCH_ICON_THEMED_SVG,
 	tabIconIdFor,
 } from "./icon";
 import type { WorkspacesInstance } from "./obsidian-ext";
 import { createConfiguredNote } from "./newnote";
+import { createJiraLinkedTask } from "./newtask";
 import { EXCALIDRAW_PLUGIN_ID } from "./filetypes";
 import { setLanguage, t } from "./i18n";
 import { maybeShowWhatsNew } from "./whatsnew";
@@ -18,6 +19,8 @@ import { maybeRunSetup, openSetupWizard } from "./onboarding";
 import { clearContentSearchCache } from "./query";
 import { recordRecentFile, renameRecentFile } from "./recentfiles";
 import { forgetTaxonomy, OperonSession } from "./operon";
+import { MultiSourceSyncIntegration } from "./multi-source-sync";
+import { checkKnowledgeReviewReminder } from "./knowledge";
 
 /** Core "Audio recorder" plugin id, used by the "Record voice" mobile action. */
 const AUDIO_RECORDER_PLUGIN_ID = "audio-recorder";
@@ -26,7 +29,7 @@ const AUDIO_RECORDER_PLUGIN_ID = "audio-recorder";
  * Whether a leaf is actually on screen, rather than merely open.
  *
  * Obsidian takes an inactive leaf in a tab group out of layout, which is what
- * makes a backgrounded Hearth tab cost nothing to have open. `offsetParent` is
+ * makes a backgrounded Flexible Workbench tab cost nothing to have open. `offsetParent` is
  * null for exactly that case (and for a collapsed sidebar), so it is the cheapest
  * honest test available — no geometry, no observer, no undocumented API.
  *
@@ -39,22 +42,28 @@ function leafIsVisible(leaf: WorkspaceLeaf): boolean {
 	return el.offsetParent !== null || el.isShown?.() === true;
 }
 
-export default class HearthPlugin extends Plugin {
+export default class FlexibleWorkbenchPlugin extends Plugin {
 	settings: HomeSettings;
 	/** True when this load had no persisted data at all (a brand-new install),
 	 * as opposed to an existing vault that simply predates a given setting.
 	 * Used so the "What's new" dialog greets upgraders but not first-timers. */
 	isFirstRun = false;
-	/** The ribbon crystal, kept so the icon can be swapped when the
+	/** The ribbon workbench mark, kept so the icon can be swapped when the
 	 * themeColorTarget setting changes. */
 	private ribbonEl?: HTMLElement;
 
-	/** Hearth's single connection to the Operon plugin's Developer API. Shared
+	/** Flexible Workbench's single connection to the Operon plugin's Developer API. Shared
 	 * by every Operon card and the settings tab so the vault sees one consumer,
 	 * one capability grant and one session — not one per card. Nothing is
 	 * negotiated here: the session opens lazily, the first time a card (or the
 	 * settings readout) actually asks for it. */
 	operon = new OperonSession(this, () => this.settings.operonWrites);
+
+	/** Desktop-only RedNote favorites sync, embedded from the user's existing
+	 * Source Sync installation and exposed through this plugin's Integrations
+	 * page. Its large settings document is deliberately kept out of
+	 * HomeSettings; see multi-source-sync.ts. */
+	sourceSync = new MultiSourceSyncIntegration(this);
 
 	/** Home-view leaves that have already been the active leaf at least once.
 	 * Their first activation was the fresh onOpen render, so the focus refresh
@@ -74,12 +83,13 @@ export default class HearthPlugin extends Plugin {
 		setLanguage();
 
 		await this.loadSettings();
+		await this.sourceSync.load();
 
-		// Register both Hearth crystals (brand purple and themeable) so either
+		// Register both Flexible Workbench workbench marks (brand purple and themeable) so either
 		// can be used as the ribbon, tab and header icon per the
 		// themeColorTarget setting.
-		addIcon(HEARTH_ICON_ID, HEARTH_ICON_SVG);
-		addIcon(HEARTH_ICON_THEMED_ID, HEARTH_ICON_THEMED_SVG);
+		addIcon(FLEXIBLE_WORKBENCH_ICON_ID, FLEXIBLE_WORKBENCH_ICON_SVG);
+		addIcon(FLEXIBLE_WORKBENCH_ICON_THEMED_ID, FLEXIBLE_WORKBENCH_ICON_THEMED_SVG);
 
 		this.registerView(VIEW_TYPE_HOME, (leaf) => new HomeView(leaf, this));
 
@@ -100,9 +110,21 @@ export default class HearthPlugin extends Plugin {
 		});
 
 		this.addCommand({
+			id: "open-knowledge-workbench",
+			name: t().commands.openKnowledge,
+			callback: () => void this.openKnowledgeWorkbench(),
+		});
+
+		this.addCommand({
 			id: "new-note",
 			name: t().commands.newNote,
 			callback: () => this.createNewNote(),
+		});
+
+		this.addCommand({
+			id: "new-task",
+			name: t().cards.tasks.createNewTask,
+			callback: () => this.createNewTask(),
 		});
 
 		this.addCommand({
@@ -132,6 +154,18 @@ export default class HearthPlugin extends Plugin {
 			callback: () => openSetupWizard(this, { forceNewDashboard: true }),
 		});
 
+		this.addCommand({
+			id: "open-source-sync",
+			name: t().commands.openSourceSync,
+			callback: () => this.sourceSync.openSettings(),
+		});
+
+		this.addCommand({
+			id: "sync-rednote-now",
+			name: t().commands.syncRedNoteNow,
+			callback: () => void this.sourceSync.syncNow(),
+		});
+
 		this.registerDashboardCommands();
 
 		this.addSettingTab(new HomeSettingTab(this.app, this));
@@ -156,7 +190,7 @@ export default class HearthPlugin extends Plugin {
 		this.registerEvent(this.app.vault.on("rename", onVaultChange));
 		this.registerEvent(this.app.vault.on("modify", onVaultChange));
 
-		// Hearth's own recent-file history (#228). Obsidian's getLastOpenFiles()
+		// Flexible Workbench's own recent-file history (#228). Obsidian's getLastOpenFiles()
 		// stops at ten entries, so a Recent files card asking for more has to be
 		// told about opens as they happen; a rename is followed so a moved file
 		// keeps its place instead of vanishing from the list.
@@ -179,6 +213,10 @@ export default class HearthPlugin extends Plugin {
 
 		this.app.workspace.onLayoutReady(() => {
 			this.applyMobileDefaultDashboard();
+			void checkKnowledgeReviewReminder(this).catch((error: unknown) => console.error("Knowledge review reminder failed", error));
+			this.registerInterval(window.setInterval(() => {
+				void checkKnowledgeReviewReminder(this).catch((error: unknown) => console.error("Knowledge review reminder failed", error));
+			}, 30 * 60 * 1000));
 			if (this.settings.openOnStartup) void this.activateView();
 			// Pop the release-notes dialog after an update (but not on a fresh
 			// install). Runs once layout is ready so it doesn't fight startup.
@@ -195,7 +233,7 @@ export default class HearthPlugin extends Plugin {
 		// drop it rather than leave a copy of the vault behind after unload.
 		clearContentSearchCache();
 		// The Operon session holds a reference to that plugin's instance; drop
-		// it so an unloaded Hearth isn't left holding a live handle.
+		// it so an unloaded Flexible Workbench isn't left holding a live handle.
 		this.operon.invalidate();
 	}
 
@@ -301,6 +339,26 @@ export default class HearthPlugin extends Plugin {
 		await workspace.revealLeaf(leaf);
 	}
 
+	/** Add the knowledge card to the active board on first use, then open home. */
+	private async openKnowledgeWorkbench(): Promise<void> {
+		const dashboard = activeDashboard(this.settings);
+		const alreadyOnBoard = [...dashboard.cards, ...this.settings.pinnedCards].some((card) => card.kind === "knowledge");
+		if (!alreadyOnBoard) {
+			const bottom = dashboard.cards.reduce((max, card) => Math.max(max, card.y + card.h), 0);
+			dashboard.cards.push({
+				id: `knowledge-${Date.now().toString(36)}`,
+				kind: "knowledge",
+				title: t().templates.knowledge,
+				x: 0,
+				y: bottom,
+				w: 12,
+				h: 7,
+			});
+			await this.saveSettings();
+		}
+		await this.activateView();
+	}
+
 	/** Create the note the "New note" button is configured to create, and open
 	 * it. What that is — a blank note in the default location, or a Templater
 	 * template landing in a folder of the user's choosing — lives in settings
@@ -308,7 +366,7 @@ export default class HearthPlugin extends Plugin {
 	 * button and this command all behave the same.
 	 *
 	 * `from` is the view the button was pressed in, so the note can replace that
-	 * Hearth tab when the user asked for "same tab" (#106); the command palette
+	 * Flexible Workbench tab when the user asked for "same tab" (#106); the command palette
 	 * has no view and falls back to the active leaf. */
 	async createNewNote(from?: HomeView) {
 		await createConfiguredNote(
@@ -316,6 +374,32 @@ export default class HearthPlugin extends Plugin {
 			this.settings,
 			from ?? { app: this.app, settings: this.settings },
 		);
+	}
+
+	/** Open TaskNotes' own create-task interface. */
+	createNewTask(from?: HomeView) {
+		createJiraLinkedTask(
+			this.app,
+			this.settings,
+			from ?? { app: this.app, settings: this.settings },
+			async () => this.ensureProjectTodosCard(),
+		);
+	}
+
+	private async ensureProjectTodosCard(): Promise<void> {
+		const dashboard = activeDashboard(this.settings);
+		if (dashboard.cards.some((card) => card.kind === "projecttodos")) return;
+		for (const card of dashboard.cards) card.y += 3;
+		dashboard.cards.unshift({
+			id: `projecttodos-${Date.now().toString(36)}`,
+			kind: "projecttodos",
+			title: "Project Todos",
+			x: 0,
+			y: 0,
+			w: 12,
+			h: 3,
+		});
+		await this.saveSettings();
 	}
 
 	/** Create a new Excalidraw drawing via the Excalidraw plugin's own "new
@@ -395,8 +479,8 @@ export default class HearthPlugin extends Plugin {
 		this.refreshViews();
 	}
 
-	/** The mark Hearth wears in the ribbon and on its tab: the user's Lucide tab
-	 * icon, or the brand/themed crystal. */
+	/** The mark Flexible Workbench wears in the ribbon and on its tab: the user's Lucide tab
+	 * icon, or the brand/themed workbench mark. */
 	private brandIconId(): string {
 		return tabIconIdFor(this.settings.themeColorTarget, this.settings.tabIcon);
 	}
@@ -452,7 +536,7 @@ export default class HearthPlugin extends Plugin {
 		if (!this.settings.liveRefresh) return;
 		// The minimal tier suppresses it without clearing the setting: a full board
 		// rebuild on every burst of vault writes is the most expensive thing
-		// Hearth does off its own render path. Views still refresh when their tab
+		// Flexible Workbench does off its own render path. Views still refresh when their tab
 		// is focused again, so nothing goes permanently stale.
 		if (!timersAllowed(this.settings)) return;
 		this.app.workspace.getLeavesOfType(VIEW_TYPE_HOME).forEach((leaf) => {
@@ -463,7 +547,7 @@ export default class HearthPlugin extends Plugin {
 			//
 			// Visible boards only, for the same reason as refreshViews: rebuilding a
 			// board behind another tab on every burst of vault writes is the single
-			// most expensive thing Hearth does off its own render path, and the
+			// most expensive thing Flexible Workbench does off its own render path, and the
 			// focus refresh brings it up to date before it is seen.
 			if (view instanceof HomeView && !view.arrangeMode && leafIsVisible(leaf)) {
 				view.liveRender();

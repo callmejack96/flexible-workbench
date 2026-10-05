@@ -27,7 +27,7 @@ export function renderRecent(
 	body: HTMLElement,
 	component?: Component,
 ): void {
-	// "Fit to card height" asks for everything Hearth remembers and then hides
+	// "Fit to card height" asks for everything Flexible Workbench remembers and then hides
 	// whatever doesn't fit, so the row count follows the card's size. A fixed
 	// count is clamped to what the history can actually hold, so the card shows
 	// the number the editor accepted (#228).
@@ -53,12 +53,12 @@ export function renderRecent(
 		return;
 	}
 
-	const list = body.createDiv("hearth-list");
+	const list = body.createDiv("flexible-workbench-list");
 	const icons = fileIconOptions(view.plugin.settings);
 	for (const file of files) {
-		const row = list.createDiv("hearth-list-item");
-		applyFileIcon(row.createDiv("hearth-list-icon"), resolveFileIcon(view.app, file, icons));
-		row.createDiv({ cls: "hearth-list-label", text: file.basename });
+		const row = list.createDiv("flexible-workbench-list-item");
+		applyFileIcon(row.createDiv("flexible-workbench-list-icon"), resolveFileIcon(view.app, file, icons));
+		row.createDiv({ cls: "flexible-workbench-list-label", text: file.basename });
 		const open = () => void openFile(view, file, "card");
 		row.addEventListener("click", open);
 		makeClickable(row, open, file.basename);
@@ -86,7 +86,7 @@ function fitRowsToBody(body: HTMLElement, list: HTMLElement, component?: Compone
 
 	const fit = () => {
 		if (!list.isConnected) return;
-		for (const row of rows) row.removeClass("hearth-list-item-clipped");
+		for (const row of rows) row.removeClass("flexible-workbench-list-item-clipped");
 		// Rows are measured against the viewport, so a body left scrolled would
 		// read the list as starting higher than it does. Nothing is meant to
 		// scroll in this mode anyway — the whole point is that the list stops at
@@ -99,7 +99,7 @@ function fitRowsToBody(body: HTMLElement, list: HTMLElement, component?: Compone
 		const padBottom = parseFloat(getComputedStyle(body).paddingBottom) || 0;
 		const available = body.getBoundingClientRect().bottom - padBottom - first.top;
 		const visible = rowsThatFit(available, first.height, Math.max(0, step - first.height));
-		for (let i = visible; i < rows.length; i++) rows[i].addClass("hearth-list-item-clipped");
+		for (let i = visible; i < rows.length; i++) rows[i].addClass("flexible-workbench-list-item-clipped");
 	};
 
 	// Fit before the first paint, so a tall card never flashes its full list and
@@ -146,7 +146,7 @@ export function recentEditor(ctx: CardEditorContext, containerEl: HTMLElement): 
 			txt.inputEl.type = "number";
 			txt.inputEl.min = String(RECENT_COUNT_MIN);
 			txt.inputEl.max = String(RECENT_HISTORY_MAX);
-			txt.inputEl.addClass("hearth-count-input");
+			txt.inputEl.addClass("flexible-workbench-count-input");
 		});
 		addResetButton(ctx, recent, t().settings.resetField, () => {
 			card.count = undefined;
@@ -169,15 +169,15 @@ export function recentTypesEditor(ctx: CardEditorContext, containerEl: HTMLEleme
 	});
 
 	const selected = new Set(card.recentTypes ?? []);
-	const row = containerEl.createDiv("hearth-type-filter");
+	const row = containerEl.createDiv("flexible-workbench-type-filter");
 	// Folders can never appear among recently-opened files, so offer every
 	// search-filter type except that one.
 	const groups = FILE_TYPE_GROUPS.filter((g) => g.id !== FOLDERS_GROUP_ID);
 	for (const group of groups) {
-		const chip = row.createDiv("hearth-type-filter-chip");
+		const chip = row.createDiv("flexible-workbench-type-filter-chip");
 		chip.toggleClass("is-active", selected.has(group.id));
-		setIcon(chip.createDiv("hearth-type-filter-icon"), group.icon);
-		chip.createDiv({ cls: "hearth-type-filter-label", text: fileTypeLabel(group) });
+		setIcon(chip.createDiv("flexible-workbench-type-filter-icon"), group.icon);
+		chip.createDiv({ cls: "flexible-workbench-type-filter-label", text: fileTypeLabel(group) });
 		chip.setAttribute("role", "button");
 		chip.setAttribute("tabindex", "0");
 		chip.setAttribute("aria-pressed", String(selected.has(group.id)));

@@ -2,7 +2,7 @@
  * What the setup wizard can find in a vault before it asks a single question.
  *
  * The wizard's promise is that it does the looking: rather than presenting a
- * list of everything Hearth *could* talk to (that is the Integrations
+ * list of everything Flexible Workbench *could* talk to (that is the Integrations
  * catalogue's job — see `src/integrations.ts`), it reports only what is
  * actually installed and enabled *here*, and offers to wire each one up.
  *
@@ -29,14 +29,14 @@ export const KANBAN_PLUGIN_ID = "obsidian-kanban";
  *
  * Deliberately a *subset* of `INTEGRATIONS`: an entry earns a place here only
  * when accepting it has a concrete, automatic effect *on the board being
- * built* — a card added and configured. Anything Hearth merely tolerates
+ * built* — a card added and configured. Anything Flexible Workbench merely tolerates
  * (Canvas, Excalidraw, the file explorer) has nothing for the wizard to do and
  * would only be a question with no answer worth giving.
  *
  * Two former entries — Omnisearch as the search engine, and Iconic/Iconize as
  * the file-icon source — are deliberately gone. Both are vault-wide switches
  * with no per-board form, and the wizard writes nothing vault-wide (see
- * `plan.ts`). They are one toggle away in Settings → Hearth → Integrations,
+ * `plan.ts`). They are one toggle away in Settings → Flexible Workbench → Integrations,
  * which is where a setting that affects every board belongs.
  */
 export type SetupIntegrationId =
@@ -118,7 +118,7 @@ function corePluginEnabled(app: App, id: string): boolean {
  * The two probes are the same ones the card's own picker requirement uses, so
  * the wizard offers Operon exactly when the picker would let you add it.
  *
- * What this cannot know is whether the user has approved Hearth in Operon's own
+ * What this cannot know is whether the user has approved Flexible Workbench in Operon's own
  * settings: that answer only exists after an async session negotiation, which
  * is far more than a detection pass should do. The card explains the approval
  * step itself, and the wizard's offer says so up front.
@@ -160,7 +160,7 @@ const KANBAN_FRONTMATTER_KEY = "kanban-plugin";
 
 /** A Kanban board note in the vault, or null. Looks at frontmatter rather than
  * the plugin, because a board is readable whether or not Kanban is enabled —
- * which is exactly why Hearth can read one at all. */
+ * which is exactly why Flexible Workbench can read one at all. */
 function findKanbanBoard(app: App): string | null {
 	const file = findFile(app, (f) => {
 		if (f.extension !== "md") return false;
@@ -191,7 +191,7 @@ export function detectSetup(app: App): SetupDetection {
 
 	const kanbanPath = findKanbanBoard(app);
 	// Offered on the strength of a board existing, not of the plugin being on:
-	// Hearth parses the note itself. But never alongside TaskNotes — one Tasks
+	// Flexible Workbench parses the note itself. But never alongside TaskNotes — one Tasks
 	// card has one source, and TaskNotes is the richer of the two.
 	if (kanbanPath && !taskNotesOn) {
 		integrations.push({
@@ -294,7 +294,7 @@ function safeVaultName(app: App): string {
 }
 
 /**
- * The slice of TaskNotes' configuration Hearth needs to mirror, reduced to the
+ * The slice of TaskNotes' configuration Flexible Workbench needs to mirror, reduced to the
  * four settings a Tasks card reads.
  *
  * This is the whole point of detecting TaskNotes rather than merely noticing
@@ -315,7 +315,7 @@ export interface TaskNotesImport {
 }
 
 /**
- * Reduce a parsed TaskNotes configuration to the mapping Hearth stores.
+ * Reduce a parsed TaskNotes configuration to the mapping Flexible Workbench stores.
  *
  * Pure, and total: a vault whose TaskNotes defines no completed status at all
  * still yields a usable `doneValue` (its documented default, "done"), because

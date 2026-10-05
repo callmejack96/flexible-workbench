@@ -1,6 +1,6 @@
 import { setIcon, type App, type Setting, type TextComponent, type TFile } from "obsidian";
 import { isImageFile, isImagePath } from "./filetypes";
-import { HEARTH_ICON_ID } from "./icon";
+import { FLEXIBLE_WORKBENCH_ICON_ID } from "./icon";
 import { LucideIconPickerModal, knownIconIds, pickIconId } from "./lucide";
 import { FilePickerModal } from "./pickers";
 import { t } from "./i18n";
@@ -8,14 +8,14 @@ import { t } from "./i18n";
 /**
  * The mark beside a board's title, as one setting (#252).
  *
- * Hearth used to carry two fields for this — a "logo" holding an emoji or a
+ * Flexible Workbench used to carry two fields for this — a "logo" holding an emoji or a
  * couple of characters, and a "title icon" holding a Lucide id that silently
  * won whenever both were set. Two fields for one slot meant the settings tab
  * (and every board's own settings) had to explain a precedence rule, and the
  * two together still couldn't draw a picture. There is now a single
  * `titleIcon` string, and what it holds decides what is drawn:
  *
- *   - empty            → the Hearth crystal (or whatever the caller passes as
+ *   - empty            → the Flexible Workbench workbench mark (or whatever the caller passes as
  *                        the fallback icon)
  *   - `https://…`      → a picture fetched from the web
  *   - `Assets/me.png`  → a picture from the vault
@@ -100,34 +100,34 @@ export function titleIconFile(app: App, value: string): TFile | null {
  * Draw a title icon into `parent` and return the element it created.
  *
  * `fallbackIconId` is what an empty value — and a picture that has gone missing
- * — falls back to; the header passes the Hearth crystal in the variant the
+ * — falls back to; the header passes the Flexible Workbench workbench mark in the variant the
  * board's theme-colour setting asks for.
  */
 export function renderTitleIcon(
 	app: App,
 	parent: HTMLElement,
 	raw: string | undefined,
-	fallbackIconId: string = HEARTH_ICON_ID,
+	fallbackIconId: string = FLEXIBLE_WORKBENCH_ICON_ID,
 ): HTMLElement {
 	const icon = titleIconOf(raw);
 	if (icon.kind === "url" || icon.kind === "image") {
 		const file = icon.kind === "image" ? titleIconFile(app, icon.value) : null;
 		const src = icon.kind === "url" ? icon.value : file && app.vault.getResourcePath(file);
 		if (src) {
-			const el = parent.createSpan({ cls: "hearth-logo hearth-logo-image" });
+			const el = parent.createSpan({ cls: "flexible-workbench-logo flexible-workbench-logo-image" });
 			// Decorative: the title text beside it already names the board.
-			const img = el.createEl("img", { cls: "hearth-logo-img", attr: { alt: "" } });
+			const img = el.createEl("img", { cls: "flexible-workbench-logo-img", attr: { alt: "" } });
 			img.src = src;
 			return el;
 		}
 	} else if (icon.kind === "lucide") {
-		const el = parent.createSpan({ cls: "hearth-logo hearth-logo-icon" });
+		const el = parent.createSpan({ cls: "flexible-workbench-logo flexible-workbench-logo-icon" });
 		setIcon(el, icon.value);
 		return el;
 	} else if (icon.kind === "text") {
-		return parent.createSpan({ cls: "hearth-logo", text: icon.value });
+		return parent.createSpan({ cls: "flexible-workbench-logo", text: icon.value });
 	}
-	const el = parent.createSpan({ cls: "hearth-logo hearth-logo-icon" });
+	const el = parent.createSpan({ cls: "flexible-workbench-logo flexible-workbench-logo-icon" });
 	setIcon(el, fallbackIconId);
 	return el;
 }
@@ -149,7 +149,7 @@ export function addTitleIconPicker(
 	value: string,
 	onChange: (value: string) => void,
 ): Setting {
-	const preview = setting.controlEl.createSpan({ cls: "hearth-icon-preview" });
+	const preview = setting.controlEl.createSpan({ cls: "flexible-workbench-icon-preview" });
 	let text: TextComponent | undefined;
 
 	const apply = (next: string) => {

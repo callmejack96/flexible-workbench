@@ -16,7 +16,7 @@ import {
  *
  * Everything that touches the running plugin is Obsidian API and stays
  * untested (per the no-mocks rule). What's covered here is the part that
- * decides *what Hearth believes about another plugin's data*: reading a
+ * decides *what Flexible Workbench believes about another plugin's data*: reading a
  * granularity out of its 0.x settings object, turning that into a vault path,
  * and picking its "open this period's note" command out of the command
  * registry. Those three are where a version difference or a hand-edited
@@ -173,7 +173,7 @@ describe("periodicOpenCommandId", () => {
 		expect(periodicOpenCommandId(["periodic-notes:open-daily-note"], "quarter")).toBeNull();
 	});
 
-	it("ignores 1.0's fiscal year, which isn't a granularity Hearth offers", () => {
+	it("ignores 1.0's fiscal year, which isn't a granularity Flexible Workbench offers", () => {
 		expect(periodicOpenCommandId(["periodic-notes:open-fiscal-year"], "year")).toBeNull();
 	});
 

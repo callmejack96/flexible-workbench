@@ -1,0 +1,10 @@
+{
+  "id": "multi-source-sync",
+  "name": "Obsidian Source Sync",
+  "version": "0.3.11-chrome-session-v2-favorites",
+  "minAppVersion": "1.5.0",
+  "description": "Local-only RedNote favorites sync to Obsidian/raw/red.",
+  "author": "坦丁|场景化AI知识库",
+  "authorUrl": "",
+  "isDesktopOnly": true
+}

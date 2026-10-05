@@ -10,7 +10,7 @@
  * resolved place so an offline board still knows where it points.
  *
  * Responses are cached in memory per (location + units) for a card-configurable
- * window, so a board with several weather cards — and Hearth's frequent full
+ * window, so a board with several weather cards — and Flexible Workbench's frequent full
  * re-renders — makes at most one request per window. Everything degrades
  * gracefully: a failed fetch keeps the last good snapshot, and the request is
  * skipped entirely when the user has disabled external calls.

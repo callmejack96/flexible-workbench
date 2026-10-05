@@ -72,6 +72,12 @@ export class TextComponent {}
 
 export function setIcon(): void {}
 export function addIcon(): void {}
+/** Faithful-enough port of Obsidian's normalizePath for the pure helpers under
+ * test: forward slashes, no duplicate/leading/trailing slashes. */
+export function normalizePath(path: string): string {
+	const cleaned = path.replace(/\\/g, "/").replace(/\/+/g, "/").replace(/(^\/+|\/+$)/g, "").trim();
+	return cleaned || "/";
+}
 // lucide.ts imports this for its icon-registry lookup (fileicons.ts and the
 // icon pickers go through it). The pure helpers under test take the "is this
 // icon registered?" check as a parameter, so the real registry is never
@@ -94,7 +100,7 @@ export const Platform = {
 	isMobileApp: false,
 	isDesktopApp: true,
 };
-// Set to the newest version any Hearth feature gates on (Operon's Developer
+// Set to the newest version any Flexible Workbench feature gates on (Operon's Developer
 // API needs 1.12.2), so a `requireApiVersion` check is satisfied by default and
 // a test that wants the *unsupported* answer says so explicitly — flipping
 // `Platform.isDesktopApp` is the readable way to do it.

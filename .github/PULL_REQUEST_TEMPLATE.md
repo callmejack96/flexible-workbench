@@ -1,6 +1,6 @@
 <!--
-Thanks for contributing to Hearth! A quick heads-up (see CONTRIBUTING.md):
-Hearth is moving fast, so small, obvious fixes and translations are easy to
+Thanks for contributing to Flexible Workbench! A quick heads-up (see CONTRIBUTING.md):
+Flexible Workbench is moving fast, so small, obvious fixes and translations are easy to
 merge, but for anything larger please open an issue first so we can align
 before you invest the work.
 -->

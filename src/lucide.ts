@@ -20,7 +20,7 @@ import { t } from "./i18n";
  *
  * Three shapes of icon id are in circulation and all of them have to work:
  * Obsidian's registered form (`lucide-home`), the bare Lucide name (`home`,
- * which is what plugins normally write and what Hearth stores), and whatever a
+ * which is what plugins normally write and what Flexible Workbench stores), and whatever a
  * user typed by hand — which may not name an icon at all. {@link resolveIconId}
  * is the single place that reconciles them, so an unknown id degrades to "no
  * icon" instead of an invisible, blank icon slot.
@@ -75,7 +75,7 @@ export function pickIconId(
 }
 
 /** Strip Obsidian's registration prefix, leaving the bare Lucide name that
- * Hearth stores and that users recognise from lucide.dev. */
+ * Flexible Workbench stores and that users recognise from lucide.dev. */
 export function bareIconName(id: string): string {
 	return id.startsWith(LUCIDE_PREFIX) ? id.slice(LUCIDE_PREFIX.length) : id;
 }
@@ -98,7 +98,7 @@ export function renderIcon(el: HTMLElement, raw: string | undefined): boolean {
 /**
  * The names offered by the picker: the Lucide set, bare and sorted.
  *
- * Icons registered by plugins (Hearth's own crystal among them) are left out —
+ * Icons registered by plugins (Flexible Workbench's own workbench mark among them) are left out —
  * they are not Lucide, they come and go with whatever plugins are enabled, and
  * a board that referenced one would lose its icon the moment that plugin was
  * disabled. Should Obsidian ever stop prefixing the set, every id is offered
@@ -132,9 +132,9 @@ export class LucideIconPickerModal extends FuzzySuggestModal<string> {
 	}
 
 	renderSuggestion(match: FuzzyMatch<string>, el: HTMLElement): void {
-		el.addClass("hearth-icon-suggestion");
-		renderIcon(el.createSpan("hearth-icon-suggestion-icon"), match.item);
-		el.createSpan({ cls: "hearth-icon-suggestion-name", text: match.item });
+		el.addClass("flexible-workbench-icon-suggestion");
+		renderIcon(el.createSpan("flexible-workbench-icon-suggestion-icon"), match.item);
+		el.createSpan({ cls: "flexible-workbench-icon-suggestion-name", text: match.item });
 	}
 
 	onChooseItem(name: string): void {
@@ -158,7 +158,7 @@ export function addIconPicker(
 	value: string,
 	onChange: (value: string) => void,
 ): Setting {
-	const preview = setting.controlEl.createSpan({ cls: "hearth-icon-preview" });
+	const preview = setting.controlEl.createSpan({ cls: "flexible-workbench-icon-preview" });
 	let text: TextComponent | undefined;
 
 	const apply = (next: string) => {

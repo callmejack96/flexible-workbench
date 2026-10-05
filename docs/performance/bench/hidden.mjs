@@ -1,4 +1,4 @@
-/* Does the sky keep costing anything when the Hearth tab is not the visible
+/* Does the sky keep costing anything when the Flexible Workbench tab is not the visible
  * one? Obsidian hides an inactive leaf in a tab group by taking it out of
  * layout, so the question is what Chromium does with a running animation in
  * each of the ways an element can be "not shown". */
@@ -7,7 +7,7 @@ import { HERE, launch, loadPlaywright, readMetrics, startTrace, stopTrace } from
 const WINDOW_MS = 4000;
 
 /** `css` is applied inline to the view root; `cls` is added as a class, which
- *  is how Hearth's own motion gate switches off (see src/motion.ts). */
+ *  is how Flexible Workbench's own motion gate switches off (see src/motion.ts). */
 const MODES = {
 	"visible (control)": {},
 	"display: none  (what a hidden Obsidian tab does)": { css: "display:none" },
@@ -15,7 +15,7 @@ const MODES = {
 	"opacity: 0": { css: "opacity:0" },
 	"scrolled out of view / offscreen": { css: "position:absolute;left:-10000px" },
 	"content-visibility: hidden": { css: "content-visibility:hidden" },
-	"THE GATE: .hearth-motion-paused": { cls: "hearth-motion-paused" },
+	"THE GATE: .flexible-workbench-motion-paused": { cls: "flexible-workbench-motion-paused" },
 };
 
 const browser = await launch(loadPlaywright());
@@ -31,13 +31,13 @@ console.log("-".repeat(84));
 
 for (const [label, mode] of Object.entries(MODES)) {
 	await page.evaluate(
-		(s) => window.hearthBench.build(s),
+		(s) => window.flexibleWorkbenchBench.build(s),
 		{ bg: "sky", bgBlur: 2, skyAnimate: true, skyCode: 63, cardBlur: 7 },
 	);
 	await page.evaluate((m) => {
 		const root = document.getElementById("root");
 		root.setAttribute("style", m.css ?? "");
-		root.setAttribute("class", m.cls ? `hearth-view ${m.cls}` : "hearth-view");
+		root.setAttribute("class", m.cls ? `flexible-workbench-view ${m.cls}` : "flexible-workbench-view");
 	}, mode);
 	await page.waitForTimeout(1000);
 

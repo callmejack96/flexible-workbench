@@ -2,7 +2,7 @@ import { Notice, Setting, type App } from "obsidian";
 import { CARD_KINDS, cardDefinition } from "./cards";
 import { type CardEditorContext } from "./cards/definition";
 import { t } from "./i18n";
-import { HearthTabbedModal, type HearthModalTab } from "./tabbedmodal";
+import { FlexibleWorkbenchTabbedModal, type FlexibleWorkbenchModalTab } from "./tabbedmodal";
 import {
 	TILE_COLS_DEFAULT,
 	TILE_COLS_MAX,
@@ -62,7 +62,7 @@ export interface CardSettingsOptions {
  * Remove/Done footer, so a card with a dense editor (tasks, RSS) stays as
  * navigable as a plain one.
  */
-export class CardSettingsModal extends HearthTabbedModal {
+export class CardSettingsModal extends FlexibleWorkbenchTabbedModal {
 	private card: DashboardCard;
 	private opts: CardSettingsOptions;
 
@@ -90,20 +90,20 @@ export class CardSettingsModal extends HearthTabbedModal {
 
 	onOpen(): void {
 		this.titleEl.setText(t().editors.title);
-		this.hearthRenderShell();
+		this.flexibleWorkbenchRenderShell();
 	}
 
 	/** Rebuild the modal in place, keeping the active tab. Kind-specific editors
 	 * call this after a change that swaps which controls are shown. */
 	private render(): void {
-		this.hearthRenderShell();
+		this.flexibleWorkbenchRenderShell();
 	}
 
-	protected hearthTabStorageKey(): string {
-		return "hearth-card-settings-tab";
+	protected flexibleWorkbenchTabStorageKey(): string {
+		return "flexible-workbench-card-settings-tab";
 	}
 
-	protected hearthTabs(): HearthModalTab[] {
+	protected flexibleWorkbenchTabs(): FlexibleWorkbenchModalTab[] {
 		const tabs = t().editors.tabs;
 		return [
 			{ id: "content", label: tabs.content, icon: "square-pen" },
@@ -112,7 +112,7 @@ export class CardSettingsModal extends HearthTabbedModal {
 		];
 	}
 
-	protected hearthRenderBody(body: HTMLElement, tabId: string): void {
+	protected flexibleWorkbenchRenderBody(body: HTMLElement, tabId: string): void {
 		switch (tabId) {
 			case "content":
 				this.identitySection(body);
@@ -168,7 +168,7 @@ export class CardSettingsModal extends HearthTabbedModal {
 	}
 
 	/** Persistent footer shared by every tab: remove the card, or close. */
-	protected hearthRenderFooter(footer: HTMLElement): void {
+	protected flexibleWorkbenchRenderFooter(footer: HTMLElement): void {
 		new Setting(footer)
 			.addButton((b) => {
 				b.setButtonText(t().editors.removeCard).onClick(() => {
@@ -184,7 +184,7 @@ export class CardSettingsModal extends HearthTabbedModal {
 						},
 					});
 				});
-				b.buttonEl.addClass("hearth-danger-btn");
+				b.buttonEl.addClass("flexible-workbench-danger-btn");
 			})
 			.addButton((b) =>
 				b
@@ -333,7 +333,7 @@ export class CardSettingsModal extends HearthTabbedModal {
 					this.opts.save();
 				});
 			txt.inputEl.type = "number";
-			txt.inputEl.addClass("hearth-count-input");
+			txt.inputEl.addClass("flexible-workbench-count-input");
 			txt.inputEl.setAttribute("aria-label", t().editors.size.widthAria);
 		});
 		row.addText((txt) => {
@@ -344,7 +344,7 @@ export class CardSettingsModal extends HearthTabbedModal {
 				this.opts.save();
 			});
 			txt.inputEl.type = "number";
-			txt.inputEl.addClass("hearth-count-input");
+			txt.inputEl.addClass("flexible-workbench-count-input");
 			txt.inputEl.setAttribute("aria-label", t().editors.size.heightAria);
 		});
 		addResetButton(this.editorContext(), row, t().editors.resetSize, () => {
@@ -424,7 +424,7 @@ export class CardSettingsModal extends HearthTabbedModal {
 						this.opts.rerender();
 					});
 				txt.inputEl.type = "number";
-				txt.inputEl.addClass("hearth-count-input");
+				txt.inputEl.addClass("flexible-workbench-count-input");
 			});
 
 		new Setting(containerEl)
@@ -442,7 +442,7 @@ export class CardSettingsModal extends HearthTabbedModal {
 						this.opts.rerender();
 					});
 				txt.inputEl.type = "number";
-				txt.inputEl.addClass("hearth-count-input");
+				txt.inputEl.addClass("flexible-workbench-count-input");
 			});
 	}
 

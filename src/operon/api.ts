@@ -8,22 +8,23 @@ import type {
 
 /**
  * Operon's in-process Developer API V1 — the plugin's own public integration
- * surface, and the only thing Hearth talks to. Operon owns task parsing,
- * recurrence, statuses and its index; Hearth asks for typed snapshots and
- * renders them. Nothing here reads Operon's markdown or reimplements its rules.
+ * surface, and the only thing Flexible Workbench talks to. Operon owns task parsing,
+ * recurrence, statuses and its index; Flexible Workbench asks for typed snapshots and
+ * renders them. Flexible Workbench's time tracker has its own local state. Nothing here
+ * reads Operon's markdown or reimplements its task rules.
  *
  * Three properties of that API shape every decision in this module:
  *
- * 1. It is desktop-only and needs Obsidian 1.12.2+. Hearth ships mobile and
+ * 1. It is desktop-only and needs Obsidian 1.12.2+. Flexible Workbench ships mobile and
  *    declares minAppVersion 1.8.7, so "unavailable" is a normal state, not an
  *    error path.
  * 2. Access is granted by the user, per capability, in Operon's own settings —
  *    no modal fires from here — and it is all-or-nothing: one missing capability
- *    fails the whole session. That is why Hearth requests a single fixed read
+ *    fails the whole session. That is why Flexible Workbench requests a single fixed read
  *    scope instead of a per-card set.
  * 3. There are no change events and sessions go stale when either plugin
  *    reloads, so the session is re-derived from the live registry on demand and
- *    cards refresh off Hearth's own vault-event hub.
+ *    cards refresh off Flexible Workbench's own vault-event hub.
  */
 
 /** The community-plugin id Operon registers itself under. */
@@ -33,9 +34,9 @@ export const OPERON_PLUGIN_ID = "operon";
 export const OPERON_MIN_APP_VERSION = "1.12.2";
 
 /**
- * Every capability Hearth asks for, across all of its Operon cards — reads
+ * Every capability Flexible Workbench asks for, across its Operon task cards — reads
  * only. Operon refuses to open a partially authorized session, so requesting
- * the union once means the user approves Hearth once; asking per card would
+ * the union once means the user approves Flexible Workbench once; asking per card would
  * queue a fresh pending request each time a card is added.
  *
  * `system.health` and `system.capabilities` need no grant, but they are listed
@@ -48,11 +49,10 @@ export const OPERON_READ_CAPABILITIES: readonly CapabilityIdV1[] = [
 	"tasks.read",
 	"tasks.query",
 	"tasks.finder",
-	"timers.read",
 ];
 
 /**
- * The writes Hearth can perform, requested only when the user turns them on.
+ * The writes Flexible Workbench can perform, requested only when the user turns them on.
  *
  * Kept separate from the reads because the grant is all-or-nothing: folding
  * these into the default set would make every vault approve write access to
@@ -78,7 +78,7 @@ export const OPERON_ALL_CAPABILITIES: readonly CapabilityIdV1[] = [
 	...OPERON_WRITE_CAPABILITIES,
 ];
 
-/** Everything Hearth asks Operon for, given whether writes are enabled. */
+/** Everything Flexible Workbench asks Operon for, given whether writes are enabled. */
 export function operonCapabilities(writes: boolean): readonly CapabilityIdV1[] {
 	return writes ? OPERON_ALL_CAPABILITIES : OPERON_READ_CAPABILITIES;
 }
@@ -86,7 +86,7 @@ export function operonCapabilities(writes: boolean): readonly CapabilityIdV1[] {
 /**
  * Why an Operon card can't show data right now — or that it can ("ready").
  * Every state maps to its own empty-state string, because "Operon isn't
- * installed" and "you haven't approved Hearth yet" need very different
+ * installed" and "you haven't approved Flexible Workbench yet" need very different
  * instructions.
  */
 export type OperonAccessState =
@@ -98,16 +98,16 @@ export type OperonAccessState =
 	| "unsupported"
 	/** Operon is up but its runtime is still starting; retry shortly. */
 	| "booting"
-	/** Waiting for the user to approve Hearth in Operon's settings. */
+	/** Waiting for the user to approve Flexible Workbench in Operon's settings. */
 	| "pending"
-	/** Approved once, then suspended (usually a major Hearth version bump). */
+	/** Approved once, then suspended (usually a major Flexible Workbench version bump). */
 	| "suspended"
-	/** The user revoked Hearth's grant. */
+	/** The user revoked Flexible Workbench's grant. */
 	| "revoked"
 	/** Reads are admitted. */
 	| "ready";
 
-/** Operon's own account of a refusal, kept so Hearth can show it verbatim
+/** Operon's own account of a refusal, kept so Flexible Workbench can show it verbatim
  * instead of guessing. `reasonCode` is the finer-grained identifier Operon puts
  * in `error.details` (e.g. `developer-api-consumer-unverified`). */
 export interface OperonAccessError {
@@ -129,7 +129,7 @@ export interface OperonAccess {
 	/** Why Operon refused, when it said. Null on success. */
 	error: OperonAccessError | null;
 	/** How long Operon asked to be left alone, when it said. Drives the retry
-	 * delay for transient states instead of a number Hearth invented. */
+	 * delay for transient states instead of a number Flexible Workbench invented. */
 	retryAfterMs: number | null;
 	/** Capabilities requested but not granted, for the settings readout. */
 	missing: readonly string[];
@@ -154,14 +154,14 @@ export function getOperonAccessor(app: App): OperonDeveloperApiAccessorV1 | null
 }
 
 /** Whether Operon is enabled and exposes its Developer API accessor. Says
- * nothing about platform support or whether the user has approved Hearth. */
+ * nothing about platform support or whether the user has approved Flexible Workbench. */
 export function isOperonAvailable(app: App): boolean {
 	return getOperonAccessor(app) !== null;
 }
 
 /** Whether this Obsidian build can host Operon's Developer API at all. Operon
  * checks the same two conditions before handing out an API, so checking them
- * first lets Hearth explain *why* instead of showing a generic failure. */
+ * first lets Flexible Workbench explain *why* instead of showing a generic failure. */
 export function isOperonPlatformSupported(): boolean {
 	return Platform.isDesktopApp && requireApiVersion(OPERON_MIN_APP_VERSION);
 }
@@ -275,7 +275,7 @@ export function retryDelayMs(attempt: number, retryAfterMs?: number | null): num
 	return Math.min(step, RETRY_MAX_MS);
 }
 
-/** Narrow Operon's structured error to what Hearth shows and branches on. */
+/** Narrow Operon's structured error to what Flexible Workbench shows and branches on. */
 export function accessErrorOf(error: unknown): OperonAccessError | null {
 	if (!error || typeof error !== "object") return null;
 	const e = error as {
@@ -333,7 +333,7 @@ const UNAVAILABLE: OperonAccess = {
 };
 
 /**
- * Holds Hearth's single Operon session and re-derives it when it can no longer
+ * Holds Flexible Workbench's single Operon session and re-derives it when it can no longer
  * be trusted. One instance lives on the plugin (`plugin.operon`); cards and the
  * settings tab share it so the vault sees one consumer, one grant and one
  * session rather than one per card.

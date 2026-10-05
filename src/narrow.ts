@@ -2,7 +2,7 @@ import type { DashboardCard } from "./types";
 import { MIN_H_PX } from "./grid";
 
 /**
- * The narrow layout: what Hearth does when the board is too small for the
+ * The narrow layout: what Flexible Workbench does when the board is too small for the
  * free-form one.
  *
  * The free-form board places every card at `left: fx * 100%` / `width: fw *

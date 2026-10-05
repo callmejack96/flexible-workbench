@@ -23,7 +23,7 @@ import type { CardSettingsOptions } from "../editors";
  * This used to be a plain `available()` predicate that *hid* the template until
  * the dependency was there, which made a third of the catalogue invisible: a
  * user with no Dataview never learned the Dataview card exists, and "why does
- * my friend have a Git card?" was unanswerable from inside Hearth. Every card
+ * my friend have a Git card?" was unanswerable from inside Flexible Workbench. Every card
  * with a requirement already renders its own "install X" prompt when the
  * dependency is missing, so the picker now offers all of them and marks the
  * unmet ones instead.

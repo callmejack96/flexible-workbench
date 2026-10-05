@@ -1,6 +1,6 @@
 # Power benchmark harness
 
-Renders Hearth's *own* drawing code — `src/sky.ts` and `src/grid.ts`, unmodified,
+Renders Flexible Workbench's *own* drawing code — `src/sky.ts` and `src/grid.ts`, unmodified,
 behind a shim for Obsidian's DOM helpers — in headless Chromium at DPR 2, and
 measures what it costs. Written for
 [`../macos-power-investigation.md`](../macos-power-investigation.md); kept so the

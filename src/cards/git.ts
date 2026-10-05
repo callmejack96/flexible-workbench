@@ -1,4 +1,4 @@
-import { Component, Menu, Notice, setIcon, Setting, TFile } from "obsidian";
+import { Component, Menu, Notice, Platform, setIcon, Setting, TFile } from "obsidian";
 import { emptyState, moment } from "../cardbodies";
 import { addResetButton, moveItem } from "../editors";
 import {
@@ -32,6 +32,12 @@ import {
 	type GitSnapshot,
 } from "../git";
 import { t } from "../i18n";
+import {
+	readLocalGitRepositories,
+	syncNptFromLive,
+	type LocalGitRepository,
+	type LocalGitSnapshot,
+} from "../localgit";
 import { openFile } from "../opener";
 import { effectiveAutoRefreshMinutes, type DashboardCard } from "../types";
 import { confirmAction, makeClickable } from "../ui";
@@ -63,6 +69,11 @@ export function renderGit(
 	body: HTMLElement,
 	component: Component,
 ): void {
+	const repositories = (card.git?.repositories ?? []).filter((repo) => repo.path.trim());
+	if (repositories.length > 0) {
+		renderRepositoryOverview(view, card, body, component, repositories);
+		return;
+	}
 	const plugin = getGitPlugin(view.app);
 	if (!plugin) {
 		emptyState(body, "git-branch", t().cards.empty.gitEnable);
@@ -84,7 +95,7 @@ export function renderGit(
 		destroyed = true;
 	});
 
-	const wrap = body.createDiv("hearth-git");
+	const wrap = body.createDiv("flexible-workbench-git");
 	let snapshot: GitSnapshot = { status: plugin.cachedStatus };
 	let loading = false;
 	let busy = false;
@@ -156,10 +167,10 @@ export function renderGit(
 			// The plugin is loaded but has no repository open — either it is still
 			// starting up, or this vault isn't a repo. Both are worth saying, and
 			// both are fixed from obsidian-git's own view.
-			const empty = wrap.createDiv("hearth-git-notready");
+			const empty = wrap.createDiv("flexible-workbench-git-notready");
 			emptyState(empty, "git-branch", t().cards.empty.gitNotReady);
 			const button = empty.createEl("button", {
-				cls: "hearth-git-notready-button",
+				cls: "flexible-workbench-git-notready-button",
 				text: t().cards.git.openSourceControl,
 			});
 			button.addEventListener("click", () => void openGitView(view.app, "sourceControl"));
@@ -203,7 +214,7 @@ export function renderGit(
 	);
 	// The plugin finished a refresh cycle — but it only re-reads the status
 	// during one when its own status bar or one of its views needs it, and a
-	// Hearth card is neither. So when that cycle produced no status event, the
+	// Flexible Workbench card is neither. So when that cycle produced no status event, the
 	// card reads for itself; when it did, the paint above already happened and
 	// there is nothing left to do.
 	component.registerEvent(
@@ -235,6 +246,271 @@ export function renderGit(
 }
 
 
+// ---- Multi-repository overview -----------------------------------------
+
+function renderRepositoryOverview(
+	view: HomeView,
+	card: DashboardCard,
+	body: HTMLElement,
+	component: Component,
+	repositories: LocalGitRepository[],
+): void {
+	const strings = t().cards.git.repositories;
+	const wrap = body.createDiv("flexible-workbench-git-repositories");
+	let snapshots: LocalGitSnapshot[] = repositories.map((repo) => ({
+		id: repo.id,
+		name: repo.name?.trim() || repo.path.split(/[\\/]/).filter(Boolean).pop() || repo.path,
+		path: repo.path,
+		ahead: 0,
+		behind: 0,
+		changed: 0,
+		staged: 0,
+		untracked: 0,
+		conflicted: 0,
+	}));
+	let loading = false;
+	let syncingNpt = false;
+	let destroyed = false;
+	let token = 0;
+	component.register(() => { destroyed = true; });
+
+	const openDetails = (repo: LocalGitRepository): void => {
+		const target = repo.obsidianPath?.trim();
+		if (target) {
+			const file = view.app.vault.getAbstractFileByPath(target);
+			if (file instanceof TFile) {
+				void openFile(view, file, "card");
+				return;
+			}
+			new Notice(strings.noteMissing(target));
+			return;
+		}
+		const adapter = view.app.vault.adapter as { getBasePath?: () => string };
+		const vaultPath = adapter.getBasePath?.();
+		if (vaultPath && normalizeFsPath(vaultPath) === normalizeFsPath(repo.path)) {
+			void openGitView(view.app, "sourceControl");
+			return;
+		}
+		new Notice(strings.configureDetail);
+	};
+
+	const paint = (): void => {
+		wrap.empty();
+		wrap.toggleClass("is-busy", loading || syncingNpt);
+		const healthy = snapshots.filter((repo) => !repo.error);
+		const pending = healthy.filter((repo) => repo.changed > 0).length;
+		const updates = healthy.filter((repo) => repo.behind > 0).length;
+		const conflicts = healthy.filter((repo) => repo.conflicted > 0).length;
+
+		const overview = wrap.createDiv("flexible-workbench-git-repo-overview");
+		const heading = overview.createDiv("flexible-workbench-git-repo-overview-copy");
+		heading.createDiv({ cls: "flexible-workbench-git-repo-eyebrow", text: strings.eyebrow });
+		heading.createDiv({
+			cls: "flexible-workbench-git-repo-summary",
+			text: strings.summary(repositories.length, pending, updates),
+		});
+		const controls = overview.createDiv("flexible-workbench-git-repo-controls");
+		const refresh = controls.createEl("button", {
+			cls: "flexible-workbench-git-repo-refresh",
+			attr: { "aria-label": strings.refresh },
+			title: strings.refresh,
+		});
+		setIcon(refresh, "refresh-cw");
+		if (loading) refresh.addClass("is-loading");
+		refresh.disabled = loading;
+		refresh.addEventListener("click", refreshAll);
+
+		const syncNpt = controls.createEl("button", {
+			cls: "flexible-workbench-git-repo-sync-npt",
+			text: strings.syncNpt,
+			attr: { type: "button" },
+		});
+		setIcon(syncNpt.createSpan("flexible-workbench-git-repo-sync-npt-icon"), "git-merge");
+		syncNpt.disabled = loading || syncingNpt || !Platform.isDesktopApp;
+		syncNpt.setAttribute("title", strings.syncNptDesc);
+		syncNpt.addEventListener("click", () => {
+			if (syncingNpt) return;
+			confirmAction(view.app, {
+				title: strings.syncNpt,
+				message: strings.syncNptConfirm,
+				confirmText: strings.syncNpt,
+				onConfirm: () => {
+					syncingNpt = true;
+					paint();
+					void syncNptFromLive().then((results) => {
+						if (destroyed) return;
+						syncingNpt = false;
+						const succeeded = results.filter((result) => result.ok);
+						const failed = results.filter((result) => !result.ok);
+						new Notice(
+							failed.length
+								? strings.syncNptFailed(succeeded.length, failed.map((result) => `${result.name}: ${result.detail}`).join("\n"))
+								: strings.syncNptComplete(succeeded.length),
+							10_000,
+						);
+						refreshAll();
+					});
+				},
+			});
+		});
+
+		const badges = overview.createDiv("flexible-workbench-git-repo-overview-badges");
+		paintOverviewBadge(badges, "git-branch", repositories.length, strings.total, "");
+		paintOverviewBadge(badges, "pencil", pending, strings.pending, pending ? "is-warning" : "");
+		paintOverviewBadge(badges, "download", updates, strings.updates, updates ? "is-update" : "");
+		if (conflicts) paintOverviewBadge(badges, "triangle-alert", conflicts, strings.conflicts, "is-error");
+
+		const list = wrap.createDiv("flexible-workbench-git-repo-list");
+		snapshots.forEach((snapshot, index) => {
+			paintRepositoryRow(
+				list,
+				snapshot,
+				repositories[index],
+				loading,
+				() => openDetails(repositories[index]),
+			);
+		});
+		if (!Platform.isDesktopApp) {
+			list.createDiv({ cls: "flexible-workbench-git-repo-platform-note", text: strings.desktopOnly });
+		}
+	};
+
+	const refreshAll = (): void => {
+		if (loading) return;
+		if (!Platform.isDesktopApp) {
+			snapshots = snapshots.map((repo) => ({ ...repo, error: "desktopOnly" }));
+			paint();
+			return;
+		}
+		loading = true;
+		const current = ++token;
+		paint();
+		void readLocalGitRepositories(repositories).then((next) => {
+			if (destroyed || current !== token) return;
+			snapshots = next;
+			loading = false;
+			paint();
+		});
+	};
+
+	paint();
+	refreshAll();
+	const refreshMin = effectiveAutoRefreshMinutes(view.plugin.settings, card.git?.refreshMin ?? 0);
+	if (refreshMin > 0) {
+		component.registerInterval(window.setInterval(refreshAll, refreshMin * 60_000));
+	}
+}
+
+function normalizeFsPath(path: string): string {
+	return path.replace(/\\/g, "/").replace(/\/$/, "").toLowerCase();
+}
+
+function paintOverviewBadge(
+	container: HTMLElement,
+	icon: string,
+	value: number,
+	label: string,
+	cls: string,
+): void {
+	const badge = container.createDiv(`flexible-workbench-git-repo-overview-badge ${cls}`);
+	setIcon(badge.createSpan("flexible-workbench-git-repo-overview-icon"), icon);
+	badge.createSpan({ cls: "flexible-workbench-git-repo-overview-value", text: String(value) });
+	badge.createSpan({ cls: "flexible-workbench-git-repo-overview-label", text: label });
+}
+
+function paintRepositoryRow(
+	list: HTMLElement,
+	snapshot: LocalGitSnapshot,
+	repo: LocalGitRepository,
+	loading: boolean,
+	openDetails: () => void,
+): void {
+	const strings = t().cards.git.repositories;
+	const row = list.createDiv("flexible-workbench-git-repo-row");
+	if (snapshot.error) row.addClass("has-error");
+	else if (snapshot.conflicted) row.addClass("has-conflict");
+	else if (snapshot.behind) row.addClass("has-update");
+	else if (snapshot.changed) row.addClass("has-changes");
+	else row.addClass("is-clean");
+
+	const state = row.createDiv("flexible-workbench-git-repo-state");
+	state.createSpan("flexible-workbench-git-repo-dot");
+
+	const identity = row.createDiv("flexible-workbench-git-repo-identity");
+	identity.createDiv({ cls: "flexible-workbench-git-repo-name", text: snapshot.name });
+	identity.createDiv({ cls: "flexible-workbench-git-repo-path", text: snapshot.path });
+
+	const branch = row.createDiv("flexible-workbench-git-repo-branch");
+	setIcon(branch.createSpan("flexible-workbench-git-repo-branch-icon"), "git-branch");
+	branch.createSpan({ text: snapshot.branch || (loading ? strings.loadingBranch : strings.noBranch) });
+
+	const metrics = row.createDiv("flexible-workbench-git-repo-metrics");
+	if (snapshot.error) {
+		metrics.createSpan({ cls: "flexible-workbench-git-repo-error", text: strings.errors[snapshot.error] });
+	} else {
+		paintRepoMetric(metrics, "pencil", snapshot.changed, strings.changed, snapshot.changed > 0);
+		paintRepoMetric(metrics, "arrow-up", snapshot.ahead, strings.ahead, snapshot.ahead > 0);
+		paintRepoMetric(metrics, "arrow-down", snapshot.behind, strings.behind, snapshot.behind > 0);
+		if (snapshot.changed === 0 && snapshot.ahead === 0 && snapshot.behind === 0) {
+			metrics.createSpan({ cls: "flexible-workbench-git-repo-clean", text: strings.clean });
+		}
+	}
+
+	const details = row.createEl("button", {
+		cls: "flexible-workbench-git-repo-details",
+		attr: { "aria-label": strings.details(snapshot.name) },
+		title: repo.obsidianPath?.trim() || strings.details(snapshot.name),
+	});
+	details.createSpan({ text: strings.detail });
+	setIcon(details.createSpan("flexible-workbench-git-repo-details-icon"), "arrow-up-right");
+	details.addEventListener("click", (event) => {
+		event.stopPropagation();
+		openDetails();
+	});
+	row.addEventListener("dblclick", openDetails);
+}
+
+function paintRepoMetric(
+	container: HTMLElement,
+	icon: string,
+	value: number,
+	label: string,
+	active: boolean,
+): void {
+	const metric = container.createSpan(`flexible-workbench-git-repo-metric${active ? " is-active" : ""}`);
+	setIcon(metric.createSpan("flexible-workbench-git-repo-metric-icon"), icon);
+	metric.createSpan({ text: String(value) });
+	metric.setAttribute("title", label);
+}
+
+/** Keep repository setup reachable in normal dashboard mode. Previously it
+ * was only behind Arrange → card gear, which made the absolute-path fields
+ * effectively undiscoverable. The dynamic import avoids a static cycle between
+ * the dashboard renderer and the card registry. */
+function mountGitSettingsShortcut(
+	view: HomeView,
+	card: DashboardCard,
+	cardEl: HTMLElement,
+	head: HTMLElement,
+): void {
+	const label = t().cards.git.repositories.manage;
+	const titled = !!card.title?.trim();
+	const host = titled ? head : cardEl;
+	const button = host.createEl("button", {
+		cls: `flexible-workbench-git-configure ${titled ? "is-inline" : "is-floating"}`,
+		attr: { "aria-label": label, type: "button" },
+		title: label,
+	});
+	setIcon(button.createSpan("flexible-workbench-git-configure-icon"), "folder-cog");
+	button.createSpan({ cls: "flexible-workbench-git-configure-label", text: label });
+	button.addEventListener("pointerdown", (event) => event.stopPropagation());
+	button.addEventListener("click", (event) => {
+		event.stopPropagation();
+		void import("../dashboard").then(({ openCardSettings }) => openCardSettings(view, card));
+	});
+}
+
+
 /** The status line: branch, what it tracks, how far ahead, and the size of the
  * working tree's changes. */
 function paintStatus(
@@ -245,13 +521,13 @@ function paintStatus(
 	onRefresh: () => void,
 ): void {
 	const strings = t().cards.git;
-	const row = wrap.createDiv("hearth-git-status");
+	const row = wrap.createDiv("flexible-workbench-git-status");
 
 	const branchName = snapshot.branch?.current;
-	const branch = row.createDiv("hearth-git-branch");
-	setIcon(branch.createDiv("hearth-git-branch-icon"), "git-branch");
+	const branch = row.createDiv("flexible-workbench-git-branch");
+	setIcon(branch.createDiv("flexible-workbench-git-branch-icon"), "git-branch");
 	branch.createSpan({
-		cls: "hearth-git-branch-name",
+		cls: "flexible-workbench-git-branch-name",
 		text: branchName || strings.noBranch,
 	});
 	if (branchName) {
@@ -261,7 +537,7 @@ function paintStatus(
 	}
 
 	const counts = gitChangeCounts(snapshot.status);
-	const chips = row.createDiv("hearth-git-chips");
+	const chips = row.createDiv("flexible-workbench-git-chips");
 	/** One count chip; drawn only when it has something to say. */
 	const chip = (
 		value: number,
@@ -270,9 +546,9 @@ function paintStatus(
 		cls: string,
 	): void => {
 		if (value <= 0) return;
-		const el = chips.createDiv(`hearth-git-chip ${cls}`);
-		setIcon(el.createSpan("hearth-git-chip-icon"), icon);
-		el.createSpan({ cls: "hearth-git-chip-value", text: String(value) });
+		const el = chips.createDiv(`flexible-workbench-git-chip ${cls}`);
+		setIcon(el.createSpan("flexible-workbench-git-chip-icon"), icon);
+		el.createSpan({ cls: "flexible-workbench-git-chip-value", text: String(value) });
 		el.setAttribute("title", label);
 		el.setAttribute("aria-label", `${value} ${label}`);
 	};
@@ -282,20 +558,20 @@ function paintStatus(
 	chip(snapshot.unpushed ?? 0, "upload", strings.unpushed, "is-unpushed");
 
 	if (counts.total === 0 && !(snapshot.unpushed ?? 0)) {
-		chips.createSpan({ cls: "hearth-git-clean", text: strings.clean });
+		chips.createSpan({ cls: "flexible-workbench-git-clean", text: strings.clean });
 	}
 
 	const last = snapshot.lastCommit;
 	if (last) {
 		row.createDiv({
-			cls: "hearth-git-lastcommit",
+			cls: "flexible-workbench-git-lastcommit",
 			text: strings.lastCommit(relativeTime(last)),
 		});
 	}
 	// The refresh control doubles as the busy indicator: it spins while a read is
 	// in flight, which is also when pressing it again would be pointless.
 	const refresh = row.createEl("button", {
-		cls: "hearth-git-refresh",
+		cls: "flexible-workbench-git-refresh",
 		attr: { "aria-label": strings.refresh },
 		title: strings.refresh,
 	});
@@ -319,16 +595,16 @@ function paintActions(
 	const actions = gitActions(configured);
 	if (actions.length === 0) return;
 	const labelled = style === "labelled";
-	const row = wrap.createDiv("hearth-git-actions");
+	const row = wrap.createDiv("flexible-workbench-git-actions");
 	row.toggleClass("is-labelled", labelled);
 	for (const action of actions) {
 		const def = GIT_ACTION_DEFS[action];
 		const label = t().cards.git.actions[action];
-		const button = row.createEl("button", { cls: "hearth-git-action" });
+		const button = row.createEl("button", { cls: "flexible-workbench-git-action" });
 		button.addClass(`is-${action}`);
 		if (def.destructive) button.addClass("is-destructive");
-		setIcon(button.createSpan("hearth-git-action-icon"), def.icon);
-		if (labelled) button.createSpan({ cls: "hearth-git-action-label", text: label });
+		setIcon(button.createSpan("flexible-workbench-git-action-icon"), def.icon);
+		if (labelled) button.createSpan({ cls: "flexible-workbench-git-action-label", text: label });
 		button.setAttribute("aria-label", label);
 		button.setAttribute("title", label);
 		const available = gitActionAvailable(plugin, action);
@@ -350,17 +626,17 @@ function paintChanges(
 	refresh: () => void,
 ): void {
 	const rows = gitChangeRows(snapshot.status);
-	const section = wrap.createDiv("hearth-git-changes");
+	const section = wrap.createDiv("flexible-workbench-git-changes");
 	if (rows.length === 0) {
-		section.createDiv({ cls: "hearth-git-none", text: t().cards.git.noChanges });
+		section.createDiv({ cls: "flexible-workbench-git-none", text: t().cards.git.noChanges });
 		return;
 	}
 	const shown = limit > 0 ? rows.slice(0, limit) : rows;
-	const list = section.createDiv("hearth-list hearth-git-list");
+	const list = section.createDiv("flexible-workbench-list flexible-workbench-git-list");
 	for (const row of shown) paintChangeRow(view, plugin, list, row, showPaths, refresh);
 	if (rows.length > shown.length) {
 		const more = section.createDiv({
-			cls: "hearth-git-more",
+			cls: "flexible-workbench-git-more",
 			text: t().cards.git.more(rows.length - shown.length),
 		});
 		const open = (): void => void openGitView(view.app, "sourceControl");
@@ -380,18 +656,18 @@ function paintChangeRow(
 	showPaths: boolean | undefined,
 	refresh: () => void,
 ): void {
-	const el = list.createDiv("hearth-list-item hearth-git-file");
+	const el = list.createDiv("flexible-workbench-list-item flexible-workbench-git-file");
 	el.addClass(`is-${row.kind}`);
 	if (row.staged) el.addClass("is-staged");
-	el.createDiv({ cls: "hearth-git-letter", text: row.letter });
+	el.createDiv({ cls: "flexible-workbench-git-letter", text: row.letter });
 
-	const main = el.createDiv("hearth-git-file-main");
-	main.createDiv({ cls: "hearth-list-label", text: row.name });
+	const main = el.createDiv("flexible-workbench-git-file-main");
+	main.createDiv({ cls: "flexible-workbench-list-label", text: row.name });
 	if (showPaths) {
 		const folder = row.path.includes("/")
 			? row.path.slice(0, row.path.lastIndexOf("/"))
 			: "";
-		if (folder) main.createDiv({ cls: "hearth-git-file-path", text: folder });
+		if (folder) main.createDiv({ cls: "flexible-workbench-git-file-path", text: folder });
 	}
 	el.setAttribute("title", row.path);
 
@@ -468,23 +744,23 @@ function paintLog(
 	limit: number,
 ): void {
 	const entries = (snapshot.log ?? []).slice(0, limit);
-	const section = wrap.createDiv("hearth-git-log");
+	const section = wrap.createDiv("flexible-workbench-git-log");
 	if (entries.length === 0) {
-		section.createDiv({ cls: "hearth-git-none", text: t().cards.git.noCommits });
+		section.createDiv({ cls: "flexible-workbench-git-none", text: t().cards.git.noCommits });
 		return;
 	}
 	for (const entry of entries) {
-		const el = section.createDiv("hearth-git-commit");
-		el.createDiv({ cls: "hearth-git-commit-hash", text: shortHash(entry.hash) });
-		const main = el.createDiv("hearth-git-commit-main");
+		const el = section.createDiv("flexible-workbench-git-commit");
+		el.createDiv({ cls: "flexible-workbench-git-commit-hash", text: shortHash(entry.hash) });
+		const main = el.createDiv("flexible-workbench-git-commit-main");
 		main.createDiv({
-			cls: "hearth-git-commit-message",
+			cls: "flexible-workbench-git-commit-message",
 			text: commitSummary(entry.message) || t().cards.git.noMessage,
 		});
 		const when = parseCommitDate(entry.date);
 		const meta = [entry.author?.name, when ? relativeTime(when) : ""].filter(Boolean);
 		if (meta.length) {
-			main.createDiv({ cls: "hearth-git-commit-meta", text: meta.join(" · ") });
+			main.createDiv({ cls: "flexible-workbench-git-commit-meta", text: meta.join(" · ") });
 		}
 		const open = (): void => void openGitView(view.app, "history");
 		el.setAttribute("title", entry.hash ?? "");
@@ -506,8 +782,75 @@ function relativeTime(ms: number): string {
 export function gitEditor(ctx: CardEditorContext, containerEl: HTMLElement): void {
 	const cfg = (ctx.card.git ??= {});
 	const strings = t().editors.git;
+	const repositories = (cfg.repositories ??= []);
 
-	if (!isGitAvailable(ctx.app)) {
+	new Setting(containerEl)
+		.setName(strings.repositories)
+		.setDesc(strings.repositoriesDesc)
+		.setHeading();
+	for (const repo of repositories) {
+		const heading = new Setting(containerEl)
+			.setName(repo.name?.trim() || t().cards.git.repositories.unnamed)
+			.setDesc(repo.path || strings.repoPathPlaceholder);
+		heading.addExtraButton((button) =>
+			button
+				.setIcon("trash-2")
+				.setTooltip(strings.removeRepository)
+				.onClick(() => {
+					cfg.repositories = repositories.filter((item) => item.id !== repo.id);
+					ctx.opts.save();
+					ctx.opts.rerender();
+					ctx.requestRender();
+				}),
+		);
+		new Setting(containerEl).setName(strings.repoName).addText((input) =>
+			input
+				.setPlaceholder(strings.repoNamePlaceholder)
+				.setValue(repo.name ?? "")
+				.onChange((value) => {
+					repo.name = value.trim() || undefined;
+					ctx.opts.save();
+					ctx.opts.rerender();
+				}),
+		);
+		new Setting(containerEl).setName(strings.repoPath).setDesc(strings.repoPathDesc).addText((input) =>
+			input
+				.setPlaceholder(strings.repoPathPlaceholder)
+				.setValue(repo.path)
+				.onChange((value) => {
+					repo.path = value.trim();
+					ctx.opts.save();
+					ctx.opts.rerender();
+				}),
+		);
+		new Setting(containerEl)
+			.setName(strings.repoDetail)
+			.setDesc(strings.repoDetailDesc)
+			.addText((input) =>
+				input
+					.setPlaceholder(strings.repoDetailPlaceholder)
+					.setValue(repo.obsidianPath ?? "")
+					.onChange((value) => {
+						repo.obsidianPath = value.trim() || undefined;
+						ctx.opts.save();
+					}),
+			);
+	}
+	new Setting(containerEl).addButton((button) =>
+		button
+			.setButtonText(strings.addRepository)
+			.setCta()
+			.onClick(() => {
+				cfg.repositories = [
+					...repositories,
+					{ id: `repo-${Date.now().toString(36)}`, path: "" },
+				];
+				ctx.opts.save();
+				ctx.requestRender();
+			}),
+	);
+
+	if (repositories.filter((repo) => repo.path.trim()).length === 0 && !isGitAvailable(ctx.app)) {
 		new Setting(containerEl).setName(strings.missing).setDesc(strings.missingDesc);
 	}
 
@@ -743,6 +1086,9 @@ export const gitCard: CardDefinition<"git"> = {
 		if (source.git)
 			copy.git = {
 				...source.git,
+				repositories: source.git.repositories
+					? source.git.repositories.map((repository) => ({ ...repository }))
+					: undefined,
 				sections: source.git.sections ? [...source.git.sections] : undefined,
 				actions: source.git.actions ? [...source.git.actions] : undefined,
 			};
@@ -750,4 +1096,6 @@ export const gitCard: CardDefinition<"git"> = {
 	// The card drives its own updates off obsidian-git's events, which say far
 	// more precisely than a vault event whether anything git-visible changed.
 	liveness: { mode: "static" },
+	mountExtras: (view, card, cardEl, head) =>
+		mountGitSettingsShortcut(view, card, cardEl, head),
 };

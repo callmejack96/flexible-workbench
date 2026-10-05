@@ -10,11 +10,11 @@ import type {
 } from "@stratejya/operon-cli/contracts/v1";
 
 /**
- * Hearth-local names for the Operon V1 read DTOs it renders.
+ * Flexible Workbench-local names for the Operon V1 read DTOs it renders.
  *
  * Operon hands out immutable snapshots (`DeepReadonlyV1`) and exports that
  * helper precisely so consumers can keep the boundary in their own types.
- * Aliasing them here means the rest of Hearth writes `OperonTask` rather than
+ * Aliasing them here means the rest of Flexible Workbench writes `OperonTask` rather than
  * `DeepReadonlyV1<TaskContextV1>`, and there is exactly one place to look when
  * a contract shape moves upstream.
  */
@@ -28,7 +28,7 @@ export type OperonTaxonomy = DeepReadonlyV1<CatalogTaxonomyV1>;
 
 /** Operon's own rules — most usefully `creation`, which says where a new task
  * goes: inline into the daily note, into one specific file, into the active
- * file, or as its own note. Hearth never applies these itself (Operon does);
+ * file, or as its own note. Flexible Workbench never applies these itself (Operon does);
  * it reads them so a refusal can name the setting behind it. */
 export type OperonPolicies = DeepReadonlyV1<CatalogPoliciesV1>;
 

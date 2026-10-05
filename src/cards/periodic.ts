@@ -74,26 +74,26 @@ export function renderPeriodic(
 	const file = findPeriodicNote(view.app, granularity, now());
 
 	if (!file) {
-		const empty = body.createDiv("hearth-card-empty");
-		setIcon(empty.createDiv("hearth-card-empty-icon"), "calendar-plus");
+		const empty = body.createDiv("flexible-workbench-card-empty");
+		setIcon(empty.createDiv("flexible-workbench-card-empty-icon"), "calendar-plus");
 		empty.createDiv({
-			cls: "hearth-card-empty-text",
+			cls: "flexible-workbench-card-empty-text",
 			text: t().cards.periodic.noNoteYet(period),
 		});
 		const create = empty.createEl("button", {
-			cls: "hearth-periodic-create",
+			cls: "flexible-workbench-periodic-create",
 			text: t().cards.periodic.create(period),
 		});
 		create.addEventListener("click", () => {
 			void (async () => {
-				// Periodic Notes writes the note, with its own template: Hearth
+				// Periodic Notes writes the note, with its own template: Flexible Workbench
 				// never invents one (see src/periodic.ts).
 				const made = await createPeriodicNote(view.app, granularity, now());
 				if (!made.ran) {
 					new Notice(t().notices.couldNotOpenPeriodic);
 					return;
 				}
-				// 1.0 hands the file back without opening it, so Hearth opens it
+				// 1.0 hands the file back without opening it, so Flexible Workbench opens it
 				// the way it opens everything else (#106) and redraws the card
 				// itself — the file-watch below can't see a note whose path the
 				// card couldn't work out. 0.x's command opened it already, and
@@ -122,7 +122,7 @@ export function renderPeriodic(
 		return;
 	}
 
-	const host = body.createDiv("hearth-embed markdown-rendered");
+	const host = body.createDiv("flexible-workbench-embed markdown-rendered");
 	body.addClass("is-embed-host");
 	void renderMarkdownFile(view, file, host, component);
 }

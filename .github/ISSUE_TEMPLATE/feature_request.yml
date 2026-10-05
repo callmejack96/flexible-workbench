@@ -1,19 +1,19 @@
 name: 💡 Feature request
-description: Suggest an idea or improvement for Hearth
+description: Suggest an idea or improvement for Flexible Workbench
 title: "[Feature]: "
 labels: ["enhancement"]
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for the idea! Hearth is opinionated, so describing the
+        Thanks for the idea! Flexible Workbench is opinionated, so describing the
         **problem you're trying to solve** — not just the feature — helps a lot;
         the *why* often points at a better solution than the *what*.
   - type: textarea
     id: problem
     attributes:
       label: What problem would this solve?
-      description: What are you trying to do that Hearth makes hard or impossible today?
+      description: What are you trying to do that Flexible Workbench makes hard or impossible today?
     validations:
       required: true
   - type: textarea

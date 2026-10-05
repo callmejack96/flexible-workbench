@@ -3,7 +3,7 @@
  *
  * By default it does what it always did: `fileManager.createNewMarkdownFile` in
  * Obsidian's "Default location for new notes", called "Untitled", opened the
- * way Hearth opens notes. #227 asks for the three things a user who has already
+ * way Flexible Workbench opens notes. #227 asks for the three things a user who has already
  * built a capture workflow needs from it — a **Templater template**, a
  * **destination folder** and a **filename pattern** — plus the ability to
  * **rename the button**. All four are plain settings, so the header button, the
@@ -11,7 +11,7 @@
  * behaviour rather than drifting apart.
  *
  * The Templater path is the Templater card's, reused wholesale (see
- * `src/templater.ts`): Hearth never expands `<% tp.* %>` itself, it asks the
+ * `src/templater.ts`): Flexible Workbench never expands `<% tp.* %>` itself, it asks the
  * running plugin to make the note and then opens the result through its own
  * opener so a dashboard doesn't replace itself. Everything the card supports —
  * `{{date}}`/`{{time}}`/`{{prompt}}` filename tokens, `tp.system.prompt()`
@@ -104,7 +104,7 @@ async function promptValueFor(app: App, pattern: string, label: string): Promise
  * Create the note the New-note button is configured to create, and open it.
  *
  * `from` is the view the button was pressed in, so the note can replace that
- * Hearth tab when the user asked for "same tab" (#106); the command palette has
+ * Flexible Workbench tab when the user asked for "same tab" (#106); the command palette has
  * no view and passes a bare host instead.
  */
 export async function createConfiguredNote(
@@ -182,13 +182,13 @@ async function createBlankNote(
 		// Fall back to the core command if the internal API shape changes.
 		if (!app.commands.executeCommandById("file-explorer:new-file")) {
 			new Notice(t().notices.couldNotCreateNote);
-			console.error("Hearth new note error", err);
+			console.error("Flexible Workbench new note error", err);
 		}
 	}
 }
 
 /** Open a freshly made note, and place the cursor for a templated one.
- * Templater does the jump itself when it opens the note; Hearth opened it
+ * Templater does the jump itself when it opens the note; Flexible Workbench opened it
  * instead (see `src/templater.ts`), so it has to be asked for. */
 async function openNewNote(
 	app: App,

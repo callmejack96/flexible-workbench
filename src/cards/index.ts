@@ -11,17 +11,21 @@ import { t } from "../i18n";
 import { embedCard } from "./embed";
 import { slideshowCard } from "./slideshow";
 import { dailyCard } from "./daily";
+import { timeReportsCard } from "./time-reports";
 import { periodicCard } from "./periodic";
 import { webCard } from "./web";
 import { bookmarksCard } from "./bookmarks";
 import { favoritesCard } from "./favorites";
+import { savedLinksCard } from "./savedlinks";
 import { textCard } from "./text";
 import { recentCard } from "./recent";
 import { linksCard } from "./links";
 import { commandsCard } from "./commands";
 import { templaterCard } from "./templater";
 import { clockCard } from "./clock";
+import { timerCard } from "./timer";
 import { tasksCard } from "./tasks";
+import { projectTodosCard } from "./projecttodos";
 import { calendarCard } from "./calendar";
 import { scheduleCard } from "./schedule";
 import { statsCard } from "./stats";
@@ -32,12 +36,16 @@ import { calculatorCard } from "./calculator";
 import { dataviewCard } from "./dataview";
 import { datacoreCard } from "./datacore";
 import { rssCard } from "./rss";
+import { socialCard } from "./social";
+import { douyinCard } from "./douyin";
 import { jiraCard } from "./jira";
 import { weatherCard } from "./weather";
 import { gitCard } from "./git";
 import { operonCard } from "./operon";
 import { leafCard } from "./leaf";
 import { petCard } from "./pet";
+import { imageArchiveCard } from "./imagearchive";
+import { knowledgeCard } from "./knowledge";
 
 export type {
 	CardCategory,
@@ -59,17 +67,21 @@ export const CARD_DEFINITIONS: { [K in CardKind]: CardDefinition<K> } = {
 	embed: embedCard,
 	slideshow: slideshowCard,
 	daily: dailyCard,
+	"time-reports": timeReportsCard,
 	periodic: periodicCard,
 	web: webCard,
 	bookmarks: bookmarksCard,
 	favorites: favoritesCard,
+	savedlinks: savedLinksCard,
 	text: textCard,
 	recent: recentCard,
 	links: linksCard,
 	commands: commandsCard,
 	templater: templaterCard,
 	clock: clockCard,
+	timer: timerCard,
 	tasks: tasksCard,
+	projecttodos: projectTodosCard,
 	calendar: calendarCard,
 	schedule: scheduleCard,
 	stats: statsCard,
@@ -80,12 +92,16 @@ export const CARD_DEFINITIONS: { [K in CardKind]: CardDefinition<K> } = {
 	dataview: dataviewCard,
 	datacore: datacoreCard,
 	rss: rssCard,
+	social: socialCard,
+	douyin: douyinCard,
 	jira: jiraCard,
 	weather: weatherCard,
 	git: gitCard,
 	operon: operonCard,
 	leaf: leafCard,
 	pet: petCard,
+	imagearchive: imageArchiveCard,
+	knowledge: knowledgeCard,
 };
 
 /** Every registered kind, in registry order. Used for layout-import validation
@@ -93,7 +109,7 @@ export const CARD_DEFINITIONS: { [K in CardKind]: CardDefinition<K> } = {
 export const CARD_KINDS = Object.keys(CARD_DEFINITIONS) as CardKind[];
 
 /** Inert definition served for a kind this build doesn't know — persisted data
- * written by a newer Hearth version (then downgraded), a sync conflict, or a
+ * written by a newer Flexible Workbench version (then downgraded), a sync conflict, or a
  * hand-edited data.json. The card renders an empty body (the old render
  * switch's default) instead of a lookup on `undefined` taking down the whole
  * dashboard render; the card itself keeps its data and its slot, and the
@@ -125,12 +141,12 @@ export function cardDefinition(card: DashboardCard): CardDefinition {
 export const TEMPLATE_MENU_GROUPS: { category: CardCategory; templates: string[] }[] = [
 	{
 		category: "notes",
-		templates: ["note", "daily", "periodic", "image", "slideshow", "canvas", "excalidraw", "base", "recent", "favorites", "bookmarks"],
+		templates: ["note", "daily", "time-reports", "periodic", "image", "slideshow", "canvas", "excalidraw", "base", "recent", "favorites", "bookmarks", "savedlinks"],
 	},
-	{ category: "planning", templates: ["tasks", "schedule", "calendar", "clock"] },
-	{ category: "vault", templates: ["search", "searchbar", "stats", "heatmap"] },
-	{ category: "tools", templates: ["links", "commands", "text", "calculator", "web"] },
-	{ category: "integrations", templates: ["templater", "dataview", "datacore", "git", "jira", "rss", "weather", "operon-tasks", "operon-board", "operon-agenda", "operon-timer", "leaf"] },
+	{ category: "planning", templates: ["tasks", "projecttodos", "schedule", "calendar", "clock", "timer"] },
+	{ category: "vault", templates: ["search", "searchbar", "stats", "heatmap", "imagearchive"] },
+	{ category: "tools", templates: ["links", "commands", "text", "calculator", "web", "knowledge"] },
+	{ category: "integrations", templates: ["templater", "dataview", "datacore", "git", "jira-assigned-to-me", "jira", "rss", "social", "douyin", "weather", "operon-tasks", "operon-board", "operon-agenda", "leaf"] },
 	{ category: "fun", templates: ["pet"] },
 ];
 

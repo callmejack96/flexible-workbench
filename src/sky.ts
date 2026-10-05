@@ -297,7 +297,7 @@ function drawCloud(svg: SVGElement, cloud: Cloud, field: SkyField): void {
 		// An array, not "a b": createSvg hands `cls` to classList.add(), which
 		// rejects a token containing a space. (createDiv sets the class
 		// attribute instead, which is why a two-class string is fine there.)
-		cls: ["hearth-weather-cloud", `is-lane-${cloud.lane}`],
+		cls: ["flexible-workbench-weather-cloud", `is-lane-${cloud.lane}`],
 	});
 	const seconds = driftSeconds(cloud.lane);
 	// Same two mechanisms as the raindrops: a static offset so a still sky still
@@ -332,7 +332,7 @@ function drawPrecipitation(
 		density,
 	);
 	// Two classes, so an array — see drawCloud.
-	const layer = svg.createSvg("g", { cls: ["hearth-weather-fall", `is-${group}`] });
+	const layer = svg.createSvg("g", { cls: ["flexible-workbench-weather-fall", `is-${group}`] });
 	const span = field.width - 10;
 	for (let i = 0; i < count; i++) {
 		// A prime-ish stride spreads the drops across the width without clumping
@@ -371,13 +371,13 @@ function celestialCentre(field: SkyField): { cx: number; cy: number } {
 /** The sun, with a soft corona. */
 function drawSun(svg: SVGElement, field: SkyField): void {
 	const { cx, cy } = celestialCentre(field);
-	const group = svg.createSvg("g", { cls: "hearth-weather-sun" });
+	const group = svg.createSvg("g", { cls: "flexible-workbench-weather-sun" });
 	group.createSvg("circle", {
-		cls: "hearth-weather-sun-glow",
+		cls: "flexible-workbench-weather-sun-glow",
 		attr: { cx: String(cx), cy: String(cy), r: "30" },
 	});
 	group.createSvg("circle", {
-		cls: "hearth-weather-sun-disc",
+		cls: "flexible-workbench-weather-sun-disc",
 		attr: { cx: String(cx), cy: String(cy), r: "15" },
 	});
 }
@@ -391,17 +391,17 @@ function drawSun(svg: SVGElement, field: SkyField): void {
 function drawMoon(svg: SVGElement, field: SkyField): void {
 	const { cx, cy } = celestialCentre(field);
 	const group = svg.createSvg("g", {
-		cls: "hearth-weather-moon",
+		cls: "flexible-workbench-weather-moon",
 		// The crescent path below is written for the card's centre (158,28), so
 		// the whole group is translated rather than the path re-derived.
 		attr: { transform: `translate(${cx - 158} ${cy - 28})` },
 	});
 	group.createSvg("circle", {
-		cls: "hearth-weather-moon-glow",
+		cls: "flexible-workbench-weather-moon-glow",
 		attr: { cx: "158", cy: "28", r: "26" },
 	});
 	group.createSvg("path", {
-		cls: "hearth-weather-moon-disc",
+		cls: "flexible-workbench-weather-moon-disc",
 		attr: {
 			// Disc centred (158,28) r15; shadow centred (149,19) r17. The major
 			// arc of the disc out round the lit side, then the shadow's minor arc
@@ -422,7 +422,7 @@ function drawMoon(svg: SVGElement, field: SkyField): void {
  * into one body of haze instead of stacking into visible seams.
  */
 function drawFog(svg: SVGElement, field: SkyField, density: number, seed = 0xf066): void {
-	const layer = svg.createSvg("g", { cls: "hearth-weather-fogbank" });
+	const layer = svg.createSvg("g", { cls: "flexible-workbench-weather-fogbank" });
 	const rand = seeded(seed);
 	const count = thinned(Math.round(field.width / 26), density);
 	for (let i = 0; i < count; i++) {
@@ -490,11 +490,11 @@ function drawStorm(svg: SVGElement, field: SkyField, seed = 0xb017): void {
 	const rand = seeded(seed);
 	// Behind everything: the sky itself going pale for an instant.
 	svg.createSvg("rect", {
-		cls: "hearth-weather-flash",
+		cls: "flexible-workbench-weather-flash",
 		attr: { x: "0", y: "0", width: String(field.width), height: String(field.height) },
 	});
 
-	const layer = svg.createSvg("g", { cls: "hearth-weather-bolts" });
+	const layer = svg.createSvg("g", { cls: "flexible-workbench-weather-bolts" });
 	const durations = [7.3, 11.1, 13.7];
 	const count = field.width > 300 ? 3 : 2;
 	for (let i = 0; i < count; i++) {
@@ -506,7 +506,7 @@ function drawStorm(svg: SVGElement, field: SkyField, seed = 0xb017): void {
 		const top = field.height * (0.1 + rand() * 0.12);
 		const bottom = field.height * (0.55 + rand() * 0.3);
 		const bolt = layer.createSvg("path", {
-			cls: "hearth-weather-bolt",
+			cls: "flexible-workbench-weather-bolt",
 			attr: { d: boltPath(rand, x, top, bottom) },
 		});
 		bolt.style.animationDuration = `${durations[i % durations.length]}s`;
@@ -565,7 +565,7 @@ export function drawSky(parent: HTMLElement, opts: SkyOptions): HTMLElement {
 	const field = fieldFor(opts.spread ?? "card");
 	const density = Math.max(0, Math.min(1, opts.density ?? 1));
 
-	const sky = parent.createDiv(`hearth-weather-sky sky-${group}`);
+	const sky = parent.createDiv(`flexible-workbench-weather-sky sky-${group}`);
 	sky.toggleClass("is-night", !opts.isDay);
 	sky.toggleClass("is-animated", opts.animate);
 	// The drift and fall distances are the one part of the animation that has to
@@ -576,7 +576,7 @@ export function drawSky(parent: HTMLElement, opts: SkyOptions): HTMLElement {
 	sky.style.setProperty("--sky-fall", `${field.fall}px`);
 
 	const svg = sky.createSvg("svg", {
-		cls: "hearth-weather-art",
+		cls: "flexible-workbench-weather-art",
 		attr: {
 			viewBox: `0 0 ${field.width} ${field.height}`,
 			// `slice` fills the box at any aspect ratio, cropping rather than
@@ -592,7 +592,7 @@ export function drawSky(parent: HTMLElement, opts: SkyOptions): HTMLElement {
 		else drawMoon(svg, field);
 	}
 	if (celestial && !opts.isDay) {
-		const stars = svg.createSvg("g", { cls: "hearth-weather-stars" });
+		const stars = svg.createSvg("g", { cls: "flexible-workbench-weather-stars" });
 		for (const star of field.stars.slice(0, thinned(field.stars.length, density))) {
 			const dot = stars.createSvg("circle", {
 				attr: { cx: String(star.x), cy: String(star.y), r: String(star.r) },

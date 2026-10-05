@@ -70,7 +70,7 @@ export function renderStats(view: HomeView, card: DashboardCard, body: HTMLEleme
 	};
 	const streak = dailyNoteStreak(view);
 
-	const grid = body.createDiv("hearth-stats");
+	const grid = body.createDiv("flexible-workbench-stats");
 
 	const builtins = advanced && cfg?.builtins ? cfg.builtins : DEFAULT_STATS;
 	for (const id of builtins) {
@@ -102,10 +102,10 @@ export function renderStats(view: HomeView, card: DashboardCard, body: HTMLEleme
 
 
 function addStat(grid: HTMLElement, icon: string, value: number, label: string): void {
-	const cell = grid.createDiv("hearth-stat");
-	setIcon(cell.createDiv("hearth-stat-icon"), icon);
-	cell.createDiv({ cls: "hearth-stat-value", text: String(value) });
-	cell.createDiv({ cls: "hearth-stat-label", text: label });
+	const cell = grid.createDiv("flexible-workbench-stat");
+	setIcon(cell.createDiv("flexible-workbench-stat-icon"), icon);
+	cell.createDiv({ cls: "flexible-workbench-stat-value", text: String(value) });
+	cell.createDiv({ cls: "flexible-workbench-stat-label", text: label });
 }
 
 
@@ -164,13 +164,13 @@ export function statsEditor(ctx: CardEditorContext, containerEl: HTMLElement): v
 		cfg.builtins = undefined;
 	});
 	const selectedBuiltins = new Set<StatId>(cfg.builtins ?? DEFAULT_STATS);
-	const builtinRow = containerEl.createDiv("hearth-type-filter");
+	const builtinRow = containerEl.createDiv("flexible-workbench-type-filter");
 	for (const id of ALL_STATS) {
-		const chip = builtinRow.createDiv("hearth-type-filter-chip");
+		const chip = builtinRow.createDiv("flexible-workbench-type-filter-chip");
 		const on = selectedBuiltins.has(id);
 		chip.toggleClass("is-active", on);
-		setIcon(chip.createDiv("hearth-type-filter-icon"), STAT_ICONS[id]);
-		chip.createDiv({ cls: "hearth-type-filter-label", text: t().cards.stats[id] });
+		setIcon(chip.createDiv("flexible-workbench-type-filter-icon"), STAT_ICONS[id]);
+		chip.createDiv({ cls: "flexible-workbench-type-filter-label", text: t().cards.stats[id] });
 		chip.setAttribute("role", "button");
 		chip.setAttribute("tabindex", "0");
 		chip.setAttribute("aria-pressed", String(on));
@@ -208,18 +208,18 @@ export function statsEditor(ctx: CardEditorContext, containerEl: HTMLElement): v
 		cfg.attachmentTypes = undefined;
 	});
 	const selectedTypes = new Set(cfg.attachmentTypes ?? []);
-	const typeRow = containerEl.createDiv("hearth-type-filter");
+	const typeRow = containerEl.createDiv("flexible-workbench-type-filter");
 	// Attachments are non-note files, so offer every file-type group except
 	// folders and markdown notes.
 	const groups = FILE_TYPE_GROUPS.filter(
 		(g) => g.id !== FOLDERS_GROUP_ID && g.id !== "markdown",
 	);
 	for (const group of groups) {
-		const chip = typeRow.createDiv("hearth-type-filter-chip");
+		const chip = typeRow.createDiv("flexible-workbench-type-filter-chip");
 		const on = selectedTypes.has(group.id);
 		chip.toggleClass("is-active", on);
-		setIcon(chip.createDiv("hearth-type-filter-icon"), group.icon);
-		chip.createDiv({ cls: "hearth-type-filter-label", text: fileTypeLabel(group) });
+		setIcon(chip.createDiv("flexible-workbench-type-filter-icon"), group.icon);
+		chip.createDiv({ cls: "flexible-workbench-type-filter-label", text: fileTypeLabel(group) });
 		chip.setAttribute("role", "button");
 		chip.setAttribute("tabindex", "0");
 		chip.setAttribute("aria-pressed", String(on));
@@ -247,7 +247,7 @@ export function statsEditor(ctx: CardEditorContext, containerEl: HTMLElement): v
 	new Setting(containerEl).setDesc(t().editors.stats.customCountsDesc);
 	const queries = (cfg.queries ??= []);
 	queries.forEach((q, index) => {
-		const row = new Setting(containerEl).setClass("hearth-link-setting");
+		const row = new Setting(containerEl).setClass("flexible-workbench-link-setting");
 		row.addText((txt) =>
 			txt
 				.setPlaceholder(t().editors.stats.labelPlaceholder)

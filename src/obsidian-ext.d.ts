@@ -6,6 +6,10 @@ import type { GitStatus } from "./git";
 // but are stable and widely used by community plugins.
 declare module "obsidian" {
 	interface App {
+		setting: {
+			open(): void;
+			openTabById(id: string): void;
+		};
 		internalPlugins: {
 			getPluginById(id: string): {
 				instance: unknown;

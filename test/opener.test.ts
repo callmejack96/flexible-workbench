@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { hearthLeafIsNavigable, internalLinkText, openTarget, resolveOpenIn } from "../src/opener";
+import { flexibleWorkbenchLeafIsNavigable, internalLinkText, openTarget, resolveOpenIn } from "../src/opener";
 import { DEFAULT_SETTINGS, type HomeSettings, type OpenIn, type OpenInRule } from "../src/types";
 
 /**
  * The pure decisions behind the open-behaviour setting (#106): which mode
  * applies to a click, which destination that mode plus the held modifiers
- * imply, whether the Hearth tab is there to be taken over by an open it never
+ * imply, whether the Flexible Workbench tab is there to be taken over by an open it never
  * sees, and which anchors count as links to a note.
  *
  * Actually reaching for a leaf needs a live workspace, so `targetLeaf`,
@@ -58,24 +58,24 @@ describe("resolveOpenIn", () => {
 	});
 });
 
-describe("hearthLeafIsNavigable", () => {
+describe("flexibleWorkbenchLeafIsNavigable", () => {
 	it("defaults to navigable, so the file explorer keeps behaving as it did (#84)", () => {
-		expect(hearthLeafIsNavigable(DEFAULT_SETTINGS)).toBe(true);
+		expect(flexibleWorkbenchLeafIsNavigable(DEFAULT_SETTINGS)).toBe(true);
 		// Even with everything else pointed at a new tab.
-		expect(hearthLeafIsNavigable(settings("tab"))).toBe(true);
+		expect(flexibleWorkbenchLeafIsNavigable(settings("tab"))).toBe(true);
 	});
 
-	it("stops outside opens taking over the Hearth tab when asked", () => {
-		expect(hearthLeafIsNavigable({ ...settings("tab"), openFromOutside: "tab" })).toBe(false);
+	it("stops outside opens taking over the Flexible Workbench tab when asked", () => {
+		expect(flexibleWorkbenchLeafIsNavigable({ ...settings("tab"), openFromOutside: "tab" })).toBe(false);
 		// An explicit "current tab" wins even when the global says otherwise.
-		expect(hearthLeafIsNavigable({ ...settings("window"), openFromOutside: "same" })).toBe(true);
+		expect(flexibleWorkbenchLeafIsNavigable({ ...settings("window"), openFromOutside: "same" })).toBe(true);
 	});
 
 	it('follows the global choice on "default" — and only "same" is a takeover', () => {
-		expect(hearthLeafIsNavigable({ ...settings("same"), openFromOutside: "default" })).toBe(true);
-		expect(hearthLeafIsNavigable({ ...settings("tab"), openFromOutside: "default" })).toBe(false);
+		expect(flexibleWorkbenchLeafIsNavigable({ ...settings("same"), openFromOutside: "default" })).toBe(true);
+		expect(flexibleWorkbenchLeafIsNavigable({ ...settings("tab"), openFromOutside: "default" })).toBe(false);
 		// Split and window can't be expressed here; they mean "not this tab".
-		expect(hearthLeafIsNavigable({ ...settings("split"), openFromOutside: "default" })).toBe(false);
+		expect(flexibleWorkbenchLeafIsNavigable({ ...settings("split"), openFromOutside: "default" })).toBe(false);
 	});
 });
 

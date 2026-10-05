@@ -1,4 +1,4 @@
-/* Measures the cost of each Hearth board configuration in a real Chromium
+/* Measures the cost of each Flexible Workbench board configuration in a real Chromium
  * compositor, using the plugin's own drawSky()/updateFrostLayers().
  *
  * Two independent measurements per scenario:
@@ -12,7 +12,7 @@ import { HERE, launch, loadPlaywright, readMetrics, startTrace, stopTrace } from
 const WINDOW_MS = Number(process.env.WINDOW_MS ?? 6000);
 const REPEATS = Number(process.env.REPEATS ?? 3);
 
-/** Hearth defaults: bgBlur 2, cardBlur 7. */
+/** Flexible Workbench defaults: bgBlur 2, cardBlur 7. */
 const SCENARIOS = {
 	"1. blank board (no wallpaper, no frost)": { bg: "none", bgBlur: 0, skyAnimate: false, skyCode: 63, cardBlur: 0 },
 	"2. image wallpaper, no frost": { bg: "image", bgBlur: 2, skyAnimate: false, skyCode: 63, cardBlur: 0 },
@@ -41,12 +41,12 @@ const BUCKETS = {
 };
 
 async function collect(page, client, scenario) {
-	await page.evaluate((s) => window.hearthBench.build(s), scenario);
+	await page.evaluate((s) => window.flexibleWorkbenchBench.build(s), scenario);
 	// Let layout, first paint and the frost rebuild settle before the window opens.
 	await page.waitForTimeout(1200);
 
-	const animations = await page.evaluate(() => window.hearthBench.countAnimated());
-	const maskBytes = await page.evaluate(() => window.hearthBench.frostMaskBytes());
+	const animations = await page.evaluate(() => window.flexibleWorkbenchBench.countAnimated());
+	const maskBytes = await page.evaluate(() => window.flexibleWorkbenchBench.frostMaskBytes());
 
 
 	await startTrace(client, TRACE_CATEGORIES);

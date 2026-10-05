@@ -12,7 +12,7 @@
  * is edited, moved or deleted.
  *
  * Results are cached in memory per URL for a card-configurable window, mirroring
- * the RSS card: a board with several calendar cards (and Hearth's frequent full
+ * the RSS card: a board with several calendar cards (and Flexible Workbench's frequent full
  * re-renders) makes at most one request per feed per refresh window, degrades
  * gracefully offline (a failed fetch keeps the last good events), and skips the
  * outbound request entirely when the user has disabled external calls.

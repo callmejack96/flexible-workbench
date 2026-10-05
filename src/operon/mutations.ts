@@ -6,13 +6,15 @@ import type {
 	ExactMutationTargetV1,
 	RiskLevelV1,
 	StructuredErrorV1,
+	TimerControlSpecV1,
 } from "@stratejya/operon-cli/contracts/v1";
 import type { OperonAccess, OperonSession } from "./api";
 import type { OperonPolicies, OperonTask } from "./types";
 
 /**
- * The two Operon writes Hearth performs: moving a task to another status
- * (dragging it across the board) and creating one (the card's "+").
+ * Operon writes Flexible Workbench performs: moving a task to another status
+ * (dragging it across the board), creating one (the card's "+"), and controlling
+ * the shared timer.
  *
  * Operon does not take a write as a single call. Every mutation is
  * **preview → apply**, and the plan the preview returns is the only thing
@@ -24,17 +26,17 @@ import type { OperonPolicies, OperonTask } from "./types";
  *   up — with `recover(plan)`, the *same* plan, never a fresh preview. Retrying
  *   a mutation whose outcome is unknown is how an integration writes twice.
  * - **Consent is the host's.** A plan can come back `requiresConsent`, or at an
- *   elevated risk level, and Hearth asks the user before applying rather than
+ *   elevated risk level, and Flexible Workbench asks the user before applying rather than
  *   deciding on their behalf.
  * - **Expected state travels with the intent.** A transition carries the status
- *   Hearth believed the task was in, so a board drawn from a stale read is
+ *   Flexible Workbench believed the task was in, so a board drawn from a stale read is
  *   refused by Operon instead of quietly overwriting someone else's change.
  *
  * Like `reads.ts`, nothing here throws: every path returns a result a card can
  * render.
  */
 
-/** Risk levels Hearth applies without asking. Anything above these — or any
+/** Risk levels Flexible Workbench applies without asking. Anything above these — or any
  * plan Operon marks as needing consent — goes to the user first. */
 const SILENT_RISK: readonly RiskLevelV1[] = ["none", "routine"];
 
@@ -98,7 +100,7 @@ export function transitionIntent(
  * use. That matters when one of them is unreachable: a vault whose inline
  * target is the daily note gets "Configured Daily Note target is unavailable or
  * invalid" from Operon, and choosing "file" is a real way past it rather than a
- * workaround Hearth invents by writing somewhere itself.
+ * workaround Flexible Workbench invents by writing somewhere itself.
  */
 export type OperonCreateAs = "inline" | "file";
 
@@ -163,7 +165,7 @@ export function createTarget(
  */
 export function createIntent(input: OperonNewTask): DeveloperMutationPreviewInputV1 {
 	const item: CreateTaskItemV1 = {
-		itemRef: "hearth-1",
+		itemRef: "flexible-workbench-1",
 		description: input.description,
 		// Still `configured-default` in every case: the card may pick which of
 		// Operon's two configured targets to use, never a path of its own.
@@ -178,6 +180,21 @@ export function createIntent(input: OperonNewTask): DeveloperMutationPreviewInpu
 		capability: "tasks.create.preview",
 		mutationKind: "task.create",
 		spec: { operation: "create", items: [item] },
+	};
+}
+
+/** The preview intent for starting or stopping Operon's shared timer. */
+export function timerControlIntent(
+	operation: TimerControlSpecV1["operation"],
+	expectedActiveStart?: string,
+): DeveloperMutationPreviewInputV1 {
+	return {
+		capability: "timers.control.preview",
+		mutationKind: "timer.control",
+		spec: {
+			operation,
+			...(expectedActiveStart ? { expectedActiveStart } : {}),
+		},
 	};
 }
 
@@ -312,4 +329,14 @@ export function createTask(
 		return Promise.resolve({ ok: false, outcome: "failed", reason: "empty-description" });
 	}
 	return runMutation(session, createIntent({ ...input, description }), confirm);
+}
+
+/** Start or stop Operon's shared timer through the preview/apply/recover flow. */
+export function controlTimer(
+	session: OperonSession,
+	operation: TimerControlSpecV1["operation"],
+	expectedActiveStart?: string,
+	confirm?: OperonConfirm,
+): Promise<OperonWriteResult> {
+	return runMutation(session, timerControlIntent(operation, expectedActiveStart), confirm);
 }

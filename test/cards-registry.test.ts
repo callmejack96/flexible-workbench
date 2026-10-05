@@ -40,7 +40,8 @@ describe("CARD_TEMPLATES (add-card menu)", () => {
 		expect(snapshot).toEqual([
 			// ---- Notes & files ----
 			{ id: "note", icon: "file-text", category: "notes", requires: null, build: { kind: "embed", title: "Note", target: "", w: 6, h: 3 } },
-			{ id: "daily", icon: "calendar", category: "notes", requires: null, build: { kind: "daily", w: 6, h: 4 } },
+			{ id: "daily", icon: "list-todo", category: "notes", requires: null, build: { kind: "daily", title: "Todo List", dailyTodos: [], w: 6, h: 4 } },
+			{ id: "time-reports", icon: "bar-chart-3", category: "notes", requires: null, build: { kind: "time-reports", title: "Time reports", w: 6, h: 4 } },
 			{
 				id: "periodic",
 				icon: "calendar-range",
@@ -65,15 +66,18 @@ describe("CARD_TEMPLATES (add-card menu)", () => {
 
 			// ---- Planning ----
 			{ id: "tasks", icon: "list-todo", category: "planning", requires: null, build: { kind: "tasks", title: "Tasks", tasks: {}, w: 4, h: 4 } },
+			{ id: "projecttodos", icon: "folders", category: "planning", requires: null, build: { kind: "projecttodos", title: "Project Todos", w: 12, h: 3 } },
 			{ id: "schedule", icon: "calendar-range", category: "planning", requires: null, build: { kind: "schedule", title: "Calendar", schedule: {}, w: 8, h: 6 } },
 			{ id: "calendar", icon: "calendar-days", category: "planning", requires: null, build: { kind: "calendar", title: "Calendar", w: 4, h: 4 } },
 			{ id: "clock", icon: "clock", category: "planning", requires: null, build: { kind: "clock", title: "", w: 4, h: 2 } },
+			{ id: "timer", icon: "timer", category: "planning", requires: null, build: { kind: "timer", title: "Time tracker", w: 3, h: 2 } },
 
 			// ---- Vault insight ----
 			{ id: "search", icon: "search", category: "vault", requires: null, build: { kind: "search", title: "Query", savedSearch: { query: "" }, w: 4, h: 4 } },
 			{ id: "searchbar", icon: "text-cursor-input", category: "vault", requires: null, build: { kind: "searchbar", title: "", searchBar: {}, w: 6, h: 1 } },
 			{ id: "stats", icon: "bar-chart-3", category: "vault", requires: null, build: { kind: "stats", title: "Stats", w: 4, h: 2 } },
 			{ id: "heatmap", icon: "activity", category: "vault", requires: null, build: { kind: "heatmap", title: "Activity", heatmap: {}, w: 6, h: 3 } },
+			{ id: "imagearchive", icon: "image-down", category: "vault", requires: null, build: { kind: "imagearchive", title: "", imagearchive: {}, w: 4, h: 3 } },
 
 			// ---- Tools ----
 			// The three launchpad-like cards are built on the scaled button style:
@@ -84,6 +88,7 @@ describe("CARD_TEMPLATES (add-card menu)", () => {
 			{ id: "text", icon: "pencil", category: "tools", requires: null, build: { kind: "text", title: "Notes", text: "", w: 4, h: 2 } },
 			{ id: "calculator", icon: "calculator", category: "tools", requires: null, build: { kind: "calculator", title: "Calculator", calculator: {}, w: 4, h: 3 } },
 			{ id: "web", icon: "globe", category: "tools", requires: null, build: { kind: "web", title: "Web", url: "", w: 6, h: 4 } },
+			{ id: "knowledge", icon: "brain-circuit", category: "tools", requires: null, build: { kind: "knowledge", title: "Knowledge Workbench", w: 8, h: 7 } },
 
 			// ---- Integrations ----
 			{
@@ -103,6 +108,30 @@ describe("CARD_TEMPLATES (add-card menu)", () => {
 				build: { kind: "git", title: "Git", git: {}, w: 4, h: 4 },
 			},
 			{
+				id: "jira-assigned-to-me",
+				icon: "list-checks",
+				category: "integrations",
+				requires: null,
+				build: {
+					kind: "jira",
+					title: "Assigned to me",
+					jira: {
+						apiBasePath: "/rest/api/latest",
+						jql: '(assignee = currentUser() OR assignee = "zenan.wu@npt.sg") ORDER BY duedate DESC, updated DESC',
+						showStartDate: true,
+						showEndDate: true,
+						sortDueDateDesc: true,
+						controls: ["status", "startDate", "dueDate", "priority", "issueType", "fixVersion"],
+						dateControlsConfigured: true,
+						maxResults: 50,
+						refreshMin: 0,
+						cacheMin: 5,
+					},
+					w: 6,
+					h: 5,
+				},
+			},
+			{
 				id: "jira",
 				icon: "ticket",
 				category: "integrations",
@@ -112,7 +141,9 @@ describe("CARD_TEMPLATES (add-card menu)", () => {
 					title: "Jira",
 					jira: {
 						apiBasePath: "/rest/api/latest",
-						controls: ["status", "assignee", "priority", "issueType", "sprint", "fixVersion"],
+						sortDueDateDesc: true,
+						controls: ["status", "assignee", "startDate", "dueDate", "priority", "issueType", "fixVersion"],
+						dateControlsConfigured: true,
 						maxResults: 50,
 						refreshMin: 0,
 						cacheMin: 5,
@@ -122,6 +153,8 @@ describe("CARD_TEMPLATES (add-card menu)", () => {
 				},
 			},
 			{ id: "rss", icon: "rss", category: "integrations", requires: null, build: { kind: "rss", title: "RSS", rss: { sources: [] }, w: 4, h: 5 } },
+			{ id: "social", icon: "panels-top-left", category: "integrations", requires: null, build: { kind: "social", title: "Content favorites", social: { initialSource: "rednote", itemLimit: 12 }, w: 7, h: 5 } },
+			{ id: "douyin", icon: "heart", category: "integrations", requires: null, build: { kind: "douyin", title: "Douyin favorites", douyin: { storagePath: ".flexible-workbench/douyin-favorites.json", itemLimit: 12 }, w: 6, h: 5 } },
 			{
 				id: "weather",
 				icon: "cloud-sun",
@@ -149,13 +182,6 @@ describe("CARD_TEMPLATES (add-card menu)", () => {
 				category: "integrations",
 				requires: "Operon",
 				build: { kind: "operon", title: "Operon agenda", operon: { view: "agenda" }, w: 4, h: 5 },
-			},
-			{
-				id: "operon-timer",
-				icon: "timer",
-				category: "integrations",
-				requires: "Operon",
-				build: { kind: "operon", title: "Operon timer", operon: { view: "timer" }, w: 3, h: 2 },
 			},
 			{
 				id: "leaf",
@@ -265,6 +291,8 @@ function maximalCard(): DashboardCard {
 		dataview: { columnWidths: [1, 2, 3] },
 		datacore: { query: "@page and #project", language: "query", pageSize: 25 },
 		rss: { sources: [{ id: "s1", name: "Feed", url: "https://example.com/feed" }] },
+		social: { initialSource: "rednote", rednoteFolder: "raw/red", itemLimit: 8, credentials: { rednote: "secret" } },
+		douyin: { cookie: "secret", storagePath: "Data/douyin.json", itemLimit: 8 },
 		jira: {
 			controls: ["status"],
 			selections: { status: ["Open"] },
@@ -321,6 +349,9 @@ describe("cloneCard deep-clone independence", () => {
 		copy.dataview!.columnWidths!.push(4);
 		copy.datacore!.query = "@page and #other";
 		copy.rss!.sources!.push({ id: "s2", name: "Feed 2", url: "https://example.com/feed2" });
+		copy.social!.rednoteFolder = "raw/other";
+		copy.social!.credentials!.rednote = "other-secret";
+		copy.douyin!.cookie = "other-secret";
 		copy.jira!.controls!.push("assignee");
 		copy.jira!.selections!.status!.push("Closed");
 		copy.weather!.place!.name = "Brno";
@@ -353,6 +384,8 @@ describe("cloneCard deep-clone independence", () => {
 		expect(orig.dataview).toEqual(pristine.dataview);
 		expect(orig.datacore).toEqual(pristine.datacore);
 		expect(orig.rss).toEqual(pristine.rss);
+		expect(orig.social).toEqual(pristine.social);
+		expect(orig.douyin).toEqual(pristine.douyin);
 		expect(orig.jira).toEqual(pristine.jira);
 		expect(orig.weather).toEqual(pristine.weather);
 		expect(orig.git).toEqual(pristine.git);
@@ -373,7 +406,8 @@ describe("liveness classification", () => {
 		expect(modes).toEqual({
 			embed: "watch-file",
 			slideshow: "vault",
-			daily: "watch-file",
+			daily: "static",
+			"time-reports": "static",
 			periodic: "watch-file",
 			web: "poll",
 			bookmarks: "static",
@@ -384,7 +418,9 @@ describe("liveness classification", () => {
 			commands: "static",
 			templater: "static",
 			clock: "static",
+			timer: "static",
 			tasks: "vault",
+			projecttodos: "vault",
 			calendar: "vault",
 			schedule: "vault",
 			stats: "vault",
@@ -395,12 +431,16 @@ describe("liveness classification", () => {
 			dataview: "static",
 			datacore: "static",
 			rss: "static",
+			social: "vault",
+			douyin: "static",
 			jira: "static",
 			weather: "static",
 			git: "static",
 			operon: "vault",
 			leaf: "static",
 			pet: "vault",
+			imagearchive: "vault",
+			knowledge: "static",
 		});
 	});
 });
@@ -408,7 +448,7 @@ describe("liveness classification", () => {
 describe("cardDefinition", () => {
 	it("serves an inert fallback for a kind this build doesn't know", () => {
 		// Persisted data can outrun the code: a data.json written by a newer
-		// Hearth (then downgraded), a sync conflict, a hand edit. The lookup must
+		// Flexible Workbench (then downgraded), a sync conflict, a hand edit. The lookup must
 		// stay total so one alien card can't take down the whole dashboard render.
 		const alien = { id: "a", x: 0, y: 0, w: 1, h: 1, kind: "hologram" } as unknown as DashboardCard;
 		const def = cardDefinition(alien);

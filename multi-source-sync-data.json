@@ -1,0 +1,141 @@
+{
+  "rootFolder": "raw/red",
+  "activePlatform": "rednote",
+  "enabledTypes": {
+    "rednote": [
+      "bookmark"
+    ],
+    "zhihu": [],
+    "douyin": [],
+    "weibo": []
+  },
+  "syncTags": true,
+  "assetReportEnabled": true,
+  "autoSyncEnabled": true,
+  "syncIntervalMinutes": 10,
+  "syncBatchSize": 5,
+  "platforms": {
+    "rednote": {
+      "enabled": true,
+      "accounts": {},
+      "activeHost": "xhs",
+      "partition": "persist:rednote",
+      "cookies": "",
+      "a1Cookie": "",
+      "accountId": "",
+      "nickname": "",
+      "syncAlbums": false,
+      "albumWhitelist": [],
+      "downloadVideos": false,
+      "syncComments": true,
+      "commentLimit": 10,
+      "commentReplyLimit": 0,
+      "discovery": {
+        "activeThemeId": "default-material-radar",
+        "aiAnalysisEnabled": false,
+        "homeChannel": "推荐",
+        "themes": [
+          {
+            "id": "default-material-radar",
+            "name": "主题素材",
+            "keywords": [
+              "小红书运营",
+              "干货"
+            ],
+            "links": [],
+            "maxCandidates": 20,
+            "maxSaves": 10,
+            "minLikeCount": 0,
+            "daysRange": 30,
+            "createdAt": "2026-08-31T15:09:14.871Z",
+            "updatedAt": "2026-08-31T15:09:14.871Z"
+          }
+        ],
+        "run": {
+          "status": "idle",
+          "mode": "radar",
+          "candidates": [],
+          "selectedIds": []
+        }
+      }
+    },
+    "zhihu": {
+      "enabled": false
+    },
+    "douyin": {
+      "enabled": false
+    },
+    "weibo": {
+      "enabled": false
+    }
+  },
+  "syncState": {},
+  "license": {
+    "authCode": "",
+    "status": "free",
+    "deviceId": "mss_772b69051ad9b85b8310dd4b74f71c38",
+    "supabaseUrl": "",
+    "supabaseAnonKey": "",
+    "verifyUrl": "https://multi-source-sync.pages.dev/v1/license/verify",
+    "purchaseUrl": "https://www.xiaohongshu.com/goods-detail/multi-source-sync-placeholder",
+    "maxFreeItems": 100,
+    "syncedFreeCount": 0
+  },
+  "templates": {
+    "defaultTemplate": "---\nsourcePlugin: \"multi-source-sync\"\nresourceId: \"{{resourceId}}\"\ntype: \"{{typeLabel}}\"\nauthor: \"{{yaml author}}\"\nurl: \"{{sourceUrl}}\"\n{{#if tags.length}}tags:\n{{#each tags}}  - \"{{yaml this}}\"\n{{/each}}{{/if}}{{#if category}}\ncategory: \"{{yaml category}}\"{{/if}}\n{{#if albums.length}}albums:\n{{#each albums}}  - \"{{yaml this}}\"\n{{/each}}{{/if}}{{#if albumIds.length}}albumIds:\n{{#each albumIds}}  - \"{{yaml this}}\"\n{{/each}}{{/if}}\n{{#if createdAt}}postCreatedAt: {{createdAt}}{{/if}}\nsyncedAt: {{syncedAt}}\n{{#if accountId}}accountId: \"{{yaml accountId}}\"{{/if}}\n{{#if accountName}}accountName: \"{{yaml accountName}}\"{{/if}}\n---\n\n# {{title}}\n\n{{#if author}}作者：{{author}}{{/if}}\n{{#if collectionName}}专辑：{{collectionName}}{{/if}}\n\n{{mediaEmbeds}}\n\n{{fullText}}\n\n{{commentInsightsMarkdown}}\n\n{{commentsMarkdown}}\n\n原文：{{sourceUrl}}\n",
+    "overrides": {
+      "rednote": {}
+    }
+  },
+  "ai": {
+    "enabled": false,
+    "commentInsightsEnabled": false,
+    "openaiApiKey": "",
+    "openaiBaseUrl": "https://api.openai.com/v1",
+    "openaiModel": "gpt-4o-mini",
+    "categories": [
+      "知识管理",
+      "效率工具",
+      "生活方式",
+      "设计审美",
+      "商业洞察",
+      "旅行",
+      "美食",
+      "待整理"
+    ]
+  },
+  "transcription": {
+    "whisperCliPath": "",
+    "ffmpegPath": "",
+    "modelPath": "",
+    "language": "zh",
+    "skipExisting": true,
+    "overwriteManagedSection": false
+  },
+  "imageText": {
+    "toolPath": "",
+    "skipExisting": true,
+    "overwriteManagedSection": false,
+    "batchNoteLimit": 25
+  },
+  "syncProgress": {
+    "running": false,
+    "mode": "smart",
+    "saved": 0,
+    "existing": 0,
+    "updated": 0,
+    "skipped": 0,
+    "pagesScanned": 0,
+    "processed": 0,
+    "stage": "paused",
+    "runLimit": 15,
+    "batchSize": 5,
+    "batchWaitSeconds": 5,
+    "autoContinue": false,
+    "pausedByUser": false,
+    "startedAt": "2026-10-05T01:54:00.335Z",
+    "updatedAt": "2026-10-05T01:54:01.061Z",
+    "message": "同步已暂停：小红书登录已失效，请重新登录当前账号后继续。",
+    "stopReason": "auth_required"
+  }
+}

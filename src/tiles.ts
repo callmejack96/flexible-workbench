@@ -30,7 +30,7 @@
 import { type DashboardCard, type TileGeometry } from "./types";
 
 
-/** Gap between tiles, in px. Mirrors the `gap` on `.hearth-links` in
+/** Gap between tiles, in px. Mirrors the `gap` on `.flexible-workbench-links` in
  * `styles.css` — both readings need it to map pixels onto cells. */
 export const TILE_GAP = 6;
 

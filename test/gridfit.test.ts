@@ -228,7 +228,7 @@ describe("boardFitScale", () => {
 	function grid(fitted: boolean, clientHeight: number): HTMLElement {
 		return {
 			clientHeight,
-			closest: (sel: string) => (fitted && sel === ".hearth-fit" ? ({} as HTMLElement) : null),
+			closest: (sel: string) => (fitted && sel === ".flexible-workbench-fit" ? ({} as HTMLElement) : null),
 		} as unknown as HTMLElement;
 	}
 

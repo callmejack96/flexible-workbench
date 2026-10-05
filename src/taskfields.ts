@@ -7,10 +7,10 @@ import type { TaskFieldDef, TaskFieldKey, TaskFieldStyle, TaskValueMap } from ".
  * — so the resolution rules can be tested without the card registry, the same
  * way priority.ts and taskscope.ts are.
  *
- * The model is deliberately open. Hearth offers no list of fields to pick from:
+ * The model is deliberately open. Flexible Workbench offers no list of fields to pick from:
  * a field is something the user builds — a name, a display style, and one or
  * more keys that feed it. A key reads either a frontmatter property or one of
- * the values Hearth parses itself, and can map each raw value to a nicer label
+ * the values Flexible Workbench parses itself, and can map each raw value to a nicer label
  * and a colour.
  *
  * While customization is off, none of this is consulted: the card renders the
@@ -18,7 +18,7 @@ import type { TaskFieldDef, TaskFieldKey, TaskFieldStyle, TaskValueMap } from ".
  */
 
 
-/** Values Hearth parses itself, offered as key sources alongside frontmatter.
+/** Values Flexible Workbench parses itself, offered as key sources alongside frontmatter.
  * These are the only way to reach metadata that isn't in frontmatter at all —
  * a checkbox line's ⏫ priority, a Kanban card's column, a parsed due date. */
 export const TASK_BUILTIN_SOURCES = [
@@ -50,7 +50,7 @@ export function frontmatterSource(property: string): string {
 }
 
 
-/** The key source addressing one of Hearth's own parsed values. */
+/** The key source addressing one of Flexible Workbench's own parsed values. */
 export function builtinSource(id: TaskBuiltinSource): string {
 	return `${BUILTIN_PREFIX}${id}`;
 }
@@ -74,7 +74,7 @@ export function sourceBuiltin(source: string): TaskBuiltinSource | null {
 }
 
 
-/** Whether a source is one Hearth can read at all. */
+/** Whether a source is one Flexible Workbench can read at all. */
 export function isKnownSource(source: string): boolean {
 	return sourceProperty(source).length > 0 || sourceBuiltin(source) !== null;
 }
@@ -137,7 +137,7 @@ export function isDescriptionSource(source: string): boolean {
 
 
 /** A fresh field id. Only has to be unique within one card's list, so the
- * timestamp + random suffix used elsewhere in Hearth is plenty. */
+ * timestamp + random suffix used elsewhere in Flexible Workbench is plenty. */
 export function newTaskFieldId(): string {
 	return `f-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
 }
@@ -151,7 +151,7 @@ export function newTaskField(name: string): TaskFieldDef {
 
 /**
  * The stored field list, with anything unrenderable removed: keys naming a
- * source Hearth can't read, and (after that) fields left with no keys at all.
+ * source Flexible Workbench can't read, and (after that) fields left with no keys at all.
  *
  * An empty result is a legitimate configuration — "show no metadata" — and is
  * never substituted with defaults. That is the whole point of the feature: once

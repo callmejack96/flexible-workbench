@@ -1,18 +1,14 @@
 # Flexible Workbench — a personal Obsidian workbench
 
-> Personal fork of [Hearth](https://github.com/ondreu/Hearth). The upstream
-> architecture, tests, and internal `hearth-*` namespaces are intentionally
-> retained so changes can be made incrementally without destabilizing the plugin.
-
 **English** · [简体中文](README.zh-CN.md)
 
 [![Build](https://img.shields.io/github/actions/workflow/status/callmejack96/flexible-workbench/ci.yml?branch=main&label=build)](https://github.com/callmejack96/flexible-workbench/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/callmejack96/flexible-workbench?sort=semver)](https://github.com/callmejack96/flexible-workbench/releases/latest)
 [![License](https://img.shields.io/github/license/callmejack96/flexible-workbench)](LICENSE)
 
-![Hearth — customizable Obsidian dashboard, search and launcher](assets/2.png)
+![Flexible Workbench — customizable Obsidian dashboard, search and launcher](assets/2.png)
 
-**Hearth turns your Obsidian vault into a welcoming front page.** A fast fuzzy
+**Flexible Workbench turns your Obsidian vault into a welcoming front page.** A fast fuzzy
 search bar, quick file-type filters, and a freely arrangeable grid of live
 widgets — notes, tasks, kanban boards, calendars, web pages, stats, clocks and
 launchers — on desktop and mobile.
@@ -34,7 +30,7 @@ Think of it as a new-tab dashboard, start page and command launcher in one.
 | ![Full dashboard](assets/Full_Dash.png) | ![Search-only launcher](assets/Just_search.png) |
 | ![Dashboard variant](assets/Full_Dash2.png) | ![Card gallery](assets/cards.png) |
 
-<img src="assets/mobile.png" width="280" alt="Hearth on mobile" />
+<img src="assets/mobile.png" width="280" alt="Flexible Workbench on mobile" />
 
 ## Contents
 
@@ -46,11 +42,11 @@ Think of it as a new-tab dashboard, start page and command launcher in one.
 
 ## Quick start
 
-1. Install **Hearth** from Obsidian's community plugin browser — or drop
+1. Install **Flexible Workbench** from Obsidian's community plugin browser — or drop
    `main.js`, `manifest.json` and `styles.css` into
-   `<vault>/.obsidian/plugins/hearth/` and enable it.
-2. Hearth opens on startup and replaces empty new tabs (both toggleable in
-   **Settings → Hearth**).
+   `<vault>/.obsidian/plugins/flexible-workbench/` and enable it.
+2. Flexible Workbench opens on startup and replaces empty new tabs (both toggleable in
+   **Settings → Flexible Workbench**).
 3. Open it any time from the ribbon **home** icon or the **Open home
    dashboard** command.
 4. Hit **Arrange** (top-right) to add, move, resize and configure cards right
@@ -58,26 +54,26 @@ Think of it as a new-tab dashboard, start page and command launcher in one.
 
 ## Setup wizard
 
-On a fresh install Hearth offers to build your first dashboard for you. It asks
+On a fresh install Flexible Workbench offers to build your first dashboard for you. It asks
 a handful of questions — a title, a look, what you use your vault for — and lays
 out a board from the answers rather than dropping you on a generic starter grid.
 
 It also **looks at what you already have**. Every plugin below that is installed
 and enabled is offered with the one thing accepting it will do:
 
-| Found | What Hearth does with it |
+| Found | What Flexible Workbench does with it |
 | --- | --- |
 | **TaskNotes** | Adds a Tasks card on the TaskNotes source, using TaskNotes' *own* field names and completed statuses |
 | **Kanban** | Adds a Tasks card showing your board as draggable columns |
 | **Dataview** / **Datacore** | Adds a card, seeded with an editable query |
 | **Templater** | Adds a launchpad with a button per template you already have |
 | **Git** | Adds a Git card with status, commit and sync |
-| **Operon** | Adds an Operon tasks card (desktop only — Operon still asks you to approve Hearth) |
+| **Operon** | Adds an Operon tasks card (desktop only — Operon still asks you to approve Flexible Workbench) |
 | **Bases** | Embeds a base from your vault |
 | **Daily notes** / **Bookmarks** | Adds the matching card |
 
 The TaskNotes case is the one worth calling out: its field names are
-user-remappable and its statuses user-defined, so Hearth reads them from the
+user-remappable and its statuses user-defined, so Flexible Workbench reads them from the
 plugin and copies them onto the card it builds. A vault that renamed `due` to
 `deadline` gets a Tasks card that works on its first render.
 
@@ -89,17 +85,17 @@ the accent, the card surface, the spacing and the background all land as
 *per-board overrides* on that one dashboard, and the TaskNotes field mapping
 lands on the Tasks card itself — so your vault-wide settings, and every other
 board you have, come out of a setup run exactly as they went in. That is also
-why it no longer asks about things that can only be vault-wide (whether Hearth
+why it no longer asks about things that can only be vault-wide (whether Flexible Workbench
 opens on startup, where notes open, which search engine to use, whose file
-icons to show): those live in **Settings → Hearth**, one toggle each, and apply
+icons to show): those live in **Settings → Flexible Workbench**, one toggle each, and apply
 to everything by design.
 
 The last step previews the board — a scale drawing plus a list of every card and
 why it's there — before anything is written. Nothing is applied until you press
 **Build my dashboard**.
 
-You can run it again any time from **Settings → Hearth → About → Build a
-dashboard**, or the **Set up Hearth** command. Run that way it *always* adds a
+You can run it again any time from **Settings → Flexible Workbench → About → Build a
+dashboard**, or the **Set up Flexible Workbench** command. Run that way it *always* adds a
 new dashboard: every board you already have is left exactly as it is.
 
 ## Search
@@ -150,7 +146,7 @@ the bottom of the rail opens a pre-filled GitHub issue or email.
 | **Excalidraw drawing** | A drawing with native pan and zoom | [Excalidraw](https://github.com/zsviczian/obsidian-excalidraw-plugin) |
 | **Embedded base** | A `.base` file, rendered by Obsidian's Bases | Bases (core) |
 | **Recent files** | The files you opened most recently | — |
-| **Favorites** | The notes you starred in Hearth | — |
+| **Favorites** | The notes you starred in Flexible Workbench | — |
 | **Bookmarks** | Your Obsidian bookmarks, with site favicons | Bookmarks (core) |
 
 ### Planning
@@ -217,7 +213,7 @@ Categorized as **Integrations** in the picker.
 | **Jira filter** | Issues from a saved Jira filter or JQL search, filtered by status, assignee, priority, type, sprint and version | Jira over HTTPS |
 | **RSS feed** | Headlines from any RSS 2.0 or Atom feed you follow | Network |
 | **Weather** | Current conditions and forecast from [Open-Meteo](https://open-meteo.com) in five styles, up to an edge-to-edge painted sky that follows real conditions and time of day — click a card for the full forecast, hour by hour | Network |
-| **Operon tasks / board / agenda / timer** | Four cards on [Operon](https://github.com/hasanyilmaz/operon)'s own API — a task list, a pipeline board, a few days' agenda, and the running time tracker | Operon (desktop) |
+| **Operon tasks / board / agenda / timer** | Four cards on [Operon](https://github.com/hasanyilmaz/operon)'s own API — a task list, a pipeline board, a few days' agenda, and a timer with dated descriptions and summaries | Operon (desktop) |
 | **Plugin view** *(beta)* | Another plugin's side-panel view (calendar, outline, tag pane, Kanban…) hosted in a card, optionally pinned to one file | A plugin with a view |
 
 The Templater card does something Templater's own per-template commands can't:
@@ -228,7 +224,7 @@ do from its own command.
 
 Git and Operon both work *through* the other plugin rather than around it: Git
 commits go through the Git plugin's own task queue, so your remote, credentials
-and commit-message template apply unchanged, and Hearth never parses Operon's
+and commit-message template apply unchanged, and Flexible Workbench never parses Operon's
 notes. See [Operon](#operon) for its setup, which is the one that needs a step
 from you.
 
@@ -245,13 +241,13 @@ cards refresh on a timer. Every card that reaches the network respects
 
 ## Integrations
 
-Hearth picks these up on its own — nothing to connect, no keys to paste. The
+Flexible Workbench picks these up on its own — nothing to connect, no keys to paste. The
 full list, with live status and where each one's settings live, is under
-**Settings → Hearth → Integrations**.
+**Settings → Flexible Workbench → Integrations**.
 
 **Community plugins**
 
-| Plugin | What Hearth does with it | Configured in |
+| Plugin | What Flexible Workbench does with it | Configured in |
 | --- | --- | --- |
 | [Omnisearch](https://github.com/scambier/obsidian-omnisearch) | Becomes the engine behind the search bar | Search tab |
 | [TaskNotes](https://obsidian.md/plugins?id=tasknotes) | Tasks cards read one-note-per-task vaults — status, due date and priority from frontmatter, under TaskNotes' own field names | Integrations tab |
@@ -261,13 +257,13 @@ full list, with live status and where each one's settings live, is under
 | [Periodic Notes](https://github.com/liamcain/obsidian-periodic-notes) | The Periodic note card: this week's, month's, quarter's or year's note, resolved and created by the plugin itself | The card |
 | [Git](https://github.com/Vinzent03/obsidian-git) | The Git card, acting through the plugin's own task queue | The card |
 | [Operon](https://github.com/hasanyilmaz/operon) | Four cards on Operon's Developer API — [details below](#operon) | Integrations tab |
-| [Iconic](https://obsidian.md/plugins?id=iconic) / [Iconize](https://obsidian.md/plugins?id=obsidian-icon-folder) | Your per-file icons show wherever Hearth lists a file | Integrations tab |
+| [Iconic](https://obsidian.md/plugins?id=iconic) / [Iconize](https://obsidian.md/plugins?id=obsidian-icon-folder) | Your per-file icons show wherever Flexible Workbench lists a file | Integrations tab |
 | [Excalidraw](https://github.com/zsviczian/obsidian-excalidraw-plugin) | Drawings render live in Embed cards; "New drawing" runs its command | The card |
 | [Kanban](https://github.com/obsidian-community/obsidian-kanban) | Tasks cards read and write its board notes in its own format | The card |
 
 **Obsidian core plugins**
 
-| Core plugin | What Hearth does with it |
+| Core plugin | What Flexible Workbench does with it |
 | --- | --- |
 | **Daily notes** | Daily note, Mini calendar and Vault statistics resolve today's note from its folder, format and template |
 | **Bases** | Embed cards show a `.base` view |
@@ -301,23 +297,28 @@ scopes (*Happening today*, *Overdue*, *Recently touched*). Clicking a task
 opens its note on the exact line.
 
 **Reading is the default; changing is a choice.** Switch on *Allow changes*
-(**Settings → Hearth → Integrations → Operon**) and the board card lets you drag
+(**Settings → Flexible Workbench → Integrations → Operon**) and the board card lets you drag
 a task into another status column — or pick one from the row's right-click menu,
 so it works without a mouse — and every card grows a **+** that creates a task
-where Operon's own settings say new tasks go. Hearth previews the change,
+where Operon's own settings say new tasks go. Flexible Workbench previews the change,
 Operon rates it and applies it, and anything more than routine is confirmed with
 you first. A move carries the status the board was drawn from, so a drag onto a
 stale board is refused rather than quietly undoing someone else's change. Leave
-the switch off and Hearth can only read.
+the switch off and Flexible Workbench can only read; with it on, the timer card
+can start and finish time entries too.
+
+Before a timer starts, the card asks what you'll work on. Finishing it requires a
+summary. The card keeps the start and end times, duration, description and summary
+in Flexible Workbench's plugin data, grouped by date for review.
 
 Before you add one:
 
 | | |
 | --- | --- |
 | **Platform** | Desktop only, Obsidian 1.12.2 or newer |
-| **Approval** | Hearth's request appears in **Settings → Operon → Core → General → Developer API Integrations** — approve it there. Until then the cards say what they're waiting for |
+| **Approval** | Flexible Workbench's request appears in **Settings → Operon → Core → General → Developer API Integrations** — approve it there. Until then the cards say what they're waiting for |
 | **Widening it** | Operon grants all-or-nothing, so turning *Allow changes* on needs a fresh approval |
-| **Status & kill switch** | **Settings → Hearth → Integrations** shows the connection, what was requested, and how to cut it |
+| **Status & kill switch** | **Settings → Flexible Workbench → Integrations** shows the connection, what was requested, and how to cut it |
 
 ## Layout
 
@@ -360,12 +361,12 @@ Before you add one:
   takes a **Lucide icon** (searched from a picker rather than typed from
   memory), an **emoji or a couple of characters**, the **vault path of an
   image**, or the **URL of an image on the web**. Each dashboard can override
-  it; leave it empty and the Hearth crystal stays as it was. Hearth's **tab and
+  it; leave it empty and the Flexible Workbench workbench mark stays as it was. Flexible Workbench's **tab and
   ribbon** button takes a Lucide icon of its own.
 
 ## Mobile
 
-Hearth's board is laid out freely — cards sit where you drop them, at a
+Flexible Workbench's board is laid out freely — cards sit where you drop them, at a
 fraction of the board's width. Below about **600px** that stops meaning
 anything, so the board **reflows into a single full-width column**, top to
 bottom, in the order the desktop board reads in. Your layout is never
@@ -377,7 +378,7 @@ narrow desktop pane gets the same treatment, and you can see the phone layout
 by dragging a pane narrow.
 
 - **Stacked column** — cards full width, one per row. Turn it off in
-  **Settings → Hearth → Mobile** to keep the free-form layout.
+  **Settings → Flexible Workbench → Mobile** to keep the free-form layout.
 - **Per-card overrides** — in a card's settings (Layout → *On a narrow board*):
   **hide** it, give it a **position** in the column, set its **height**, or
   **start it collapsed** as a title row that builds the card only when tapped —
@@ -393,7 +394,7 @@ by dragging a pane narrow.
 - **Its own performance tier** — defaults to *Balanced* on mobile; your desktop
   tier is stored separately and untouched.
 - **Its own settings category** — everything above lives under
-  **Settings → Hearth → Mobile**.
+  **Settings → Flexible Workbench → Mobile**.
 - **Mobile mode** — still there: an optional search-only launcher, if that is
   all you want on a phone.
 - **Action bar** — a row of buttons under the search field (New note, New
@@ -403,7 +404,7 @@ by dragging a pane narrow.
 
 ## Settings & shortcuts
 
-Everything lives under **Settings → Hearth**, grouped by a category ribbon:
+Everything lives under **Settings → Flexible Workbench**, grouped by a category ribbon:
 **Appearance**, **Search**, **Dashboard**, **Behaviour** (startup, new tabs,
 where notes open, mobile, privacy), **Integrations**, **Backup** and **About**.
 Per-card settings are edited from the card itself in arrange mode.
@@ -434,7 +435,7 @@ npm run typecheck
 ```
 
 To test in a vault, symlink or copy `main.js`, `manifest.json` and `styles.css`
-into `<vault>/.obsidian/plugins/hearth/`.
+into `<vault>/.obsidian/plugins/flexible-workbench/`.
 
 **Translations** — user-facing strings live in [`src/locales/`](src/locales/).
 English (`en.ts`) is the source of truth; copy it, translate the values and
@@ -442,19 +443,12 @@ register the file. See [`src/locales/README.md`](src/locales/README.md).
 
 ## Contributing
 
-Hearth moves fast, so the most valuable contributions right now are **bug
+Flexible Workbench moves fast, so the most valuable contributions right now are **bug
 reports**, **feature ideas** and **translations**. Small, obvious fixes are
 always welcome; for anything larger, please open an issue first — big PRs
 against a fast-moving codebase tend to go stale. See
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-## Support
-
-Hearth is free and open source. If it's earned a place on your vault's front
-page, you can buy me a coffee — it genuinely helps keep the updates coming.
-
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/B7K822EW68)
-
 ## License
 
-MIT © ondreu · [Changelog](CHANGELOG.md) · [Security](SECURITY.md)
+MIT · [Changelog](CHANGELOG.md) · [Security](SECURITY.md)

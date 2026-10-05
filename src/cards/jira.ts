@@ -1,6 +1,14 @@
 import { Notice, Setting } from "obsidian";
 import { t } from "../i18n";
-import { clearJiraCache, JIRA_CONTROLS, listJiraFilters, renderJiraCard } from "../jira";
+import {
+	clearJiraCache,
+	effectiveJiraControls,
+	JIRA_ASSIGNED_TEAM_JQL,
+	JIRA_CONTROLS,
+	listJiraFilters,
+	renderJiraCard,
+	upgradeAssignedJiraJql,
+} from "../jira";
 import { type JiraControl } from "../types";
 import { type CardDefinition, type CardEditorContext } from "./definition";
 
@@ -8,6 +16,13 @@ import { type CardDefinition, type CardEditorContext } from "./definition";
 export function jiraEditor(ctx: CardEditorContext, containerEl: HTMLElement): void {
 	const cfg = (ctx.card.jira ??= {});
 	const strings = t().editors.jira;
+	if (cfg.jql) {
+		const upgraded = upgradeAssignedJiraJql(cfg.jql);
+		if (upgraded !== cfg.jql) {
+			cfg.jql = upgraded;
+			ctx.opts.save();
+		}
+	}
 
 	new Setting(containerEl)
 		.setName(strings.host)
@@ -22,6 +37,18 @@ export function jiraEditor(ctx: CardEditorContext, containerEl: HTMLElement): vo
 					cfg.host = next;
 					ctx.opts.save();
 				}),
+		);
+
+	new Setting(containerEl)
+		.setName(strings.sortDueDateDesc)
+		.setDesc(strings.sortDueDateDescDesc)
+		.addToggle((toggle) =>
+			toggle.setValue(cfg.sortDueDateDesc !== false).onChange((value) => {
+				cfg.sortDueDateDesc = value;
+				clearJiraCache(cfg);
+				ctx.opts.save();
+				ctx.opts.rerender();
+			}),
 		);
 
 	new Setting(containerEl)
@@ -53,6 +80,44 @@ export function jiraEditor(ctx: CardEditorContext, containerEl: HTMLElement): vo
 					cfg.apiBasePath = next;
 					ctx.opts.save();
 				}),
+		);
+
+	new Setting(containerEl)
+		.setName(strings.jql)
+		.setDesc(strings.jqlDesc)
+		.addTextArea((text) =>
+			text
+				.setPlaceholder(strings.jqlPlaceholder)
+				.setValue(cfg.jql ?? "")
+				.onChange((value) => {
+					const next = value.trim() || undefined;
+					if (next !== cfg.jql) clearJiraCache(cfg);
+					cfg.jql = next;
+					cfg.selections = {};
+					ctx.opts.save();
+				}),
+		);
+
+	new Setting(containerEl)
+		.setName(strings.showStartDate)
+		.setDesc(strings.showStartDateDesc)
+		.addToggle((toggle) =>
+			toggle.setValue(cfg.showStartDate !== false).onChange((value) => {
+				cfg.showStartDate = value;
+				ctx.opts.save();
+				ctx.opts.rerender();
+			}),
+		);
+
+	new Setting(containerEl)
+		.setName(strings.showEndDate)
+		.setDesc(strings.showEndDateDesc)
+		.addToggle((toggle) =>
+			toggle.setValue(cfg.showEndDate !== false).onChange((value) => {
+				cfg.showEndDate = value;
+				ctx.opts.save();
+				ctx.opts.rerender();
+			}),
 		);
 
 	const filterSetting = new Setting(containerEl)
@@ -123,15 +188,16 @@ export function jiraEditor(ctx: CardEditorContext, containerEl: HTMLElement): vo
 	);
 
 	new Setting(containerEl).setName(strings.controls).setHeading();
-	const enabled = new Set<JiraControl>(cfg.controls ?? JIRA_CONTROLS);
+	const enabled = new Set<JiraControl>(effectiveJiraControls(cfg));
 	for (const control of JIRA_CONTROLS) {
 		new Setting(containerEl)
 			.setName(t().cards.jira.controls[control])
 			.addToggle((toggle) =>
-				toggle.setValue(enabled.has(control)).onChange((value) => {
+					toggle.setValue(enabled.has(control)).onChange((value) => {
 					if (value) enabled.add(control);
 					else enabled.delete(control);
 					cfg.controls = JIRA_CONTROLS.filter((item) => enabled.has(item));
+					cfg.dateControlsConfigured = true;
 					ctx.opts.save();
 					ctx.opts.rerender();
 				}),
@@ -153,7 +219,7 @@ export function jiraEditor(ctx: CardEditorContext, containerEl: HTMLElement): vo
 		txt.inputEl.type = "number";
 		txt.inputEl.min = "1";
 		txt.inputEl.max = "200";
-		txt.inputEl.addClass("hearth-count-input");
+		txt.inputEl.addClass("flexible-workbench-count-input");
 	});
 
 	const numberSetting = (
@@ -173,7 +239,7 @@ export function jiraEditor(ctx: CardEditorContext, containerEl: HTMLElement): vo
 				});
 				txt.inputEl.type = "number";
 				txt.inputEl.min = "0";
-				txt.inputEl.addClass("hearth-count-input");
+				txt.inputEl.addClass("flexible-workbench-count-input");
 			});
 	};
 	numberSetting(
@@ -194,6 +260,29 @@ export const jiraCard: CardDefinition<"jira"> = {
 	kind: "jira",
 	templates: [
 		{
+			id: "jira-assigned-to-me",
+			name: "My Jira tasks",
+			icon: "list-checks",
+			build: () => ({
+				kind: "jira",
+				title: "Assigned to me",
+				jira: {
+					apiBasePath: "/rest/api/latest",
+					jql: JIRA_ASSIGNED_TEAM_JQL,
+					showStartDate: true,
+					showEndDate: true,
+					sortDueDateDesc: true,
+					controls: ["status", "startDate", "dueDate", "priority", "issueType", "fixVersion"],
+					dateControlsConfigured: true,
+					maxResults: 50,
+					refreshMin: 0,
+					cacheMin: 5,
+				},
+				w: 6,
+				h: 5,
+			}),
+		},
+		{
 			id: "jira",
 			name: "Jira filter",
 			icon: "ticket",
@@ -202,7 +291,9 @@ export const jiraCard: CardDefinition<"jira"> = {
 				title: "Jira",
 				jira: {
 					apiBasePath: "/rest/api/latest",
-					controls: ["status", "assignee", "priority", "issueType", "sprint", "fixVersion"],
+					sortDueDateDesc: true,
+					controls: ["status", "assignee", "startDate", "dueDate", "priority", "issueType", "fixVersion"],
+					dateControlsConfigured: true,
 					maxResults: 50,
 					refreshMin: 0,
 					cacheMin: 5,

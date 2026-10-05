@@ -1,0 +1,115 @@
+﻿title,bvid,url,uploader,uploader_mid,fav_time,pubtime,duration_seconds,intro,attr
+100万买红利ETF就能退休？我翻完1000条评论，答案出乎意料,BV1SZtg6HEMd,https://www.bilibili.com/video/BV1SZtg6HEMd,百万红利自由计划,3546391683008820,1791165263,1788263690,535,,0
+《开放语义层AI原生数据平台的下一层基础设施》堵俊平｜Datastrato 创始人兼CEO；Apache Gravitino 项目原始发起人,BV1TNYg6xEnF,https://www.bilibili.com/video/BV1TNYg6xEnF,Data_for_AI,3691008466356264,1791128387,1789038168,2257,"《开放语义层  AI原生数据平台的下一层基础设施》
+
+堵俊平｜Datastrato 创始人兼 CEO  Apache Gravitino 项目原始发起人
+
+本次分享从“数据接口正在由 SQL 转向意图”出发，介绍 Apache Ossie 的可移植语义契约、Gravitino 的元数据与治理控制面，以及 Agent 在执行前如何解析受治理的业务含义。",0
+豪用GPT-6 Astra！Codex神级skill Codex 额度总是不够用？这次试试让 ChatGPT 负责思考和规划，Codex 专心执行。 #Code,BV1pyeG6bERn,https://www.bilibili.com/video/BV1pyeG6bERn,青青王-AI,3546829037766974,1791126835,1789642938,97,,0
+[基于skill的Agent进化]01期-SkillX-将强Agent的成功轨迹构建为分层Skill库，实现可迁移的泛用性进化,BV1dFd9B7EvW,https://www.bilibili.com/video/BV1dFd9B7EvW,Agent智能体深度研究院,581897590,1790433061,1776830400,1449,"基于skill的Agent进化（1）《SkillX: Automatically Constructing Skill Knowledge Bases for Agents》
+https://arxiv.org/abs/2604.04804
+欢迎在评论区讨论论文~",0
+别把数仓改成JSON：AI Agent真正需要的是Agent Data Plane,BV1HztG6GELX,https://www.bilibili.com/video/BV1HztG6GELX,Seven数据跃迁,30341290,1790385544,1788280419,566,"Agent时代，企业数仓是不是应该全部改成JSON或者KV？
+这是一个非常危险的架构误区。协议适合使用JSON，不代表事实数据应该存成JSON；KV适合主键访问和状态保存，也不适合替代列式数仓完成复杂聚合。
+本期从一个“区域新客GMV下降”的真实工作场景出发，完整拆解：
+为什么Agent不能拿到表名后直接生成SQL
+如何把自然语言问题编译成结构化执行合同
+指标合同应该包含哪些语义、粒度和权限信息
+数仓、KV、向量库、图数据库与JSON如何分工
+为什么向量检索不能作为企业事实来源
+如何使用Dry Run、执",0
+【DSH】挂一百个 Skill 也不占上下文：Harness 高阶知识与玩法,BV1y9to66Ehq,https://www.bilibili.com/video/BV1y9to66Ehq,惫懒の欧阳川,33956397,1790385516,1788432969,2063,🔧这十天彻底掉进 DeepSeek Harness 的坑了。这期把 Agent 到底怎么定义（说明+配置+skill 三件套）、skill 的加载优先级链讲明白，重点是skils的 action skill：动态注入。另外 ComfyUI 插件加入了工作流绑技能包，靠的就是这个机制。让 Agent 自己改接线、换 LoRA、把文生切成图生。片尾剧透了下期的开源创意工作台。相关链接放在置顶评论。觉得有用别忘了点赞、投币、收藏、关注支持一下啦～❤️,0
+因果推断实战uplift + DML,BV11N411r7TV,https://www.bilibili.com/video/BV11N411r7TV,大佬等我呀,605006193,1784562180,1687449882,1686,"一路从数据分析的实习到大厂打工人，聊聊一个初入者视角那些JD中写的所谓决策支持在干什么，怎么做，gzh ""大佬等我呀“ 看原文",0
+[skill使用与内化] 美团skill系列新论文-Skill0.5：把通用skill学进参数，把任务skill留在提示中，并反事实检查skill是否真被使用,BV18eNg6tEdm,https://www.bilibili.com/video/BV18eNg6tEdm,Agent智能体深度研究院,581897590,1784179241,1783844708,608,"Skill0.5: Joint Skill Internalization and Utilization for Out-of-Distribution Generalization in Agentic Reinforcement Learning
+https://arxiv.org/abs/2605.28424
+
+1. 论文核心: Skill0.5 把稳定的通用技能内化进模型参数，把随任务变化的任务技能保留在提示中，并按任务掌握程度选择不同训练信号。
+2. 问题背景: 全外挂会让上下文越来越长并产生",0
+面试官：在数仓中，什么是对AI友好的模型？,BV1jeMx6sE2P,https://www.bilibili.com/video/BV1jeMx6sE2P,涤生大数据,621235564,1784178841,1783392786,505,"本期为数据开发面经讲解视频：在数仓中，什么是对AI友好的模型？
+各位看官，如果觉得视频好看，有用，辛苦一键三联，支持一下~
+涤生为大家准备了【独家】数据开发求职手册，有需要可以评论区获取哈！",0
+🚀LangChain新神器OpenWiki打造数据飞轮！开启LLM Wiki 2.0时代！ 让Codex、Claude Code等Agent共享知识库,BV1EaN86hEhV,https://www.bilibili.com/video/BV1EaN86hEhV,AI超元域,3493277319825652,1784178830,1784042831,705,"🚀LangChain新神器OpenWiki打造数据飞轮！开启LLM Wiki 2.0时代！ 让Codex、Claude Code、Hermes等Agent共享第二大脑！支持Notion！告别知识孤岛！
+
+视频简介：
+
+Karpathy提出的LLM Wiki解决了大模型知识整理问题，但实际使用时，知识库常与某个Agent或Skill深度绑定。本期视频深度实测LangChain推出的OpenWiki：配置个人模式，通过ChatGPT OAuth验证，连接Notion摄取Claude Code笔记，并生成可审阅",0
+【极简五分化】 45分钟背部增肌训练 ⎮只需一对哑铃⎮适家里寝室,BV1fj411j767,https://www.bilibili.com/video/BV1fj411j767,梅林FIT,1613054467,1783694240,1700823600,3000,"本期是极简5分化背部篇
+具体换重如下：
+动作1—低重量
+动作2—重量不变或增加1.5-1.7倍
+动作3—根据动作2重量选择双持或者双手各握一只
+动作4—如果重量2加重 则保持不变或略微增加
+动作5—如果重量2加重 则保持不变或略微增加
+动作6—如果重量2加重 则保持不变或略微增加",0
+阿里一面  为什么越来越多 Agent 开始采用 Event-driven（事件驱动）架构？什么时候不应该使用传统 Agent Loop？,BV1xXjR6VEkY,https://www.bilibili.com/video/BV1xXjR6VEkY,龙哥搞算法,3546586445514836,1783000129,1782297697,97,,0
+[Harness自动进化] 04期 | Autogenesis：南洋理工提出AGP协议，让Agent Harness进化可审计，LeetCode C++ 近满分,BV1W27R63EmC,https://www.bilibili.com/video/BV1W27R63EmC,Agent智能体深度研究院,581897590,1782897428,1780531200,711,"Autogenesis: A Self-Evolving Agent Protocol
+https://arxiv.org/abs/2604.15034
+
+1. 论文核心: Autogenesis 提出 AGP 双层协议，把 prompt、agent、tool、environment、memory 这些智能体内部资源注册成可版本化、可审计、可回滚的资源，再用统一闭环管理运行期自进化。
+2. Harness 边界: 这篇论文不属于狭义 Harness 自动优化；它更像上游协议层，可承载 harness 组件",0
+【开源】做了个AI日志系统，结果公司运维直接躺平了？全新版本重磅来袭。,BV1atKD6mEnb,https://www.bilibili.com/video/BV1atKD6mEnb,LCA智能运维平台,1777134587,1782829480,1782742514,966,"**LCA** 是一个开源的**企业级日志收集与智能分析平台**，旨在解决传统日志管理中的三大痛点：**成本高、响应慢、查询难**。其核心定位是让日志从""事后查证""变成""实时洞察""。
+
+项目地址：`github.com/jc2255/log-collect-ai-analytics`
+
+---
+
+## 四大核心能力
+
+### 1️⃣ OSS 日志自动备份
+可视化配置 Elasticsearch 快照 SLM 策略，自动将日志备份到阿里云 OSS，降低本地磁盘压力，同时满足行业合规审计要求（日志保留 6 个",0
+ydata-OpenSpec在数据开发实践,BV158J56mEJS,https://www.bilibili.com/video/BV158J56mEJS,语兴呀,405479587,1782827698,1781276371,1055,,0
+豆瓣TOP100占了三部? 这西西里岛什么来头！,BV1fP756mEcC,https://www.bilibili.com/video/BV1fP756mEcC,小鹿Lawrence,37029661,1782640375,1782470660,1345,西西里，在上一期我们讲到，在很长的一段时间里，这里都背负着一个沉重的标签——黑手党的故乡，但西西里从来不止这一面...这座小岛的温柔与浪漫，被一个叫托纳多雷的人用镜头收录在他的【时光三部曲】里。在这期视频中，我们会循着《天堂电影院》留下的痕迹，去重新发现西西里……,0
+Agent 数据处理案例 10 用skill来标准化 大量数据调研的技巧,BV1ymVE6FEJ5,https://www.bilibili.com/video/BV1ymVE6FEJ5,Ming在职AI从业者,1220871760,1782106417,1782032700,1545,,0
+Anthropic：通过评测把skill 变成可迭代资产,BV1wyosBUEtb,https://www.bilibili.com/video/BV1wyosBUEtb,慢学AI,28321599,1782047855,1776857700,566,"Anthropic：通过评测把skill 变成可迭代资产：《Improving skill-creator》①
+原文标题：Improving skill-creator
+原文链接：https://github.com/anthropics/skills/tree/main/skills/skill-creator
+                  https://github.com/anthropics/skills/tree/main/skills/skill-creator",0
+[Agent skill编排]01-腾讯GraSP-编排skill graph，规划Agent行动路径,BV1FwoaBhEc5,https://www.bilibili.com/video/BV1FwoaBhEc5,Agent智能体深度研究院,581897590,1781397733,1776922200,603,"[Agent skill编排]01-腾讯GraSP-编排skill graph，规划Agent行动路径
+https://arxiv.org/pdf/2604.17870",0
+Prompt可能不如if-else…大模型思维工程到底如何养成？,BV1WQ7f6WEUn,https://www.bilibili.com/video/BV1WQ7f6WEUn,知乎知学长,3546904126294811,1781241845,1780557208,203,,0
+别再只让 AI 写 SQL 了：用 SQL2Text 反向清洗几千条旧 SQL，自动沉淀数据资产,BV1dhGU6bEwT,https://www.bilibili.com/video/BV1dhGU6bEwT,Seven数据跃迁,30341290,1780848068,1779900146,475,,0
+大数据开发面试大模型应该如何准备，一个视频吃透6大考点，让你面试少走99%的弯路！,BV1QuLn6DEHc,https://www.bilibili.com/video/BV1QuLn6DEHc,涤生大数据,621235564,1780847943,1779016016,812,"本期讲解大数据开发面试时，面试官爱问的6个大模型问题。
+对本期视频感兴趣的朋友，欢迎在评论区留言！",0
+104K 星的 Agent 工程 Skills：别再让 AI 瞎猜需求,BV1PYVc62Efw,https://www.bilibili.com/video/BV1PYVc62Efw,AIlazy俊,44153211,1780839667,1779782400,274,"这个项目不是提示词合集，而是把需求盘问、TDD、诊断、架构维护这些真实工程流程，封装成各种主流 Agent 可复用的 skills。适合想让 Agent 少跑偏、少猜测、按工程方法协作的开发者。
+项目地址：https://github.com/mattpocock/skills
+喜欢这类 AI 工具拆解，记得一键三连加关注。",0
+[基于skill的Agent进化]阿里DreamX团队论文-SkillClaw-聚合多用户轨迹得到稳定进化方向，夜间验证保证有效性,BV1dC5268Eja,https://www.bilibili.com/video/BV1dC5268Eja,Agent智能体深度研究院,581897590,1780795919,1778690721,634,"SkillClaw: Let Skills Evolve Collectively with Agentic Evolver
+https://arxiv.org/pdf/2604.08377",0
+[中英采访] 住在巴厘岛的数字游民都在做什么工作？🌴,BV1bDLq6ZEP1,https://www.bilibili.com/video/BV1bDLq6ZEP1,SABRINA我是巴黎,1858003654,1780185500,1779185700,724,,0
+被疯狂种草！入手沃集鲜网红爆款，是真香现场还是大型踩雷？,BV1MNVp6LEVA,https://www.bilibili.com/video/BV1MNVp6LEVA,记录生活的蛋黄派,337521240,1780185282,1779962180,603,"三连吗
+谢谢",0
+聊聊Harness时代AI-First的组织架构：从信任人到信任AI【硅谷101播客】,BV1YsGH6UEZz,https://www.bilibili.com/video/BV1YsGH6UEZz,硅谷101播客,3546860354538082,1779806463,1779667200,3960,“Harness Engineering”（挽具工程）正在成为硅谷的新共识，Anthropic、OpenAI等公司都在探索这一工程范式。但真正理解Harness的人还不多。前不久，一篇题为《Why Your “AI-First” Strategy Is Probably Wrong》的文章在X上获得百万级阅读和热议，作者是来自硅谷CreaoAI（🔗creao.ai）的Peter Pang。在这篇文章里，Peter展示了Harness Agent系统激发出的极致效率：99%的代码由AI完成，每天平均3到8次,0
+韩成龙Jackie对话陈辰：一份AI时代的生存指南（45分钟完整版）,BV1Cs9tBEEME,https://www.bilibili.com/video/BV1Cs9tBEEME,韩成龙Jackie,3691007587649752,1777999253,1777500000,2642,"20多年前，当我在电视机前看陈辰姐主持的我型我秀、加油好男儿等节目时，我是不可能会想到20多年后，我胆敢以“主持人”的身份去采访最专业的主持人。
+
+内容的制作和传播方式悄然已变。正如陈辰姐在本期播客中所提到的，“主持人”的定义也正在发生变化，与其称为职业，不如叫作专家型角色。AI时代，很多传统意义上的“职业”也会被重新定义，那些涉及到人的信任、情绪和体验的职业，可能才是最不容易被AI取代的。
+
+AI是个巨大的引力场，把不同背景和履历的你我相连。AI也是杠杆，撬动并放大人的能力，但不会凭空让人变强。在AI日",0
+【硬核】爆肝1.4万字提前退休可行性计划 |23岁如何通过投资赚钱？新手投资指南,BV1Vb9hBVE4C,https://www.bilibili.com/video/BV1Vb9hBVE4C,歌白说Geslook,315846984,1777999243,1777523370,2253,我没啥要说的。,0
+数据开发如何使用AI在日常工作中提效-SKILL,BV1yGdLBREkJ,https://www.bilibili.com/video/BV1yGdLBREkJ,语兴呀,405479587,1777076762,1776443702,1122,,0
+北漂青年做量化两年狂赚1500万，极速暴富后人生陷入虚无，差点精神失常，只能靠吃米其林来排忧解难,BV1w7NTzXEqQ,https://www.bilibili.com/video/BV1w7NTzXEqQ,摩的司机徐师傅,3493117728656046,1773939603,1773532800,2370,,0
+已失效视频,BV1aNvvBzEhx,https://www.bilibili.com/video/BV1aNvvBzEhx,摸金大校,42512815,1767630859,1767097583,1096,,1
+2026年A股牛市哪些会成为主线？,BV1g6ivBzEx2,https://www.bilibili.com/video/BV1g6ivBzEx2,ETF基金波段王,518495360,1767630847,1767428395,1938,-,0
+2025经济为何这么差？下一个能抓住的暴富拐点就在2026年？康波周期的真相,BV1QCvHBKEai,https://www.bilibili.com/video/BV1QCvHBKEai,脑洞乌托邦,368229902,1767630720,1767006000,2069,为什么很多业内人士都说，下一个能抓住的暴富拐点就在2026年？今天我们来聊聊康波周期的故事,0
+【耗时2月制作】日美为镜，你也能读懂，房价涨跌逻辑,BV1hvSKB4EgK,https://www.bilibili.com/video/BV1hvSKB4EgK,钞能力毛毛,21262795,1767630702,1764496800,5085,"本期以日美为镜，借鉴日本1990-2020之间房价走势，美国2008-2020之间房价走势，对比国内情况，帮大家建立预判房价走势的逻辑框架。
+本期【非常 非常 需要耐心】前40min日美房价历史，建立房价分析逻辑，40min开始渐入佳境，大量数据分析国内情况，精华部分在78min+，重建房价分析思维。
+
+1、统计局-202508房价涨跌幅
+https://www.stats.gov.cn/sj/zxfb/202509/t20250915_1961175.html
+
+2、日本劳动人口变化走势
+http://",0
+2025年终盘点：中美休兵，欧日傻眼，未来会怎样？世界变革2.0来了【王骁年度分享】,BV1ryvaBLEry,https://www.bilibili.com/video/BV1ryvaBLEry,小王Albert,1140672573,1767630681,1767088391,2001,一键三连推荐给更多朋友！,0
+2026已来！新年三大商业趋势，和每个人息息相关,BV1WviLB3E7u,https://www.bilibili.com/video/BV1WviLB3E7u,投资人黄海,1163425648,1767630662,1767515400,1018,体验化，健康化，圈层化，三大趋势将如何影响每一个人？,0
+连吃高油高糖食物一周，这是我们身体发生的变化...,BV186BLBREUM,https://www.bilibili.com/video/BV186BLBREUM,亿点点不一样,407054668,1767630647,1766653200,703,汉堡、薯条、火锅……这些东西你喜欢吃吗？你有没有想过，如果让你连续吃一周这些高油高糖高盐的食物，你的身体会发生什么变化？这次我们公司两位同事参与了这个神奇的测试，想和你一起看看这样的吃法下，我们的身体到底会发生什么！如果你喜欢这期节目，请多多支持我们，并把视频分享给你的朋友们一起看看！,0
+赤马红羊年真的是大灾之年吗？99%的人都没看懂其中的真相！徐玉兰采访视频完整版,BV1q9q2BpE7p,https://www.bilibili.com/video/BV1q9q2BpE7p,脑洞乌托邦,368229902,1767630587,1766314800,2958,徐玉兰老师的采访视频完整版来了，这里有更加详尽的关于赤马红羊年的解读，以及更多有趣的八字 命理知识,0
+【巫师】财经跨年：中国财经年度盘点Top10,BV12GB7BQEJz,https://www.bilibili.com/video/BV12GB7BQEJz,巫师财经,472747194,1767630556,1766653200,3154,,0
+年终总结！百城楼市数据出炉，新房昂首阔步迈入全新年度！,BV1uqicBCEb6,https://www.bilibili.com/video/BV1uqicBCEb6,金融民工吉胖子,301342726,1767630527,1767409500,1165,新房昂首！百城数据跨年收尾，年终如何总结,0
+【年度总结】一口气了解过去一年的全球经济｜关税战新格局,BV111BeBPEaD,https://www.bilibili.com/video/BV111BeBPEaD,小Lin说,520819684,1767630498,1766977200,2604,"2025年，这么多杂乱的头条新闻，到底拼凑出怎么样新的贸易格局？
+美国、中国内部经济面临怎么样的困境？
+经济动荡怎么催生了德国、日本的政治动荡？
+谁，又是全球经济的最强发动机？",0
+【巫师】吃透中国房价，但是主神视角,BV1fqmiBSE1y,https://www.bilibili.com/video/BV1fqmiBSE1y,巫师财经,472747194,1767630432,1765720077,3064,,0
+Eleni Fit - 10分钟新手腹肌训练 | 精准激活下腹·上腹·侧腹+核心 | 无重复·零器械,BV1u1ULBmEgf,https://www.bilibili.com/video/BV1u1ULBmEgf,EleniFit伊莉妮,3546961800072012,1767532817,1763776800,620,"这套10分钟腹肌训练适合所有健身基础，每天跟练效果更佳！希望你喜欢～
+❀ 腹肌专项
+❀ 节奏：30秒持续训练/无间歇
+【免责声明】若您初次接触运动训练，需知存在身体受伤的可能性。请注意，当您进行任何锻炼或训练计划时，即代表您同意自行承担相关风险。本频道提供的健康、健身及营养信息均旨在分享知识，不能替代专业医疗建议、诊断或治疗方案。",0

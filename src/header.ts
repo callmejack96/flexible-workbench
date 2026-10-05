@@ -1,7 +1,7 @@
 import { type Component, Platform, setIcon } from "obsidian";
 import type { HomeView } from "./view";
 import { SearchSection } from "./search";
-import { hearthIconIdFor } from "./icon";
+import { flexibleWorkbenchIconIdFor } from "./icon";
 import { renderTitleIcon } from "./titleicon";
 import {
 	effectiveHeaderAlign,
@@ -17,6 +17,7 @@ import {
 } from "./types";
 import { t } from "./i18n";
 import { newNoteButtonLabel } from "./newnote";
+import { taskNotesEnabled } from "./tasknotes";
 
 /** The search engine used by the “Search online” button action.
  * DuckDuckGo's GET endpoint works without an API key and is privacy-friendly. */
@@ -38,29 +39,29 @@ export function renderHeader(view: HomeView, container: HTMLElement, component: 
 	container.addClass(`is-title-align-${effectiveHeaderAlign(s)}`);
 	const spacingBelow = effectiveHeaderSpacingBelow(s);
 	if (spacingBelow !== undefined) {
-		container.style.setProperty("--hearth-header-spacing-below", `${spacingBelow}px`);
+		container.style.setProperty("--flexible-workbench-header-spacing-below", `${spacingBelow}px`);
 	}
 
 	if (effectiveShowTitle(s)) {
-		const titleRow = container.createDiv("hearth-title");
-		// Tint the crystal and/or title text with the theme's icon color per
+		const titleRow = container.createDiv("flexible-workbench-title");
+		// Tint the workbench mark and/or title text with the theme's icon color per
 		// the themeColorTarget setting — this board's override, or the global one
 		// (see styles.css).
 		const target = effectiveThemeColorTarget(s);
 		if (target === "icon" || target === "both") titleRow.addClass("is-icon-themed");
 		if (target === "title" || target === "both") titleRow.addClass("is-title-themed");
-		titleRow.style.setProperty("--hearth-title-scale", String(effectiveHeaderTitleScale(s)));
-		titleRow.style.setProperty("--hearth-logo-scale", String(effectiveHeaderLogoScale(s)));
+		titleRow.style.setProperty("--flexible-workbench-title-scale", String(effectiveHeaderTitleScale(s)));
+		titleRow.style.setProperty("--flexible-workbench-logo-scale", String(effectiveHeaderLogoScale(s)));
 		const marginTop = effectiveHeaderMarginTop(s);
 		if (marginTop !== undefined) {
-			titleRow.style.setProperty("--hearth-title-margin-top", `${marginTop}px`);
+			titleRow.style.setProperty("--flexible-workbench-title-margin-top", `${marginTop}px`);
 		}
 
 		// One setting decides the mark: a Lucide icon, an emoji or short text, a
 		// picture from the vault or the web, or — when it is empty, and when a
-		// picture it names has gone missing — the Hearth crystal (#252).
-		renderTitleIcon(view.app, titleRow, effectiveTitleIcon(s), hearthIconIdFor(target));
-		titleRow.createSpan({ cls: "hearth-title-text", text: effectiveTitle(s) });
+		// picture it names has gone missing — the Flexible Workbench workbench mark (#252).
+		renderTitleIcon(view.app, titleRow, effectiveTitleIcon(s), flexibleWorkbenchIconIdFor(target));
+		titleRow.createSpan({ cls: "flexible-workbench-title-text", text: effectiveTitle(s) });
 	}
 
 	if (!effectiveShowSearch(s)) return;
@@ -87,14 +88,17 @@ export function renderHeader(view: HomeView, container: HTMLElement, component: 
 	// it. The button loses its label to a tooltip at that width (see styles.css)
 	// so the field keeps the rest of the row.
 	const narrow = view.isNarrow();
-	const searchWrap = container.createDiv("hearth-search-wrap");
+	const searchWrap = container.createDiv("flexible-workbench-search-wrap");
 	searchWrap.toggleClass("is-narrow", narrow);
-	const searchCol = searchWrap.createDiv("hearth-search-col");
-	const searchRow = searchCol.createDiv("hearth-search");
+	const searchCol = searchWrap.createDiv("flexible-workbench-search-col");
+	const searchRow = searchCol.createDiv("flexible-workbench-search");
 	const bar = search.renderBar(searchRow);
 
 	if (s.showNewNoteButton && !mobileOnly) {
 		searchWrap.append(createSearchBarButton(view, bar, s.newNoteButtonMode));
+	}
+	if (s.showNewTaskButton && taskNotesEnabled(view.app) && !mobileOnly) {
+		searchWrap.append(createNewTaskButton(view));
 	}
 
 	const below = narrow ? searchWrap : searchCol;
@@ -115,7 +119,7 @@ export function createSearchBarButton(
 
 /** Read the current query out of the search bar's input element. */
 function getSearchQuery(bar: HTMLElement): string {
-	return bar.querySelector<HTMLInputElement>(".hearth-search-input")?.value.trim() ?? "";
+	return bar.querySelector<HTMLInputElement>(".flexible-workbench-search-input")?.value.trim() ?? "";
 }
 
 /** Open a web search for the current query (or the engine's home page when
@@ -139,15 +143,30 @@ function searchOnline(bar: HTMLElement): void {
 function createNewNoteButton(view: HomeView): HTMLElement {
 	const label = newNoteButtonLabel(view.plugin.settings);
 	const btn = createEl("button", {
-		cls: "hearth-newnote",
+		cls: "flexible-workbench-newnote",
 		// A renamed button describes itself; the generic aria label is only
 		// right for the default one.
 		attr: { "aria-label": view.plugin.settings.newNoteButtonLabel.trim() || t().header.newNoteAria },
 	});
-	setIcon(btn.createSpan("hearth-newnote-icon"), "plus");
-	btn.createSpan({ cls: "hearth-newnote-label", text: label });
+	setIcon(btn.createSpan("flexible-workbench-newnote-icon"), "plus");
+	btn.createSpan({ cls: "flexible-workbench-newnote-label", text: label });
 	btn.addEventListener("click", () => {
 		void view.plugin.createNewNote(view);
+	});
+	return btn;
+}
+
+/** A separate quick action for a TaskNotes task. It delegates to TaskNotes so
+ * its configured fields, templates and destination remain the source of truth. */
+function createNewTaskButton(view: HomeView): HTMLElement {
+	const btn = createEl("button", {
+		cls: "flexible-workbench-newnote flexible-workbench-newtask",
+		attr: { "aria-label": t().header.newTaskAria },
+	});
+	setIcon(btn.createSpan("flexible-workbench-newnote-icon"), "list-plus");
+	btn.createSpan({ cls: "flexible-workbench-newnote-label", text: t().header.newTask });
+	btn.addEventListener("click", () => {
+		view.plugin.createNewTask(view);
 	});
 	return btn;
 }
@@ -155,11 +174,11 @@ function createNewNoteButton(view: HomeView): HTMLElement {
 /** The Search-online button: runs a web search for the current query. */
 function createSearchOnlineButton(bar: HTMLElement): HTMLElement {
 	const btn = createEl("button", {
-		cls: "hearth-newnote hearth-newnote-search",
+		cls: "flexible-workbench-newnote flexible-workbench-newnote-search",
 		attr: { "aria-label": t().header.searchOnlineAria },
 	});
-	setIcon(btn.createSpan("hearth-newnote-icon"), "globe");
-	btn.createSpan({ cls: "hearth-newnote-label", text: t().header.searchOnline });
+	setIcon(btn.createSpan("flexible-workbench-newnote-icon"), "globe");
+	btn.createSpan({ cls: "flexible-workbench-newnote-label", text: t().header.searchOnline });
 	btn.addEventListener("click", () => searchOnline(bar));
 	return btn;
 }

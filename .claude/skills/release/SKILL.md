@@ -1,7 +1,7 @@
 ---
 name: release
 description: >-
-  Cut a Hearth beta or promote a beta to stable, following the release-train
+  Cut a Flexible Workbench beta or promote a beta to stable, following the release-train
   cadence in RELEASING.md. Use whenever the request is to "cut a beta",
   "promote (the) beta to stable", "release <version>", "open the next beta",
   or "ship stable". Handles the stable/beta two-manifest split, the
@@ -10,9 +10,9 @@ description: >-
   manifest on a protected main through a PR.
 ---
 
-# Releasing Hearth
+# Releasing Flexible Workbench
 
-Hearth ships on a **release train**, not a freeze-and-cut model. Internalise the
+Flexible Workbench ships on a **release train**, not a freeze-and-cut model. Internalise the
 cadence before touching anything — it is the source of every subtle rule below.
 
 ## The cadence (mental model)

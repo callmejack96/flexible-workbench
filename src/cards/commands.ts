@@ -22,12 +22,12 @@ export function renderCommands(view: HomeView, card: DashboardCard, body: HTMLEl
 
 	const { grid, spec } = createTileGrid(view, card, body);
 	for (const cmd of commands) {
-		const tile = grid.createDiv("hearth-link-tile");
+		const tile = grid.createDiv("flexible-workbench-link-tile");
 		// A per-tile size overrides the card default: how many cells of the
 		// card's grid the tile spans, in either sizing style.
 		applyTileSize(tile, cmd, spec);
 		applyTileVisual(view, tile, cmd.icon, "terminal-square");
-		tile.createDiv({ cls: "hearth-link-label", text: cmd.name || cmd.id });
+		tile.createDiv({ cls: "flexible-workbench-link-label", text: cmd.name || cmd.id });
 		const run = () => runCommand(view, cmd);
 		// In arrange mode, clicking a tile must NOT trigger its action.
 		if (!view.arrangeMode) {
@@ -94,7 +94,7 @@ export function commandsEditor(ctx: CardEditorContext, containerEl: HTMLElement)
 
 	commands.forEach((cmd, index) => {
 		const row = new Setting(containerEl)
-			.setClass("hearth-link-setting")
+			.setClass("flexible-workbench-link-setting")
 			.setName(cmd.name || cmd.id);
 		row.addText((txt) => {
 			txt
@@ -120,7 +120,7 @@ export function commandsEditor(ctx: CardEditorContext, containerEl: HTMLElement)
 						ctx.opts.save();
 					});
 				txt.inputEl.type = "number";
-				txt.inputEl.addClass("hearth-count-input");
+				txt.inputEl.addClass("flexible-workbench-count-input");
 				txt.inputEl.setAttribute(
 					"aria-label",
 					t().editors.commands.tileSizeAria,

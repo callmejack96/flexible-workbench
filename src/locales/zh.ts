@@ -12,67 +12,71 @@ export const zh: Translations = {
 	// ---- Commands (command palette) & ribbon ---------------------------
 	commands: {
 		openHome: "打开主控面板",
+		openKnowledge: "打开个人知识工作台",
 		newNote: "新建笔记（默认位置）",
 		newDrawing: "新建 Excalidraw 绘图",
 		recordVoice: "开始/停止录音",
 		openDailyNote: "打开今天的日记",
-		runSetup: "设置 Hearth（首次运行向导）",
+		runSetup: "设置 Flexible Workbench（首次运行向导）",
 		switchDashboard: (n: number) => `切换到面板 ${n}`,
 		nextDashboard: "下一个面板",
 		previousDashboard: "上一个面板",
+		openSourceSync: "打开小红书内容同步",
+		syncRedNoteNow: "立即同步小红书收藏",
 	},
 	ribbon: {
-		openHome: "打开 Hearth 主页",
+		openHome: "打开 Flexible Workbench 主页",
 	},
 
 	// ---- Notices (transient toasts) ------------------------------------
 	notices: {
-		couldNotCreateNote: "Hearth：无法新建笔记。",
-		operonTaskMissing: "Hearth：该 Operon 任务的笔记已不在仓库中。",
-		operonRechecked: "Hearth：已重新检查 Operon 连接。",
-		operonWriteFailed: (reason: string) => `Hearth：Operon 拒绝了此更改 — ${reason}`,
+		couldNotCreateNote: "Flexible Workbench：无法新建笔记。",
+		knowledgeReviewReminder: (count: number) => `日常回顾：有 ${count} 条 Codex 或 Claude Code 会话待审阅。打开“个人知识工作台”查看。`,
+		operonTaskMissing: "Flexible Workbench：该 Operon 任务的笔记已不在仓库中。",
+		operonRechecked: "Flexible Workbench：已重新检查 Operon 连接。",
+		operonWriteFailed: (reason: string) => `Flexible Workbench：Operon 拒绝了此更改 — ${reason}`,
 		/** A refused create, with the Operon setting that decided the target —
 		 * the error alone names a configured target without saying which one. */
 		operonCreateFailed: (reason: string, where: string) =>
-			`Hearth：Operon 拒绝创建该任务 — ${reason} ${where} ` +
+			`Flexible Workbench：Operon 拒绝创建该任务 — ${reason} ${where} ` +
 			"请在 Operon 的设置中修改，或在此卡片设置的“新任务”下选择其他目标。",
-		/** The mutation may have landed. Hearth has already spent its one legal
+		/** The mutation may have landed. Flexible Workbench has already spent its one legal
 		 * recovery attempt, so the honest report is "unknown", not "failed" —
 		 * and never an offer to retry, which could apply the change twice. */
 		operonWriteUnknown: (reason: string) =>
-			`Hearth：Operon 无法确认更改是否已应用（${reason}）。` +
+			`Flexible Workbench：Operon 无法确认更改是否已应用（${reason}）。` +
 			"卡片已重新读取 — 请先检查该任务再重试。",
-		enableExcalidraw: "Hearth：请启用 Excalidraw 插件以创建绘图。",
-		excalidrawCommandMissing: "Hearth：找不到 Excalidraw 的“新建绘图”命令。",
-		enableAudioRecorder: "Hearth：请启用核心插件“录音机”。",
-		couldNotRecordVoice: "Hearth：无法开始录音。",
-		enableDailyNotes: "Hearth：请启用核心插件“日记”。",
-		couldNotOpenDaily: "Hearth：无法打开今天的日记。",
-		couldNotOpenPeriodic: "Hearth：Periodic Notes 无法创建该笔记。",
-		commandNotFound: (id: string) => `Hearth：找不到命令：${id}`,
-		couldNotCreateNoteForDay: (day: string) => `Hearth：无法为 ${day} 创建笔记。`,
-		couldNotCreateEventNote: "Hearth：无法为该事件创建笔记。",
-		taskNotesCreateFailed: "Hearth：无法运行 TaskNotes：新建任务。",
-		taskChangedOnDisk: "Hearth：该任务在磁盘上已更改 — 已刷新。",
-		couldNotOpenTaskNote: "Hearth：无法打开该任务的笔记。",
-		couldNotUpdateTaskStatus: "Hearth：无法更新任务状态。",
-		couldNotCompleteRecurring: "Hearth：无法将该重复任务标记为完成。",
-		couldNotUndoRecurring: "Hearth：无法撤销该重复任务的完成状态。",
-		couldNotAddKanbanCard: "Hearth：无法将卡片添加到看板。",
-		couldNotConvertCard: "Hearth：无法将卡片转换为笔记。",
-		templaterNoTemplate: (path: string) => `Hearth：找不到模板：${path}`,
-		templaterFailed: (name: string) => `Hearth：Templater 未能从 ${name} 创建笔记。`,
-		templaterCreated: (path: string) => `Hearth：已创建 ${path}`,
+		enableExcalidraw: "Flexible Workbench：请启用 Excalidraw 插件以创建绘图。",
+		excalidrawCommandMissing: "Flexible Workbench：找不到 Excalidraw 的“新建绘图”命令。",
+		enableAudioRecorder: "Flexible Workbench：请启用核心插件“录音机”。",
+		couldNotRecordVoice: "Flexible Workbench：无法开始录音。",
+		enableDailyNotes: "Flexible Workbench：请启用核心插件“日记”。",
+		couldNotOpenDaily: "Flexible Workbench：无法打开今天的日记。",
+		couldNotOpenPeriodic: "Flexible Workbench：Periodic Notes 无法创建该笔记。",
+		commandNotFound: (id: string) => `Flexible Workbench：找不到命令：${id}`,
+		couldNotCreateNoteForDay: (day: string) => `Flexible Workbench：无法为 ${day} 创建笔记。`,
+		couldNotCreateEventNote: "Flexible Workbench：无法为该事件创建笔记。",
+		taskNotesCreateFailed: "Flexible Workbench：无法运行 TaskNotes：新建任务。",
+		taskChangedOnDisk: "Flexible Workbench：该任务在磁盘上已更改 — 已刷新。",
+		couldNotOpenTaskNote: "Flexible Workbench：无法打开该任务的笔记。",
+		couldNotUpdateTaskStatus: "Flexible Workbench：无法更新任务状态。",
+		couldNotCompleteRecurring: "Flexible Workbench：无法将该重复任务标记为完成。",
+		couldNotUndoRecurring: "Flexible Workbench：无法撤销该重复任务的完成状态。",
+		couldNotAddKanbanCard: "Flexible Workbench：无法将卡片添加到看板。",
+		couldNotConvertCard: "Flexible Workbench：无法将卡片转换为笔记。",
+		templaterNoTemplate: (path: string) => `Flexible Workbench：找不到模板：${path}`,
+		templaterFailed: (name: string) => `Flexible Workbench：Templater 未能从 ${name} 创建笔记。`,
+		templaterCreated: (path: string) => `Flexible Workbench：已创建 ${path}`,
 		newNoteTemplaterMissing:
-			"Hearth：“新建笔记”按钮指向一个 Templater 模板，但 Templater 未启用 — " +
+			"Flexible Workbench：“新建笔记”按钮指向一个 Templater 模板，但 Templater 未启用 — " +
 			"改为创建空白笔记。",
-		layoutExported: "Hearth：布局已导出。",
-		layoutImported: "Hearth：布局已导入。",
-		layoutImportError: (error: string) => `Hearth：${error}`,
-		settingsExported: "Hearth：设置已导出。",
-		settingsImported: "Hearth：设置已导入。",
-		exportedToVault: (file: string) => `Hearth：已将 ${file} 保存到仓库根目录。`,
-		exportFailed: "Hearth：无法保存导出文件。",
+		layoutExported: "Flexible Workbench：布局已导出。",
+		layoutImported: "Flexible Workbench：布局已导入。",
+		layoutImportError: (error: string) => `Flexible Workbench：${error}`,
+		settingsExported: "Flexible Workbench：设置已导出。",
+		settingsImported: "Flexible Workbench：设置已导入。",
+		exportedToVault: (file: string) => `Flexible Workbench：已将 ${file} 保存到仓库根目录。`,
+		exportFailed: "Flexible Workbench：无法保存导出文件。",
 		cardCopied: "卡片已复制到面板。",
 	},
 
@@ -85,6 +89,8 @@ export const zh: Translations = {
 	header: {
 		newNote: "新建笔记",
 		newNoteAria: "新建笔记",
+		newTask: "新建待办",
+		newTaskAria: "新建待办任务",
 		searchOnline: "在线搜索",
 		searchOnlineAria: "用当前关键词搜索网络",
 	},
@@ -103,7 +109,7 @@ export const zh: Translations = {
 
 	// ---- "What's new" release-notes dialog -----------------------------
 	whatsNew: {
-		title: "Hearth 更新内容",
+		title: "Flexible Workbench 更新内容",
 		intro: "感谢更新！以下是您上次查看以来的变化。",
 		/** Shown instead of {@link intro} when there are headlines to click. */
 		introHint:
@@ -145,7 +151,7 @@ export const zh: Translations = {
 		},
 		/** The heading at the top of each step. */
 		stepTitles: {
-			welcome: "欢迎使用 Hearth",
+			welcome: "欢迎使用 Flexible Workbench",
 			vault: "为主屏幕命名",
 			look: "选择外观",
 			purpose: "您用仓库做什么？",
@@ -154,13 +160,13 @@ export const zh: Translations = {
 		},
 		/** The line under each heading. */
 		stepDescs: {
-			welcome: "回答几个问题，Hearth 就会为您搭建第一个面板。",
+			welcome: "回答几个问题，Flexible Workbench 就会为您搭建第一个面板。",
 			vault: "面板顶部的标题与图标。",
 			look:
 				"这只影响正在搭建的面板 — 其他每个面板都保留自己的外观。" +
 				"之后都可以在该面板自己的设置中修改。",
 			purpose: "可以任选多项 — 每一项都会为面板添加卡片。",
-			integrations: "Hearth 发现这些插件已安装。请开启希望它使用的项目。",
+			integrations: "Flexible Workbench 发现这些插件已安装。请开启希望它使用的项目。",
 			finish:
 				"目前尚未更改任何内容。以下是将要搭建的面板 — 作为一个面板创建，" +
 				"不会影响仓库的全局设置。",
@@ -173,19 +179,19 @@ export const zh: Translations = {
 		},
 		welcome: {
 			lead:
-				"Hearth 把一个标签页变成仓库的主屏幕 — 搜索、卡片面板和启动器。" +
+				"Flexible Workbench 把一个标签页变成仓库的主屏幕 — 搜索、卡片面板和启动器。" +
 				"这个向导会搭建一个契合您实际工作方式的面板，让您不必从空白网格开始。",
 			bullets: [
 				{
 					icon: "layout-dashboard",
 					title: "为您量身搭建的面板",
-					desc: "告诉 Hearth 您用仓库做什么，它会挑好卡片。",
+					desc: "告诉 Flexible Workbench 您用仓库做什么，它会挑好卡片。",
 				},
 				{
 					icon: "plug",
 					title: "您的插件，已经接好线",
 					desc:
-						"Hearth 会查找 TaskNotes、Dataview、Git 等插件并主动连接 — " +
+						"Flexible Workbench 会查找 TaskNotes、Dataview、Git 等插件并主动连接 — " +
 						"读取它们各自的设置，让卡片立刻正常工作。",
 				},
 				{
@@ -196,7 +202,7 @@ export const zh: Translations = {
 			],
 			detected: (names: string) => `在此仓库中找到：${names}。`,
 			detectedNone:
-				"暂未检测到受支持的插件 — 没关系，Hearth 独立也能用，之后再连接即可。",
+				"暂未检测到受支持的插件 — 没关系，Flexible Workbench 独立也能用，之后再连接即可。",
 		},
 		vault: {
 			title: "标题",
@@ -205,7 +211,7 @@ export const zh: Translations = {
 			showTitleDesc: "关闭后面板将完全没有标题。",
 			titleIcon: "标题图标",
 			titleIconDesc:
-				"标题旁显示的表情、一两个字符、Lucide 图标 id、仓库图片路径或图片网址。留空则使用 Hearth 水晶图标。",
+				"标题旁显示的表情、一两个字符、Lucide 图标 id、仓库图片路径或图片网址。留空则使用 Flexible Workbench 工作台图标。",
 			themeColor: "跟随主题的强调色",
 			themeColorDesc: "品牌标识的哪些部分采用主题的颜色。",
 			themeColorOptions: {
@@ -252,8 +258,8 @@ export const zh: Translations = {
 		backgrounds: {
 			default: {
 				icon: "image",
-				name: "Hearth 壁纸",
-				desc: "Hearth 自带的图片。",
+				name: "Flexible Workbench 壁纸",
+				desc: "Flexible Workbench 自带的图片。",
 			},
 			weather: {
 				icon: "cloud-sun",
@@ -310,7 +316,7 @@ export const zh: Translations = {
 		},
 		integrations: {
 			lead:
-				"这里每开启一项，Hearth 都会为此面板添加一张已配置好的卡片 — " +
+				"这里每开启一项，Flexible Workbench 都会为此面板添加一张已配置好的卡片 — " +
 				"不会安装或改动其他插件，也不会影响此面板之外的任何内容。",
 			recommended: "推荐",
 			effects: {
@@ -325,7 +331,7 @@ export const zh: Translations = {
 				git: "添加一张 Git 卡片显示仓库状态，并带有提交与同步按钮。",
 				operon:
 					"添加一张 Operon 任务卡片，通过 Operon 的开发者 API 读取数据。" +
-					"卡片首次加载时，需要您在 Operon 自己的设置中批准 Hearth；" +
+					"卡片首次加载时，需要您在 Operon 自己的设置中批准 Flexible Workbench；" +
 					"在此之前，卡片会说明它在等什么。",
 				bases: "添加一张卡片，嵌入仓库中的某个 base。",
 				dailyNotes: "添加一张卡片显示今天的日记，可就地编辑。",
@@ -336,7 +342,7 @@ export const zh: Translations = {
 			taskNotesDue: "到期字段",
 			taskNotesPriority: "优先级字段",
 			taskNotesDone: "视为已完成",
-			taskNotesDoneNone: "未定义 — Hearth 将使用 “done”",
+			taskNotesDoneNone: "未定义 — Flexible Workbench 将使用 “done”",
 		},
 		finish: {
 			empty:
@@ -354,14 +360,14 @@ export const zh: Translations = {
 			defaultName: "主页",
 			calloutTitle: "这是起点，不是预设",
 			calloutLead:
-				"这个面板应当是一个扎实的起点 — 足以让您看到 Hearth 能为您做什么。",
+				"这个面板应当是一个扎实的起点 — 足以让您看到 Flexible Workbench 能为您做什么。",
 			calloutBody:
-				"但 Hearth 首先是为高度自定义而生的，而这个向导只触及了其中一小部分。" +
+				"但 Flexible Workbench 首先是为高度自定义而生的，而这个向导只触及了其中一小部分。" +
 				"每张卡片都可以移动、缩放、改标题、换颜色、重新配置或删除，面板可以添加" +
 				"和切换，设置里还有远比这里问到的更多内容。请到设置中翻一翻，随心修改 — " +
-				"这正是 Hearth 的意义所在。",
+				"这正是 Flexible Workbench 的意义所在。",
 			calloutHint:
-				"“排列”（面板右上角）用于编辑卡片；其余内容在 设置 → Hearth 中。" +
+				"“排列”（面板右上角）用于编辑卡片；其余内容在 设置 → Flexible Workbench 中。" +
 				"您随时可以从 设置 → 关于 再次运行此向导。",
 		},
 		plan: {
@@ -389,7 +395,7 @@ export const zh: Translations = {
 			},
 			/** Why each card is on the board, shown beside it in the review list. */
 			reasons: {
-				always: "每个 Hearth 面板都以它开始",
+				always: "每个 Flexible Workbench 面板都以它开始",
 				daily: "日记与随笔",
 				dailyNotes: "已启用日记插件",
 				tasks: "任务与待办",
@@ -411,7 +417,7 @@ export const zh: Translations = {
 			},
 		},
 		notice: {
-			done: (n: number) => `Hearth：面板已就绪 — 添加了 ${n} 张卡片。`,
+			done: (n: number) => `Flexible Workbench：面板已就绪 — 添加了 ${n} 张卡片。`,
 		},
 	},
 
@@ -494,7 +500,7 @@ export const zh: Translations = {
 			linkedWorkspaceNone: "无",
 			mobileDefault: "移动端默认",
 			mobileDefaultDesc:
-				"在手机或平板上加载 Hearth 时打开此面板。只能有一个面板作为移动端默认；开启此项会清除其他面板的设置。",
+				"在手机或平板上加载 Flexible Workbench 时打开此面板。只能有一个面板作为移动端默认；开启此项会清除其他面板的设置。",
 			titleVisibility: "标题可见性",
 			titleVisibilityDesc:
 				"仅针对此面板显示或隐藏标题/图标区块。覆盖全局设置。",
@@ -513,7 +519,7 @@ export const zh: Translations = {
 			titleTextDesc: "为此面板覆盖全局标题文本。",
 			titleIcon: "标题图标",
 			titleIconDesc:
-				"此面板标题旁的标识：Lucide 图标 id、表情或短文本、仓库图片路径，或图片网址。清空后，仅此面板会显示 Hearth 水晶图标。",
+				"此面板标题旁的标识：Lucide 图标 id、表情或短文本、仓库图片路径，或图片网址。清空后，仅此面板会显示 Flexible Workbench 工作台图标。",
 			titleAlign: "标题对齐",
 			titleAlignDesc: "仅对齐标题/图标区块。搜索栏保持自身布局。",
 			alignDefault: "默认（居中）",
@@ -541,7 +547,7 @@ export const zh: Translations = {
 			fitOptionScroll: "允许滚动",
 			themeColorTarget: "标题上的强调色",
 			themeColorTargetDesc:
-				"此面板品牌标识的哪些部分跟随主题的图标颜色。仅为此面板覆盖全局设置；Hearth 的标签页与侧边栏图标仍跟随全局设置。",
+				"此面板品牌标识的哪些部分跟随主题的图标颜色。仅为此面板覆盖全局设置；Flexible Workbench 的标签页与侧边栏图标仍跟随全局设置。",
 			themeColorTargetDefault: (state: string) => `使用全局默认（${state}）`,
 			themeColorTargetOptions: {
 				none: "都不",
@@ -586,7 +592,7 @@ export const zh: Translations = {
 		backgroundOptions: {
 			default: "使用全局默认",
 			none: "无",
-			hdefault: "Hearth 默认",
+			hdefault: "Flexible Workbench 默认",
 			color: "纯色",
 			image: "仓库图片",
 			url: "图片 URL",
@@ -625,7 +631,7 @@ export const zh: Translations = {
 			dashboard: "网格、卡片表面与面板周围的控件。",
 			behaviour: "启动、笔记打开方式与隐私。",
 			mobile: "手机上的堆叠布局，以及操作栏。",
-			integrations: "TaskNotes、文件图标，以及 Hearth 读取的每个插件。",
+			integrations: "TaskNotes、文件图标，以及 Flexible Workbench 读取的每个插件。",
 			backup: "导出与导入您的布局和设置。",
 			about: "版本、更新内容，以及问题反馈渠道。",
 		},
@@ -663,18 +669,18 @@ export const zh: Translations = {
 			startup: "启动与标签页",
 			startupDesc: "主页视图何时、在何处打开。",
 			opening: "打开笔记",
-			openingDesc: "在 Hearth 中点击笔记时它在哪里打开。",
+			openingDesc: "在 Flexible Workbench 中点击笔记时它在哪里打开。",
 			mobileMode: "布局",
 			mobileModeDesc: "当屏幕宽度不足以容纳面板自身布局时，面板如何排布。",
 			privacy: "隐私与网络",
-			privacyDesc: "控制 Hearth 允许发出的对外请求。",
+			privacyDesc: "控制 Flexible Workbench 允许发出的对外请求。",
 		},
 		about: {
-			heading: "关于 Hearth",
+			heading: "关于 Flexible Workbench",
 			headingDesc: "项目链接、支持与版本。",
-			setup: "设置 Hearth",
+			setup: "设置 Flexible Workbench",
 			setupDesc:
-				"回答几个关于您工作方式和已装插件的问题，Hearth 就会搭建一个匹配的面板。" +
+				"回答几个关于您工作方式和已装插件的问题，Flexible Workbench 就会搭建一个匹配的面板。" +
 				"它会作为新面板添加 — 您已有的内容都不会改变。",
 			setupAgain: "搭建一个面板",
 			setupAgainDesc:
@@ -690,13 +696,13 @@ export const zh: Translations = {
 			reportIssue: "反馈问题",
 			reportIssueDesc: "遇到 bug 或有功能想法？请在 GitHub 上提交 issue。",
 			reportIssueButton: "反馈问题",
-			kofi: "支持 Hearth",
+			kofi: "支持 Flexible Workbench",
 			kofiDesc:
-				"Hearth 是免费的，并且永远免费。如果它值得留在您的主屏幕上，" +
+				"Flexible Workbench 是免费的，并且永远免费。如果它值得留在您的主屏幕上，" +
 				"欢迎打赏 — 完全自愿，不会锁定任何功能。",
 			kofiButton: "在 Ko-fi 上打赏",
 			version: (v: string) => `版本 ${v}`,
-			versionDesc: "您正在运行的 Hearth 构建版本。",
+			versionDesc: "您正在运行的 Flexible Workbench 构建版本。",
 		},
 		appearance: {
 			heading: "外观",
@@ -712,14 +718,14 @@ export const zh: Translations = {
 			titleIconDesc:
 				"标题旁绘制的标识。可以是 Lucide 图标 id（用 🔍 按钮浏览图标集）、" +
 				"表情或一两个字符、仓库中图片的路径（📷 按钮），或网络图片的网址。" +
-				"留空则使用 Hearth 水晶图标。每个面板都可以在自己的设置中覆盖此项。",
+				"留空则使用 Flexible Workbench 工作台图标。每个面板都可以在自己的设置中覆盖此项。",
 			tabIcon: "标签页图标",
 			tabIconDesc:
-				"用于 Hearth 标签页标题栏和侧边栏按钮的 Lucide 图标，取代 Hearth 水晶图标。" +
-				"可浏览图标集或输入 id；留空则使用水晶图标。",
+				"用于 Flexible Workbench 标签页标题栏和侧边栏按钮的 Lucide 图标，取代 Flexible Workbench 工作台图标。" +
+				"可浏览图标集或输入 id；留空则使用工作台图标。",
 			themeColorTarget: "跟随主题图标颜色",
 			themeColorTargetDesc:
-				"用主题的图标颜色绘制水晶图标和/或标题文本，取代默认的紫色水晶与普通文本。",
+				"用主题的图标颜色绘制工作台图标和/或标题文本，取代默认的紫色工作台标识与普通文本。",
 			themeColorNone: "关闭",
 			themeColorIcon: "图标",
 			themeColorTitle: "标题",
@@ -732,13 +738,15 @@ export const zh: Translations = {
 			searchEngine: "搜索引擎",
 			searchEngineDesc:
 				"为搜索栏提供支持的引擎。Omnisearch 需要安装并启用 Omnisearch 社区插件。",
-			searchEngineBuiltin: "Hearth（内置）",
+			searchEngineBuiltin: "Flexible Workbench（内置）",
 			searchEngineOmnisearch: "Omnisearch",
 			omnisearchMissing:
 				"Omnisearch 未安装或未启用。请先安装并启用，然后再次选择。",
 			omnisearchInstallLink: "在社区插件中打开 Omnisearch",
 			showNewNoteButton: "显示“新建笔记”按钮",
 			showNewNoteButtonDesc: "在搜索框旁显示操作按钮。",
+			showNewTaskButton: "显示“新建待办”按钮",
+			showNewTaskButtonDesc: "TaskNotes 启用时，在搜索框旁显示一个快速新建待办按钮。",
 			newNoteButtonMode: "搜索栏按钮",
 			newNoteButtonModeDesc:
 				"搜索栏旁的按钮做什么：新建笔记，或用搜索框中的内容搜索网络。",
@@ -747,7 +755,7 @@ export const zh: Translations = {
 			newNoteHeading: "“新建笔记”按钮",
 			newNoteHeadingDesc:
 				"它创建什么、创建在哪里。同一组设置同时驱动搜索栏旁的按钮、" +
-				"搜索栏卡片上的按钮，以及 Hearth 的“新建笔记”命令。",
+				"搜索栏卡片上的按钮，以及 Flexible Workbench 的“新建笔记”命令。",
 			newNoteButtonLabel: "按钮文本",
 			newNoteButtonLabelDesc: "按钮上的文本。留空则显示“新建笔记”。",
 			newNoteTemplate: "模板",
@@ -808,7 +816,7 @@ export const zh: Translations = {
 			pauseWhenUnfocused: "Obsidian 不在前台时暂停动画",
 			pauseWhenUnfocusedDesc:
 				"当您在另一个应用或另一个窗口工作时，暂停所有动画。" +
-				"被其他标签页挡住的 Hearth 标签页本身就不消耗资源；此项针对的是" +
+				"被其他标签页挡住的 Flexible Workbench 标签页本身就不消耗资源；此项针对的是" +
 				"在您并未使用的窗口中仍可见的面板 — 例如与浏览器并排，或在第二块屏幕上。" +
 				"如果您让面板常驻第二块显示器，请关闭此项。",
 			color: "最简模式背景",
@@ -859,7 +867,7 @@ export const zh: Translations = {
 			bannerFullWidth: "全宽",
 			bannerFullWidthDesc: "让横幅横贯窗口两端，而不是与下方内容对齐。",
 			labels: {
-				default: "Hearth 默认",
+				default: "Flexible Workbench 默认",
 				none: "无",
 				color: "纯色",
 				image: "仓库图片",
@@ -891,7 +899,7 @@ export const zh: Translations = {
 		},
 		behaviour: {
 			heading: "行为",
-			headingDesc: "Hearth 何时、在何处打开，以及手机/平板的“仅搜索”模式。",
+			headingDesc: "Flexible Workbench 何时、在何处打开，以及手机/平板的“仅搜索”模式。",
 			openOnStartup: "启动时打开",
 			openOnStartupDesc: "仓库加载时打开主页视图。",
 			replaceNewTabs: "替换新标签页",
@@ -902,7 +910,7 @@ export const zh: Translations = {
 			liveRefresh: "随仓库变化实时刷新",
 			liveRefreshDesc:
 				"仓库变化时保持已打开的主页视图为最新 — 最近、书签和已保存查询卡片" +
-				"无需重新打开标签页即会更新。无论此设置如何，切回 Hearth 标签页时总会刷新。",
+				"无需重新打开标签页即会更新。无论此设置如何，切回 Flexible Workbench 标签页时总会刷新。",
 			mobileSearchOnly: "移动模式（仅搜索）",
 			mobileSearchOnlyDesc:
 				"在手机和平板上隐藏面板，仅显示搜索框。对桌面端无影响。",
@@ -918,15 +926,15 @@ export const zh: Translations = {
 			mobileTierMatch: "与桌面一致",
 			disableExternalCalls: "禁用对外调用",
 			disableExternalCallsDesc:
-				"阻止 Hearth 发出的所有对外网络请求，包括 Jira、外部日历、RSS 源" +
+				"阻止 Flexible Workbench 发出的所有对外网络请求，包括 Jira、外部日历、RSS 源" +
 				"以及计算器的汇率查询。",
 			openIn: "笔记打开位置",
 			openInDesc:
-				"从 Hearth 打开笔记时它去哪里。“当前标签页”会替换主页视图，" +
-				"使 Hearth 表现得像任何其他标签页。无论如何，Ctrl/Cmd 点击总会打开新标签页。",
+				"从 Flexible Workbench 打开笔记时它去哪里。“当前标签页”会替换主页视图，" +
+				"使 Flexible Workbench 表现得像任何其他标签页。无论如何，Ctrl/Cmd 点击总会打开新标签页。",
 			openInModes: {
 				tab: "新标签页",
-				same: "当前标签页（替换 Hearth）",
+				same: "当前标签页（替换 Flexible Workbench）",
 				split: "分割窗格",
 				window: "新窗口",
 			},
@@ -941,17 +949,17 @@ export const zh: Translations = {
 				card: "卡片中的笔记",
 				cardDesc:
 					"由最近、书签、收藏、日历、热力图和任务卡片列出的笔记，以及移动端操作按钮。",
-				newNote: "Hearth 创建的笔记",
+				newNote: "Flexible Workbench 创建的笔记",
 				newNoteDesc: "新笔记、日记和事件笔记，在创建时随即打开。",
 			},
-			openFromOutside: "从 Hearth 之外打开的笔记",
+			openFromOutside: "从 Flexible Workbench 之外打开的笔记",
 			openFromOutsideDesc:
 				"文件浏览器、快速切换器、关系图 — 以及卡片嵌入的、自行打开链接的内容。" +
-				"Obsidian 会把它们交给当前聚焦的标签页，因此 Hearth 标签页会被占用。" +
-				"选择“新标签页”可保留 Hearth 标签页；此时文件浏览器将不再跟随您打开的文件。",
+				"Obsidian 会把它们交给当前聚焦的标签页，因此 Flexible Workbench 标签页会被占用。" +
+				"选择“新标签页”可保留 Flexible Workbench 标签页；此时文件浏览器将不再跟随您打开的文件。",
 			openFromOutsideModes: {
-				same: "当前标签页（替换 Hearth）",
-				tab: "新标签页（保留 Hearth）",
+				same: "当前标签页（替换 Flexible Workbench）",
+				tab: "新标签页（保留 Flexible Workbench）",
 			},
 		},
 		mobileActions: {
@@ -972,17 +980,36 @@ export const zh: Translations = {
 			addButton: "添加按钮",
 			resetDefaults: "重置为默认",
 		},
+		sourceSync: {
+			heading: "小红书内容同步",
+			headingDesc:
+				"原 Obsidian Source Sync 已内置到 Flexible Workbench。" +
+				"登录、收藏、评论、媒体与同步进度会保存在独立的本地设置文件中。",
+			statusLabel: "Source Sync",
+			status: {
+				embedded: "内置同步模块已加载，可以使用。",
+				native: "检测到单独安装的 Source Sync，当前复用它以避免两个同步计划同时运行。",
+				"desktop-only": "Source Sync 需要 Obsidian 桌面端，移动端不可用。",
+				failed: "内置同步模块加载失败，请在开发者控制台查看详情。",
+			},
+			open: "打开设置",
+			openTooltip: "打开完整的同步控制台、账号和输出设置。",
+			syncNow: "立即同步",
+			desktopOnlyNotice: "Source sync 仅支持 Obsidian 桌面端。",
+			failedNotice: "Source sync 加载失败，请打开开发者控制台查看错误。",
+			syncFailedNotice: "Source sync 同步失败，请查看同步日志。",
+		},
 		/** The full catalogue shown at the top of the Integrations tab. Every
 		 * integration is listed here whether or not it has a setting and whether
 		 * or not the plugin is installed — see `src/integrations.ts`. */
 		integrations: {
 			heading: "所有集成",
 			headingDesc:
-				"Hearth 可以配合使用的一切，无论是否已安装都列在这里。" +
+				"Flexible Workbench 可以配合使用的一切，无论是否已安装都列在这里。" +
 				"多数集成无需设置 — 需要设置的会说明其设置所在的位置。",
 			groups: {
 				plugin: "社区插件",
-				pluginDesc: "这些插件一旦启用，Hearth 就会自动识别。",
+				pluginDesc: "这些插件一旦启用，Flexible Workbench 就会自动识别。",
 				core: "Obsidian 核心插件",
 				coreDesc:
 					"内置于 Obsidian。如果某张卡片提示缺少其中之一，请在 设置 → 核心插件 中启用。",
@@ -997,11 +1024,11 @@ export const zh: Translations = {
 				external: "网络",
 				always: "始终可用",
 			},
-			/** Tooltip on the status pill, spelling out what it means for Hearth. */
+			/** Tooltip on the status pill, spelling out what it means for Flexible Workbench. */
 			statusTooltip: {
-				enabled: "已安装并启用 — Hearth 正在使用它。",
-				disabled: "已安装但已关闭，因此 Hearth 目前无法使用它。",
-				missing: "未安装。Hearth 的其他一切在没有它的情况下也能正常工作。",
+				enabled: "已安装并启用 — Flexible Workbench 正在使用它。",
+				disabled: "已安装但已关闭，因此 Flexible Workbench 目前无法使用它。",
+				missing: "未安装。Flexible Workbench 的其他一切在没有它的情况下也能正常工作。",
 				external: "这是一次对外请求，而不是插件。",
 				always: "无需安装。",
 			},
@@ -1010,7 +1037,7 @@ export const zh: Translations = {
 				section: "设置就在本页下方。",
 				tab: (tab: string) => `设置位于 ${tab} 下。`,
 				card: "在面板上的卡片本身进行配置。",
-				pluginSettings: "使用该插件自己的设置 — Hearth 中无需设置。",
+				pluginSettings: "使用该插件自己的设置 — Flexible Workbench 中无需设置。",
 				none: "无需配置。",
 			},
 			/** Row buttons. */
@@ -1023,7 +1050,7 @@ export const zh: Translations = {
 				omnisearch: {
 					name: "Omnisearch",
 					desc:
-						"把搜索栏切换到 Omnisearch 的模糊全文索引，取代 Hearth 的内置引擎。" +
+						"把搜索栏切换到 Omnisearch 的模糊全文索引，取代 Flexible Workbench 的内置引擎。" +
 						"请在 搜索 → 搜索栏 下选择引擎；该选择仅在 Omnisearch 启用时保持有效。",
 				},
 				tasknotes: {
@@ -1067,14 +1094,14 @@ export const zh: Translations = {
 				operon: {
 					name: "Operon",
 					desc:
-						"Operon 卡片 — 任务、看板、日程和计时器 — 通过 Operon 自己的开发者 API " +
+						"Operon 的任务、看板和日程卡片通过它自己的开发者 API " +
 						"读取数据，因此状态、优先级和重复规则仍由它定义。仅桌面端，" +
-						"需要 Obsidian 1.12.2 或更新版本，且 Operon 必须批准 Hearth 的读取请求。",
+						"需要 Obsidian 1.12.2 或更新版本，且 Operon 必须批准 Flexible Workbench 的读取请求。",
 				},
 				iconic: {
 					name: "Iconic",
 					desc:
-						"用 Iconic 设置的按文件图标会出现在 Hearth 列出文件的任何位置 — " +
+						"用 Iconic 设置的按文件图标会出现在 Flexible Workbench 列出文件的任何位置 — " +
 						"最近、收藏、已保存搜索和搜索结果。",
 				},
 				iconize: {
@@ -1113,7 +1140,7 @@ export const zh: Translations = {
 				},
 				fileExplorer: {
 					name: "文件浏览器",
-					desc: "为 Hearth 搜索结果上的“在文件浏览器中显示”提供支持。",
+					desc: "为 Flexible Workbench 搜索结果上的“在文件浏览器中显示”提供支持。",
 				},
 				workspaces: {
 					name: "工作区",
@@ -1182,7 +1209,7 @@ export const zh: Translations = {
 			fieldsEnable: "自定义任务字段",
 			fieldsEnableDesc:
 				"用您自己定义的字段取代任务卡片显示的固定元数据 — 任何 frontmatter 属性" +
-				"或 Hearth 能读取的内容，名称、颜色和顺序都由您决定。默认关闭，" +
+				"或 Flexible Workbench 能读取的内容，名称、颜色和顺序都由您决定。默认关闭，" +
 				"在您开启之前任务保持通常的样式。开启后从空白开始：任务只显示您添加的字段。",
 			fields: "任务上显示的字段",
 			fieldsDesc:
@@ -1191,13 +1218,13 @@ export const zh: Translations = {
 		fileIcons: {
 			heading: "文件图标 / Iconic / Iconize",
 			headingDesc:
-				"在 Hearth 显示文件的任何位置 — 最近、收藏、已保存搜索和搜索栏 — " +
+				"在 Flexible Workbench 显示文件的任何位置 — 最近、收藏、已保存搜索和搜索栏 — " +
 				"使用您通过 Iconic 或 Iconize 插件设置的按文件图标。支持显示 Lucide 图标" +
-				"和表情；使用下载图标包中图标的文件仍会显示 Hearth 自己的文件类型图标。",
+				"和表情；使用下载图标包中图标的文件仍会显示 Flexible Workbench 自己的文件类型图标。",
 			enable: "使用来自 Iconic / Iconize 的图标",
-			enableDesc: "关闭后所有文件都显示 Hearth 的文件类型图标，忽略这两个插件。",
+			enableDesc: "关闭后所有文件都显示 Flexible Workbench 的文件类型图标，忽略这两个插件。",
 			enableDescNoPlugin:
-				"目前 Iconic 与 Iconize 都未启用，因此所有文件都显示 Hearth 的文件类型图标。" +
+				"目前 Iconic 与 Iconize 都未启用，因此所有文件都显示 Flexible Workbench 的文件类型图标。" +
 				"此项可以保持开启 — 一旦其中之一被安装即会生效。",
 			property: "Iconize frontmatter 属性",
 			propertyDesc:
@@ -1207,12 +1234,12 @@ export const zh: Translations = {
 		operon: {
 			heading: "Operon",
 			headingDesc:
-				"通过 Operon 插件自己的开发者 API 读取任务、看板、日程和正在运行的计时器 — " +
-				"任务的定义仍以 Operon 为准，Hearth 只显示它返回的内容。",
+				"通过 Operon 插件自己的开发者 API 读取任务、看板和日程 — " +
+				"任务的定义仍以 Operon 为准。Flexible Workbench 的计时器独立运行。",
 			enable: "连接到 Operon",
 			enableDesc:
-				"关闭即为总开关：Operon 卡片停止读取，Hearth 也绝不会向 Operon 请求访问。" +
-				"在面板上出现 Operon 卡片之前不会发起任何请求。",
+				"关闭即为总开关：Operon 卡片停止读取，Flexible Workbench 也绝不会向 Operon 请求访问。" +
+				"在面板上出现 Operon 任务、看板或日程卡片之前不会发起任何请求。",
 			status: "连接",
 			statusAbsent: "Operon 未安装或未启用。",
 			statusUnsupported:
@@ -1220,29 +1247,29 @@ export const zh: Translations = {
 			statusBooting: "Operon 正在运行，但仍在启动中。",
 			statusPending:
 				"等待批准。请打开 设置 → Operon → Core → General → Developer API " +
-				"Integrations 并批准 Hearth。",
+				"Integrations 并批准 Flexible Workbench。",
 			statusSuspended:
-				"访问已暂停。请在 Operon 的 Developer API Integrations 中查看 Hearth 待批的权限范围。",
+				"访问已暂停。请在 Operon 的 Developer API Integrations 中查看 Flexible Workbench 待批的权限范围。",
 			statusRevoked:
 				"访问已被撤销。请在 Operon 的 Developer API Integrations 中重新授予。",
 			statusReady: "已连接 — Operon 卡片可以读取任务。",
-			statusIdle: "尚未连接。添加一张 Operon 卡片即可开启会话。",
-			statusOff: "该集成已关闭，因此 Hearth 不会从 Operon 读取任何内容。",
+			statusIdle: "尚未连接。添加 Operon 任务、看板或日程卡片即可开启会话。",
+			statusOff: "该集成已关闭，因此 Flexible Workbench 不会从 Operon 读取任何内容。",
 			statusError: "Operon 拒绝了连接。",
 			detail: "Operon 报告",
 			install: "在社区插件中打开 Operon",
 			writes: "允许更改",
 			writesDesc:
-				"允许看板卡片通过拖动把任务移到另一个状态，并添加一个用于创建任务的“+”。" +
-				"新任务放在哪里、某次移动是否合法都由 Operon 决定；Hearth 只是发起请求。" +
-				"开启此项会扩大 Hearth 请求的权限范围，因此您需要在 Operon 的 " +
-				"Developer API Integrations 中重新批准。关闭则表示 Hearth 只能读取。",
+				"允许看板卡片通过拖动把任务移到另一个状态，并添加用于创建任务的“+”。" +
+				"新任务放在哪里、某次移动是否合法都由 Operon 决定。" +
+				"开启此项会扩大 Flexible Workbench 请求的权限范围，因此您需要在 Operon 的 " +
+				"Developer API Integrations 中重新批准。关闭则表示 Flexible Workbench 只能读取。",
 			writesPending:
 				"读取正常，但更改权限尚未授予 — 请在 Operon 的 Developer API Integrations " +
-				"中重新批准 Hearth。在此之前卡片保持只读。",
+				"中重新批准 Flexible Workbench。在此之前卡片保持只读。",
 			capabilities: "请求的访问权限",
 			capabilitiesDesc:
-				"Hearth 一次性请求全部权限，因为 Operon 不会开启部分批准的会话。" +
+				"Flexible Workbench 一次性请求全部权限，因为 Operon 不会开启部分批准的会话。" +
 				"除非开启“允许更改”（会追加任务状态流转与任务创建权限），否则均为只读。",
 			missing: (names: string) => `尚未授予：${names}`,
 			recheck: "重新检查",
@@ -1291,7 +1318,7 @@ export const zh: Translations = {
 		layout: {
 			heading: "导入 / 导出",
 			headingDesc:
-				"以 JSON 文件备份或分享您的面板布局（卡片、网格、收藏）— 或全部 Hearth 设置。",
+				"以 JSON 文件备份或分享您的面板布局（卡片、网格、收藏）— 或全部 Flexible Workbench 设置。",
 			export: "导出布局",
 			exportDesc: "将当前面板布局下载为 JSON 文件。",
 			exportButton: "导出文件",
@@ -1304,14 +1331,14 @@ export const zh: Translations = {
 				"这会替换您当前的面板、固定卡片和布局设置。此操作无法撤销。",
 			exportSettings: "导出设置",
 			exportSettingsDesc:
-				"将全部 Hearth 设置 — 完整布局加上顶部、背景、行为、外观和 TaskNotes 选项 — " +
+				"将全部 Flexible Workbench 设置 — 完整布局加上顶部、背景、行为、外观和 TaskNotes 选项 — " +
 				"下载为 JSON 备份文件。",
 			importSettings: "导入设置",
 			importSettingsDesc:
-				"选择一个之前导出的设置文件。这会替换您所有的 Hearth 设置。",
+				"选择一个之前导出的设置文件。这会替换您所有的 Flexible Workbench 设置。",
 			importSettingsTitle: "导入设置？",
 			importSettingsMessage:
-				"这会替换您所有的 Hearth 设置 — 面板、布局、顶部、背景、行为和外观。" +
+				"这会替换您所有的 Flexible Workbench 设置 — 面板、布局、顶部、背景、行为和外观。" +
 				"此操作无法撤销。",
 		},
 	},
@@ -1361,18 +1388,22 @@ export const zh: Translations = {
 		kinds: {
 			embed: "嵌入（笔记 / 图片 / base）",
 			slideshow: "幻灯片",
-			daily: "日记（今天）",
+			daily: "待办清单",
+			"time-reports": "时间报告",
 			periodic: "周期笔记（周 / 月 / 年）",
 			web: "网页（iframe）",
 			bookmarks: "书签",
 			favorites: "收藏",
+			savedlinks: "收藏资料库",
 			text: "文本 / 速记",
 			recent: "最近文件",
 			links: "链接 / 启动台",
 			commands: "命令",
 			templater: "从模板新建笔记",
 			clock: "时钟与问候",
+			timer: "时间追踪",
 			tasks: "任务",
+			projecttodos: "项目 Todo",
 			calendar: "迷你日历",
 			schedule: "日历",
 			stats: "仓库统计",
@@ -1383,12 +1414,16 @@ export const zh: Translations = {
 			dataview: "Dataview 查询",
 			datacore: "Datacore 查询",
 			rss: "RSS 订阅",
+			social: "内容收藏",
+			douyin: "抖音收藏",
 			jira: "Jira 筛选器",
 			weather: "天气",
 			git: "Git",
 			operon: "Operon",
 			leaf: "插件视图（测试版）",
 			pet: "宠物",
+			imagearchive: "图片归档",
+			knowledge: "个人知识工作台",
 		},
 		linkTypes: {
 			note: "笔记",
@@ -1582,7 +1617,7 @@ export const zh: Translations = {
 				"按卡片高度能容纳的数量列出文件，而不是固定数量。调整卡片大小会改变显示数量。",
 			count: "文件数量",
 			countDesc: (max: number) =>
-				`列出多少个最近打开的文件 — 最多 ${max} 个，这也是 Hearth 最近文件历史的上限。`,
+				`列出多少个最近打开的文件 — 最多 ${max} 个，这也是 Flexible Workbench 最近文件历史的上限。`,
 			types: "文件类型",
 			typesDesc: "只列出所选类型的文件。可任意组合；不选则显示所有类型。",
 		},
@@ -1604,7 +1639,7 @@ export const zh: Translations = {
 			operonTasks: "显示 Operon 任务",
 			operonTasksDesc:
 				"标记有 Operon 任务到期的日期，并在日程中列出这些任务。" +
-				"通过 Operon 的开发者 API 读取，因此需要在 设置 → Hearth → 集成 中" +
+				"通过 Operon 的开发者 API 读取，因此需要在 设置 → Flexible Workbench → 集成 中" +
 				"批准 Operon。仅有计划时间（无到期日）的任务不包含在内。",
 			operonTaskColor: "Operon 任务颜色",
 			operonTaskColorDesc: "任务标记的颜色。默认使用强调色。",
@@ -1707,7 +1742,7 @@ export const zh: Translations = {
 			taskNotesSubLoaded: (count: number) => `已加载 ${count} 个事件。`,
 			taskNotesSubPending: "尚未加载 — 请在下方刷新。",
 			taskNotesSubDisabled: "已在 TaskNotes 中禁用。",
-			taskNotesSubBlocked: "未获取：Hearth 的设置中已禁用对外调用。",
+			taskNotesSubBlocked: "未获取：Flexible Workbench 的设置中已禁用对外调用。",
 			taskNotesSubFailed: (reason: string) => `无法加载：${reason}`,
 			taskNotesSubNotCalendar: "返回的内容不是 iCalendar 源。",
 			taskNotesSubMissingFile: "该文件不在仓库中。",
@@ -1935,7 +1970,7 @@ export const zh: Translations = {
 			source: "来源",
 			sourceDesc:
 				"Markdown 复选框在任何地方都可用。TaskNotes 通过 frontmatter 读取该插件的" +
-				"任务笔记（字段名可在 设置 → Hearth 中配置，因为 TaskNotes 没有供其他插件" +
+				"任务笔记（字段名可在 设置 → Flexible Workbench 中配置，因为 TaskNotes 没有供其他插件" +
 				"查询的 API）。Kanban 读取单个 Kanban 插件的看板笔记，每个标题作为一列。",
 			sourceCheckbox: "Markdown 复选框",
 			sourceTaskNotes: "TaskNotes 插件",
@@ -1995,12 +2030,12 @@ export const zh: Translations = {
 			doneStatuses: "视为已完成的状态",
 			doneStatusesDesc:
 				"TaskNotes 来源：哪些状态值被视为已完成（除非开启“显示已完成”，否则隐藏；" +
-				"显示时加删除线），每行一个。留空则仅使用 设置 → Hearth 中的完成值。" +
+				"显示时加删除线），每行一个。留空则仅使用 设置 → Flexible Workbench 中的完成值。" +
 				"例如加上 “canceled” 可把已取消的任务也算作已完成。",
 			doneStatusesPlaceholder: "done\ncanceled",
 			fields: "字段",
 			fieldsFollowGlobal:
-				"当前跟随 设置 → Hearth → 集成 中的字段。开启后可为此卡片单独设定。",
+				"当前跟随 设置 → Flexible Workbench → 集成 中的字段。开启后可为此卡片单独设定。",
 			fieldsCustomize: "自定义…",
 			fieldsTitle: "任务字段",
 			fieldsHint:
@@ -2055,15 +2090,15 @@ export const zh: Translations = {
 			fieldNoKeys: "无键",
 			fieldAddKey: "添加一个键",
 			fieldAddKeyDesc:
-				"Hearth 自己的值可以取到复选框行的优先级、看板列以及解析出的日期；" +
+				"Flexible Workbench 自己的值可以取到复选框行的优先级、看板列以及解析出的日期；" +
 				"属性则读取 frontmatter 中的任何内容。",
-			fieldAddBuiltin: "Hearth 读取的内容",
+			fieldAddBuiltin: "Flexible Workbench 读取的内容",
 			fieldAddProperty: "Frontmatter 属性",
 			fieldAddKeyTyped: "输入属性名…",
 			fieldAddKeyPlaceholder: "属性名",
 			fieldRemoveKey: "移除键",
 			fieldPickProperty: "在您的笔记中找到的属性",
-			fieldPickBuiltin: "Hearth 自行解析的值",
+			fieldPickBuiltin: "Flexible Workbench 自行解析的值",
 			fieldKeyAlreadyAdded: (key: string) => `“${key}”已经是此字段的一个键。`,
 			fieldMapValues: "值与颜色",
 			fieldMappedValues: (n: number) => `已映射 ${n} 个值`,
@@ -2138,6 +2173,39 @@ export const zh: Translations = {
 			remove: "移除",
 			addFavorite: "添加收藏",
 		},
+		douyin: {
+			cookie: "抖音 Cookie",
+			cookieDesc:
+				"粘贴已登录 douyin.com 浏览器会话的 Cookie 请求头。Cookie 等同于账号凭据，请勿分享或提交到 Git。",
+			storagePath: "保存路径",
+			storagePathDesc: "同步收藏使用的仓库内 JSON 路径。默认是 .flexible-workbench/douyin-favorites.json。",
+			itemLimit: "显示视频数",
+			itemLimitDesc: "此卡片最多显示多少个视频（1–100）。",
+		},
+			social: {
+			credentialsHeading: "登录凭据",
+			credential: (source: string) => `${source}登录凭据`,
+			credentialDesc: {
+				rednote: "完整的 xiaohongshu.com Cookie。Source Sync 已登录时可留空。",
+				wechat: "IMA 开放接口凭据，格式 clientId:apiKey（可选 clientId:apiKey:kbId）。在 ima.qq.com/agent-interface 获取。",
+				douyin: "从已登录浏览器复制完整的 douyin.com Cookie。",
+				zhihu: "从已登录浏览器复制完整的 zhihu.com Cookie。",
+				bilibili: "从已登录浏览器自动获取，或粘贴 Bilibili Cookie；仅用于读取自己的收藏夹。",
+			},
+			autoDetect: "从已登录浏览器自动获取",
+			initialSource: "默认来源",
+			initialSourceDesc: "这张卡片首次打开时选中的来源。",
+			rednoteFolder: "小红书目录",
+			wechatFolder: "微信公众号目录",
+			douyinFolder: "抖音目录",
+			zhihuFolder: "知乎目录",
+			bilibiliFolder: "B 站目录",
+			folderDesc: "仓库中存放该来源同步 Markdown 笔记的目录。",
+			itemLimit: "显示条目数",
+			itemLimitDesc: "每个来源最多显示多少条内容（1–100）。",
+			syncLimit: "同步抓取上限",
+			syncLimitDesc: "每次同步每个来源最多抓取多少条收藏（1–1000）。与上面的显示条目数相互独立，调大它才能把收藏拉全。",
+		},
 		clock: {
 			style: "样式",
 			styleDigital: "数字",
@@ -2204,7 +2272,7 @@ export const zh: Translations = {
 			languageTs: "脚本（TS）",
 			query: "查询",
 			queryDesc:
-				"一条 Datacore 查询，例如 @page and #project。Hearth 会把匹配项渲染为" +
+				"一条 Datacore 查询，例如 @page and #project。Flexible Workbench 会把匹配项渲染为" +
 				"实时链接列表。运行时没有“当前笔记”，因此全局查询完全可用，" +
 				"但相对文件的查询没有可解析的文件。",
 			queryPlaceholder: "@page and #project",
@@ -2219,6 +2287,19 @@ export const zh: Translations = {
 			pageSizeDesc: "以此行数对生成的列表分页。0 表示一次显示所有匹配项。",
 		},
 		git: {
+			repositories: "本地仓库",
+			repositoriesDesc:
+				"在这里固定多个桌面端仓库。卡片只读取状态；远端更新数量以最近一次 fetch 为准。",
+			addRepository: "添加仓库",
+			removeRepository: "移除仓库",
+			repoName: "显示名称",
+			repoNamePlaceholder: "默认使用文件夹名称",
+			repoPath: "仓库路径",
+			repoPathDesc: "此设备上的绝对路径。",
+			repoPathPlaceholder: "/Users/me/Projects/my-repo",
+			repoDetail: "Obsidian 详情笔记",
+			repoDetailDesc: "点击“详情”时打开的仓库内相对笔记路径。",
+			repoDetailPlaceholder: "项目/my-repo.md",
 			missing: "Git 插件未启用",
 			missingDesc:
 				"此卡片是 Git 社区插件的一个窗口 — 请安装并启用它，并让它指向一个仓库，" +
@@ -2267,11 +2348,10 @@ export const zh: Translations = {
 		},
 		operon: {
 			view: "视图",
-			viewDesc: "此卡片从 Operon 绘制什么。",
+			viewDesc: "此卡片显示 Operon 的哪种视图。",
 			viewList: "任务列表",
 			viewBoard: "状态看板",
 			viewAgenda: "日程",
-			viewTimer: "计时器",
 			scope: "范围",
 			scopeDesc:
 				"使用 Operon 自己的某个范围视图，或应用下方的筛选条件。" +
@@ -2333,7 +2413,7 @@ export const zh: Translations = {
 			removeFeed: "移除订阅源",
 			github: "从 GitHub 添加",
 			githubDesc:
-				"以 owner/repo 形式输入仓库（或粘贴其网址）并选择要关注的内容 — Hearth 会为您构建 Atom 源。",
+				"以 owner/repo 形式输入仓库（或粘贴其网址）并选择要关注的内容 — Flexible Workbench 会为您构建 Atom 源。",
 			githubPlaceholder: "owner/repo",
 			githubReleases: "发布",
 			githubCommits: "提交",
@@ -2365,9 +2445,9 @@ export const zh: Translations = {
 			location: "位置",
 			search: "查找地点",
 			searchDesc:
-				"按名称搜索 — Hearth 会把坐标存在卡片上，因此这次查询只发生一次。",
+				"按名称搜索 — Flexible Workbench 会把坐标存在卡片上，因此这次查询只发生一次。",
 			searchDisabled:
-				"Hearth 设置中已禁用对外调用，地点搜索不可用。您仍可在下方输入坐标。",
+				"Flexible Workbench 设置中已禁用对外调用，地点搜索不可用。您仍可在下方输入坐标。",
 			searchPlaceholder: "布拉格、里斯本、京都…",
 			searchButton: "搜索",
 			searchEmpty: "请输入要搜索的地名。",
@@ -2439,10 +2519,19 @@ export const zh: Translations = {
 			hostDesc: "Jira 站点的源地址。发送个人访问令牌时必须使用 HTTPS。",
 			hostPlaceholder: "https://jira.example.com",
 			pat: "个人访问令牌",
-			patDesc: "此卡片使用的 Bearer PAT。存储在 Hearth 的插件数据中。",
+			patDesc: "此卡片使用的 Bearer PAT。存储在 Flexible Workbench 的插件数据中。",
 			apiBase: "API 基础路径",
 			apiBaseDesc: "Jira REST 的相对路径。完整 URL 会被拒绝。",
 			apiBasePlaceholder: "/rest/api/latest",
+			jql: "JQL 查询",
+			jqlDesc: "可选，优先于已保存的筛选器。使用 assignee = currentUser() 查看分配给我的任务。",
+			jqlPlaceholder: "assignee = currentUser() ORDER BY duedate ASC",
+			showStartDate: "显示开始日期",
+			showStartDateDesc: "在任务行显示 Jira 的 Start date。",
+			showEndDate: "显示结束日期",
+			showEndDateDesc: "显示 Jira 的 End date；没有时使用 Due date。",
+			sortDueDateDesc: "按截止日期倒序",
+			sortDueDateDescDesc: "Due date 较晚的任务优先；日期相同时按最近更新时间排序。",
 			savedFilter: "已保存的筛选器",
 			savedFilterDesc: "加载您收藏的 Jira 筛选器，然后选择其中一个。",
 			selectedFilter: (name: string) => `已选择：${name}`,
@@ -2451,7 +2540,7 @@ export const zh: Translations = {
 			noFavoriteFilters: "Jira 未返回任何收藏的筛选器。",
 			loadFailed: "无法加载 Jira 筛选器。请检查主机、API 路径和令牌。",
 			externalCallsDisabled:
-				"Hearth 设置中已禁用对外调用，无法加载收藏的筛选器。",
+				"Flexible Workbench 设置中已禁用对外调用，无法加载收藏的筛选器。",
 			controls: "筛选控件",
 			maxResults: "最大结果数",
 			maxResultsDesc: "最多显示多少条筛选后的事项，上限 200。",
@@ -2480,7 +2569,7 @@ export const zh: Translations = {
 				"当卡片只显示单个文件时很实用。",
 			perfLabel: "性能",
 			perfNote:
-				"这是 Hearth 中开销最大的卡片。它在面板内实时运行另一个插件的完整视图，" +
+				"这是 Flexible Workbench 中开销最大的卡片。它在面板内实时运行另一个插件的完整视图，" +
 				"因此只要面板处于打开状态，该插件自己的计时器、监听器和渲染就会一直运行 — " +
 				"每多一张这样的卡片就再多一份开销。最多使用一两张，" +
 				"并预期在配置一般的硬件上面板会变慢。",
@@ -2541,6 +2630,14 @@ export const zh: Translations = {
 			showName: "显示名字",
 			showMood: "显示心情",
 			showActivity: "显示今天的活跃度",
+		},
+		imagearchive: {
+			targetFolder: "目标目录",
+			targetFolderDesc: "散落图片移动到的目录，默认 archive/image。引用会自动更新。",
+		},
+		dailyTodo: {
+			archiveFolder: "待办归档目录",
+			archiveFolderDesc: "完成的待办会以 Markdown 笔记保存到这里，默认 archive/todos。",
 		},
 		colors: {
 			heading: "颜色",
@@ -2616,18 +2713,19 @@ export const zh: Translations = {
 			gitEnable: "请启用 Git 插件以管理仓库的 Git 存储库",
 			gitNotReady: "尚未打开任何存储库 — 请在 Git 插件中配置一个",
 			rssNoSources: "请在卡片设置中添加订阅源",
+			douyin: "抖音收藏",
 			weatherNoLocation: "请在卡片设置中选择一个位置",
 			renderFailed: "此卡片无法绘制 — 详情请查看控制台",
 			leafPickView: "请在卡片设置中选择一个插件视图",
 			leafViewMissing: "此视图不可用 — 请启用提供它的插件",
 			operonEnable: "请启用 Operon 插件以显示其任务",
-			operonDisabled: "Operon 集成已关闭 — 请在 设置 → Hearth → 集成 中开启",
+			operonDisabled: "Operon 集成已关闭 — 请在 设置 → Flexible Workbench → 集成 中开启",
 			operonUnsupported:
 				"Operon 的开发者 API 仅支持桌面端，且需要 Obsidian 1.12.2 或更新版本",
 			operonPending:
-				"请在 设置 → Operon → Core → General → Developer API Integrations 中批准 Hearth",
+				"请在 设置 → Operon → Core → General → Developer API Integrations 中批准 Flexible Workbench",
 			operonSuspended:
-				"Operon 暂停了 Hearth 的访问权限 — 请在 Operon 的 Developer API Integrations 中查看",
+				"Operon 暂停了 Flexible Workbench 的访问权限 — 请在 Operon 的 Developer API Integrations 中查看",
 			operonRevoked:
 				"Operon 访问权限已被撤销 — 请在 Operon 的 Developer API Integrations 中重新授予",
 			operonBooting: "Operon 仍在启动中",
@@ -2636,14 +2734,86 @@ export const zh: Translations = {
 			operonNoAgenda: "此时段内没有安排",
 			operonNoColumns: "没有可显示的 Operon 状态 — 请在卡片设置中选择一个流程",
 		},
+		todoList: {
+			addPlaceholder: "添加待办…",
+			addButton: "添加待办",
+			startTimer: (text: string) => `为“${text}”开始计时`,
+			remove: (text: string) => `移除“${text}”`,
+			timerAlreadyRunning: "已有一段计时正在进行，请先结束再开始下一段。",
+			finishTimerFirst: "请先结束并总结此待办关联的计时，再归档待办。",
+			archiveFailed: (reason: string) => `无法归档此待办：${reason}`,
+			archiveTimeEntries: "计时记录",
+			archiveStarted: "开始时间",
+			archiveEnded: "结束时间",
+			archiveDuration: "持续时间",
+			archiveSummary: "总结",
+			archiveTimeIncomplete: "尚未结束",
+			reportUpdateFailed: (reason: string) => `待办已完成，但时间报告更新失败：${reason}`,
+		},
+		timeReports: {
+			periods: { day: "日报", week: "周报", month: "月报", year: "年报" },
+			previous: "上一周期",
+			next: "下一周期",
+			openReport: "打开 / 更新报告笔记",
+			emptyReport: "完成待办并记录计时后，这里会自动汇总时间轴和周期报告。",
+			noReportToOpen: "当前周期还没有可打开的报告。",
+			reportSaveFailed: (reason: string) => `无法保存时间报告：${reason}`,
+			reportRenderFailed: (reason: string) => `无法显示时间报告：${reason}`,
+			completedCount: (count: number) => `完成 ${count} 项`,
+			totalFocus: (duration: string) => `专注 ${duration}`,
+			sessionCount: (count: number) => `计时 ${count} 次`,
+			timeline: "时间轴",
+			emptyTimeline: "此周期暂无计时或完成记录。",
+			completedTasks: "已完成待办",
+			noCompletedTasks: "此周期暂无已完成待办。",
+			todoCompleted: (text: string) => `完成待办：${text}`,
+			standaloneTimer: "独立计时",
+			estimated: "旧记录估算",
+			byDay: "每日汇总",
+			byWeek: "每周汇总",
+			byMonth: "每月汇总",
+			periodColumn: "周期",
+			totalFocusLabel: "专注时长",
+			completedLabel: "完成待办",
+			noActivity: "暂无记录",
+		},
+		timer: {
+			timerIdle: "没有正在运行的计时器",
+			timerRunning: "进行中",
+			timerStarting: "正在开始…",
+			timerStopping: "正在保存总结…",
+			timerStart: "开始计时",
+			timerPause: "暂停计时",
+			timerResume: "继续计时",
+			timerStop: "结束并写总结",
+			timerPaused: "已暂停",
+			timerStartTitle: "开始一段计时",
+			timerDescriptionLabel: "这段时间要做什么？",
+			timerDescriptionPlaceholder: "例如：整理项目方案",
+			timerStopTitle: "结束这段计时",
+			timerSummaryLabel: "这段时间完成了什么？",
+			timerSummaryPlaceholder: "记录结果、进展或后续事项…",
+			timerEditDescription: "编辑描述",
+			timerEditDescriptionTitle: "编辑这段计时的描述",
+			timerEditSummary: "编辑总结",
+			timerEditSummaryTitle: "编辑这段计时的总结",
+			timerHistory: "近期计时记录",
+			timerHistoryEmpty: "完成一段计时后，这里会按日期显示描述和总结。",
+			timerToday: "今天",
+			timerYesterday: "昨天",
+			timerIncomplete: "尚未结束",
+			timerNoSummary: "还没有总结",
+			timerTodo: (text: string) => `关联待办：${text}`,
+			timerAlreadyRunning: "已有一段计时正在进行，请先结束再开始下一段。",
+			timerDescriptionRequired: "请先填写这段时间要做的事。",
+			timerSummaryRequired: "请填写这段时间的总结后再结束计时。",
+			timerChangedWhilePrompting: "计时器状态已变化，已刷新当前状态，请确认后重试。",
+			timerSaveFailed: (reason: string) => `计时记录无法保存：${reason}`,
+		},
 		operon: {
 			loading: "正在读取 Operon…",
 			untitled: "未命名任务",
 			settling: "Operon 仍在就绪中",
-			timerIdle: "没有正在运行的计时器",
-			timerStarting: "正在启动…",
-			timerStopping: "正在停止…",
-			timerUnassigned: "未归属的时间",
 			truncated: (shown: number, total: number) => `显示 ${shown} / ${total}`,
 			readFailed: (reason: string) => `Operon 无法响应：${reason}`,
 			/** Operon's own words, shown verbatim under an empty state so the
@@ -2665,7 +2835,7 @@ export const zh: Translations = {
 			addTaskDue: "到期日",
 			confirmTitle: "Operon 需要确认",
 			/** Operon assessed the change and asked for consent; its own summary
-			 * of what would happen is shown rather than Hearth's guess at it. */
+			 * of what would happen is shown rather than Flexible Workbench's guess at it. */
 			confirmMessage: (risk: string, effects: string) =>
 				effects
 					? `Operon 将此更改评定为 ${risk}：${effects}`
@@ -2679,6 +2849,117 @@ export const zh: Translations = {
 			createsIn: (destination: string) => `将创建于 ${destination}`,
 			promptTitle: "为新笔记命名",
 			promptPlaceholder: "它是关于什么的？",
+		},
+		knowledge: {
+			codexName: "Codex",
+			claudeCodeName: "Claude Code",
+			inboxTab: "收件箱",
+			reviewTab: "日常回顾",
+			sessionsTab: "会话日志",
+			askTab: "知识问答",
+			inboxHeading: "随手记录",
+			inboxDesc: (folder: string) => `想法或链接直接保存到 ${folder}，无需先选标签。`,
+			capturePlaceholder: "写下一句话，或粘贴链接…",
+			captureButton: "保存",
+			saving: "正在保存…",
+			captured: "已保存到收件箱。",
+			geminiOpen: "打开 Gemini",
+			searchVault: "搜索整个仓库",
+			searchUnavailable: "请先显示工作台搜索区域，再搜索仓库。",
+			geminiPastePlaceholder: "把 Gemini 中有用的回复粘贴到这里，作为未审阅笔记保存…",
+			geminiSave: "保存粘贴内容",
+			unreviewedHeading: "待整理",
+			inboxEmpty: "收件箱已经整理完了。",
+			unreviewed: "未审阅",
+			reviewHeading: "日常回顾",
+			reviewDesc: "读取 Codex 和 Claude Code 的本机日志。首次使用时，今天以前的旧日志视为已回顾；点击“标记为已回顾”会记录当时的修改时间，之后日志更新就会重新待回顾。每天最多提醒一次。已回顾的会话可整理归纳，预览后保存到 Wiki。",
+			codexLogPath: "Codex 日志文件夹",
+			claudeLogPath: "Claude Code 日志文件夹",
+			logFilePath: "日志文件位置",
+			allProviders: "全部会话",
+			pendingLogCount: (pending: number, total: number) => `${pending} 条待回顾 · 共找到 ${total} 个会话`,
+			refreshLogs: "刷新日志",
+			loadMoreLogs: (count: number) => `再加载 ${count} 条会话`,
+			loadEarlierMessages: "加载更早的对话",
+			loadingEarlierMessages: "正在加载更早的对话…",
+			loadingLogs: "正在读取…",
+			logsEmpty: "没有找到会话日志，请检查上方的文件夹路径。",
+			logsDesktopOnly: "本地会话日志仅支持桌面端读取。",
+			logUnreadable: "这份日志中没有可显示的文本消息。",
+			markLogReviewed: "标记为已回顾",
+			summarizeLog: "整理归纳",
+			summarizingLog: "正在整理…",
+			summarizingWith: (provider: string) => `正在使用 ${provider} CLI 整理会话…`,
+			summaryPreviewHeading: "会话归纳草稿",
+			summaryPreviewDesc: (provider: string) => `将会话内容交给 ${provider} CLI 生成草稿。你可以编辑后再保存到 Wiki。`,
+			summaryTitlePlaceholder: "归纳标题",
+			summaryBodyPlaceholder: "归纳内容…",
+			cancelSummary: "取消",
+			saveSummary: "保存到 Wiki",
+			savingSummary: "正在保存…",
+			summarySaved: (path: string) => `已保存到 Wiki：${path}`,
+			userRole: "你",
+			assistantRole: "助手",
+			topicPlaceholder: "Wiki 草稿的主题或问题（可选）",
+			aiSession: "AI 会话",
+			favorite: "收藏",
+			rawSource: "收件箱笔记",
+			reviewed: "已审阅",
+			reviewEmpty: "目前没有可整理的收件箱记录、收藏或已保存会话。",
+			aiDesktopOnly: "AI 生成目前仅支持桌面端；手机仍可记录和搜索。",
+			draftWith: "使用",
+			makeDraft: "整理所选材料",
+			drafting: "正在整理…",
+			pickSources: "请先选择至少一条来源笔记。",
+			generating: "正在生成…",
+			emptyDraft: "代理没有返回草稿内容。",
+			previewUnreviewed: "预览 · 未审阅",
+			sourcesHeading: "来源",
+			confirmWiki: "确认并保存到 Wiki",
+			updateHeading: (date: string) => `整理更新 · ${date}`,
+			wikiSaved: (path: string) => `已保存并标记为已审阅：${path}`,
+			sessionsHeading: "桌面代理会话",
+			sessionsDesktopOnly: "CLI 代理仅在桌面端运行。已保存的会话笔记仍可在此打开。",
+			projectDirectory: "项目目录",
+			chooseVaultFolder: "浏览仓库文件夹",
+			workingDirectory: (path: string) => `当前工作目录：${path}`,
+			activityHeading: "代理操作",
+			agent: "代理",
+			autoAcceptNote: "此目录中的代理操作会自动接受，代理可读取和修改其中的文件。当前目录始终显示在上方。",
+			newSession: "新会话",
+			statusState: "状态",
+			statusIdle: "空闲",
+			statusTokens: "上轮 Token",
+			statusModel: "模型",
+			statusModelUnknown: "CLI 事件未提供",
+			statusHelp: "/status · 会话状态与 Token 用量\n/new · 开始新会话\n/help · 查看命令\n⌘/Ctrl + Enter · 发送",
+			unsupportedCommand: (command: string) => `暂不支持命令：${command}`,
+			taskPlaceholder: "请 Codex 或 Claude 在此项目中执行任务…",
+			startSession: "发送",
+			cancelRun: "取消",
+			cancelled: "已取消。",
+			alreadyRunning: "这张卡片中已有 AI 任务正在运行。",
+			untitledSession: "项目会话",
+			providerMismatch: "请先切换到该会话对应的代理，再继续。",
+			projectRequired: "请先设置绝对项目目录。",
+			running: "正在运行…",
+			userTurn: (date: string) => `你 · ${date}`,
+			assistantTurn: "代理",
+			noResponse: "代理没有返回文本。",
+			sessionSaved: "会话记录已保存。",
+			sessionCancelled: "会话已停止；部分记录已保存。",
+			askHeading: "向知识库提问",
+			askDesc: "优先检索已审阅的 Wiki 页面；匹配到的原始记录会作为未审阅材料补充。",
+			questionPlaceholder: "你想了解什么？",
+			answerWith: "使用",
+			askButton: "提问",
+			saveAnswer: "把答案保存到收件箱",
+			addToReview: "加入每周整理",
+			answerNoteTitle: "知识库问答",
+			questionHeading: "问题",
+			answerHeading: "回答",
+			noSources: "没有匹配的已审阅 Wiki 或收件箱记录。请添加材料或换一种问法。",
+			answerReady: "回答已完成 · 点击引用可打开来源笔记。",
 		},
 		pet: {
 			species: {
@@ -2701,6 +2982,18 @@ export const zh: Translations = {
 					? `今天新建了 ${count} 篇笔记`
 					: `今天有 ${count} 篇笔记`,
 			streak: (days: number) => `连续 ${days} 天`,
+		},
+		imagearchive: {
+			summary: (count: number, folder: string) => `${count} 张图片散落在外 · 移动到 ${folder}`,
+			empty: (folder: string) => `没有散落的图片，都已经在 ${folder} 里了。`,
+			button: "整理图片",
+			confirmTitle: "移动散落图片",
+			confirmMessage: (count: number, folder: string) =>
+				`把 ${count} 张图片移动到 ${folder}？笔记里的引用会自动更新。`,
+			confirmButton: "移动",
+			moved: (count: number) => `已移动 ${count} 张图片，引用已更新。`,
+			movedWithFailures: (count: number, failed: number) => `已移动 ${count} 张；${failed} 张失败（见控制台）。`,
+			failed: (reason: string) => `整理图片失败：${reason}`,
 		},
 		embed: {
 			openFile: "打开此文件",
@@ -2732,6 +3025,90 @@ export const zh: Translations = {
 			error: "无法加载此订阅源",
 			disabled: "订阅源已关闭（对外调用被禁用）",
 			refresh: "刷新",
+		},
+		douyin: {
+			loading: "正在同步抖音收藏…",
+			notSynced: "还没有同步抖音收藏",
+			notSyncedDesc: "请在卡片设置中填写 Cookie，然后点击刷新按钮。",
+			empty: "没有找到抖音收藏",
+			summary: (items: number, folders: number) => `${items} 个视频 · ${folders} 个收藏夹`,
+			showing: (shown: number, total: number) => `显示 ${shown} / ${total}`,
+			untitled: "（无标题）",
+			open: (title: string) => `在抖音中打开 ${title}`,
+			sync: "同步抖音收藏",
+			synced: (count: number) => `抖音收藏同步完成：${count} 个视频`,
+			configure: "请先在卡片设置中填写已登录抖音账号的 Cookie。",
+			loginRequired: "抖音登录状态已过期，请更新卡片设置中的 Cookie。",
+			rateLimited: "抖音暂时限制了同步请求，请稍后再试。",
+			error: "无法同步抖音收藏",
+			disabled: "抖音同步已关闭（禁止对外请求）",
+		},
+		social: {
+			sources: {
+				rednote: "小红书",
+				wechat: "公众号",
+				douyin: "抖音",
+				zhihu: "知乎",
+				bilibili: "B 站",
+			},
+			summary: (count: number, folder: string) => `${count} 条内容 · ${folder}`,
+			configure: "配置登录凭据",
+			sync: "同步收藏",
+			disabled: "外部请求已关闭，无法同步收藏。",
+			credentialRequired: (source: string) => `请先配置${source}登录凭据。`,
+			detectingCredential: (source: string) => `正在查找${source}浏览器登录状态…`,
+			credentialDetected: (source: string) => `已从浏览器获取${source} Cookie。`,
+			autoDetectFailed: "没有找到已登录的浏览器 Cookie。请先用 Chrome/Arc/Edge/Brave 登录，或手动粘贴。",
+			synced: (source: string, count: number) => `${source}收藏同步完成：${count} 条`,
+			syncFailed: (source: string, reason: string) => `${source}同步失败：${reason}`,
+			empty: (folder: string) => `还没有同步内容；${folder} 中的笔记会显示在这里。`,
+			showing: (shown: number, total: number) => `显示 ${shown} / ${total}`,
+			open: (title: string) => `打开 ${title}`,
+			syncAll: "一键同步",
+			syncingAll: "正在同步全部收藏…",
+			syncedAll: (count: number) => `已从全部来源同步 ${count} 条`,
+			syncedAllPartial: (count: number, failures: string) =>
+				`已同步 ${count} 条 · 部分来源失败 —— ${failures}`,
+			credentialRequiredShort: (source: string) => `需要登录${source}`,
+			collect: "收集",
+			rednoteDesktopOnly: "小红书同步需要桌面版应用。",
+			rednoteCollectHint: "在此窗口打开你的小红书『收藏』页，然后点击『收集』。",
+			imaCredentialHint: "请粘贴 IMA 开放接口凭据，格式 clientId:apiKey（在 ima.qq.com/agent-interface 获取）。",
+			imaNoKb: "该 API Key 下没有找到 IMA 知识库。",
+			imaKeyExpired: "IMA API Key 已过期，请在 IMA 客户端续期（设置 → 一键续期）。",
+			douyinDesktopOnly: "抖音同步需要桌面版应用。",
+			douyinLoginRequired: "请在同步窗口登录抖音，收藏加载后会自动完成。",
+			bilibiliLoginRequired: "请先在浏览器登录 B 站，再点击同步；会读取当前账号收藏夹中的视频链接。",
+			bilibiliNetworkBlocked: "本机网络客户端拦截了 B 站请求（net::ERR_BLOCKED_BY_CLIENT）。请在网络过滤器、广告拦截器或安全软件中允许 api.bilibili.com 后重试。",
+			log: {
+				title: "收藏同步记录",
+				file: "收藏同步记录.md",
+				runAll: "一键同步",
+				colSource: "来源",
+				colNew: "新增",
+				colUpdated: "更新",
+				colFetched: "本次抓取",
+				colStatus: "状态",
+				ok: "✅",
+				totals: (created: number, updated: number) => `合计新增 ${created}，更新 ${updated}。`,
+			},
+			archive: {
+				filterUnarchived: "未归档",
+				filterArchived: "已归档",
+				count: (unarchived: number, archived: number) => `未归档 ${unarchived} · 已归档 ${archived}`,
+				manage: "管理归档",
+				manageTitle: "整理收藏 · 归档",
+				manageIntro: "勾选整理完的收藏即可归档；已归档的会从卡片『未归档』视图中隐藏。",
+				archiveToggle: "归档",
+				archiveAll: "全部归档",
+				unarchiveAll: "全部取消",
+				save: "保存",
+				saved: "归档状态已保存。",
+				empty: "还没有可整理的收藏，先同步一次。",
+				missing: "笔记已删除",
+				removeEntry: "从索引移除",
+				open: (title: string) => `打开 ${title}`,
+			},
 		},
 		weather: {
 			loading: "正在加载预报…",
@@ -2808,11 +3185,13 @@ export const zh: Translations = {
 			controls: {
 				status: "状态",
 				assignee: "负责人",
+				startDate: "开始日期",
+				dueDate: "截止日期",
 				priority: "优先级",
 				issueType: "事项类型",
-				sprint: "迭代",
 				fixVersion: "修复版本",
 			},
+			thisWeek: "本周",
 			controlCount: (label: string, count: number) => `${label}（${count}）`,
 			searchPlaceholder: "搜索选项…",
 			searchAria: (label: string) => `搜索 ${label} 选项`,
@@ -2823,9 +3202,104 @@ export const zh: Translations = {
 			error: "无法加载 Jira 事项",
 			empty: "没有事项符合这些筛选条件",
 			disabled: "Jira 已关闭（对外调用被禁用）",
-			notConfigured: "请在卡片设置中配置 Jira 主机、令牌和已保存的筛选器",
+			notConfigured: "请在卡片设置中配置 Jira 主机、令牌，以及 JQL 或已保存的筛选器",
+			startDate: "开始",
+			endDate: "结束",
+			noDate: "—",
+			openIssue: (key: string) => `在 Jira 中打开 ${key}`,
+			markDone: "标记为 Done",
+			markDoneFor: (key: string) => `将 ${key} 标记为 Done`,
+			markedDone: (key: string, status: string) => `${key} 已流转到 ${status}`,
+			linkedTodos: (count: number) => `关联 Todo（${count}）`,
+			markDoneBlocked: (key: string, count: number) =>
+				`请先完成 ${count} 个关联 Todo，再将 ${key} 标记为 Done。`,
+			markDoneFailed: (detail: string) =>
+				detail === "no-done-transition"
+					? "当前既不能直接转为 Done，也没有可用的 Doing 状态流转"
+					: detail === "doing-without-done-transition"
+						? "已转为 Doing，但 Jira 仍未提供 Done 状态流转"
+					: detail
+						? `无法将 Jira 事项标记为 Done：${detail}`
+						: "无法将 Jira 事项标记为 Done",
+			createSubtask: "创建子任务",
+			createSubtaskFor: (key: string) => `为 ${key} 创建子任务`,
+			subtaskCategory: "标题前缀",
+			jiraSubtaskType: "Jira Sub-task Type",
+			subtaskName: "子任务名称",
+			subtaskPlaceholder: "描述需要完成的工作",
+			subtaskAssignee: "负责人",
+			subtaskStoryPoints: "Story Points",
+			chooseDate: "选择日期",
+			subtaskFieldsMissing: "找不到 Jira 的 Start Date 或 Story Points 字段",
+			subtaskCapacityExceeded: (dates: string[]) =>
+				`无法创建子任务：以下日期的每日工时将超过 1：${dates.join("、")}`,
+			subtaskValidation: {
+				summary: "请输入子任务名称。",
+				subtaskType: "请选择 Jira Sub-task Type。",
+				assignee: "请选择负责人。",
+				startDate: "请选择有效的 Start Date。",
+				dueDate: "请选择有效的 Due Date。",
+				dateOrder: "Due Date 不能早于 Start Date。",
+				storyPoints: "Story Points 必须大于 0，且不能超过所选日期范围内的工作日数。",
+			},
+			subtaskCreated: (key: string) => `已创建 ${key}`,
+			weeklyScheduleLoading: "正在检查本周排期…",
+			weeklyScheduleUnavailable: "无法检查本周排期",
+			weeklyScheduleComplete: "全部排期",
+			weeklyScheduleMissing: (
+				schedules: { assignee: string; shortages: { date: string; missing: number }[] }[],
+			) =>
+				schedules
+					.filter((item) => item.shortages.length)
+					.map(
+						(item) =>
+							`${item.assignee}：${item.shortages
+								.map((shortage) => `${shortage.date} 缺 ${shortage.missing}`)
+								.join("、")}`,
+					)
+					.join("；"),
+			subtaskCreateFailed: (detail: string) =>
+				detail ? `无法创建 Jira 子任务：${detail}` : "无法创建 Jira 子任务",
+			subtaskPartiallyCreated: (key: string, detail: string) =>
+				`已创建 ${key}，但部分后续字段更新失败：${detail}`,
 		},
 		git: {
+			repositories: {
+				manage: "管理仓库",
+				eyebrow: "本地仓库",
+				summary: (total: number, pending: number, updates: number) =>
+					`${total} 个仓库 · ${pending} 个待提交 · ${updates} 个有更新`,
+				total: "仓库",
+				pending: "待提交",
+				updates: "待拉取",
+				conflicts: "有冲突",
+				refresh: "刷新所有仓库",
+				syncNpt: "同步 NPT",
+				syncNptDesc: "将 live 当前追踪分支合并到固定的 NPT UAT 分支并推送。",
+				syncNptConfirm:
+					"这会更新并推送 warehouse_id、warehouse_ph、warehouse_sg 的 NPT UAT 分支。合并冲突时将采用 live 分支版本。是否继续？",
+				syncNptComplete: (count: number) => `NPT 同步完成：已推送 ${count} 个仓库。`,
+				syncNptFailed: (succeeded: number, details: string) =>
+					`NPT 同步结束：${succeeded} 个成功。失败项目：\n${details}`,
+				changed: "未提交文件",
+				ahead: "待推送提交",
+				behind: "待拉取更新（以最近一次 fetch 为准）",
+				clean: "已是最新",
+				loadingBranch: "正在读取分支…",
+				noBranch: "无分支",
+				detail: "详情",
+				details: (name: string) => `在 Obsidian 中打开 ${name} 的详情`,
+				configureDetail: "请先在卡片设置中为这个仓库选择一个 Obsidian 详情笔记。",
+				noteMissing: (path: string) => `找不到 Obsidian 详情笔记“${path}”。`,
+				desktopOnly: "本地仓库状态仅在 Obsidian 桌面端可用。",
+				unnamed: "新仓库",
+				errors: {
+					desktopOnly: "仅桌面端可用",
+					invalidPath: "路径不存在",
+					notRepository: "不是 Git 仓库",
+					unavailable: "无法读取 Git 状态",
+				},
+			},
 			sections: {
 				status: "存储库状态",
 				actions: "按钮",
@@ -2953,8 +3427,64 @@ export const zh: Translations = {
 		bookmarks: {
 			untitled: "未命名",
 		},
+		savedLinks: {
+			all: "全部",
+			toReview: "待 Review",
+			reviewed: "已 Review",
+			syncAll: "一键同步",
+			syncingAll: "正在同步…",
+			editCategory: "编辑分类",
+			dataSource: "数据源",
+			allDataSources: "全部数据源",
+			sortBySyncTime: "同步时间排序",
+			newestFirst: "最新同步优先",
+			oldestFirst: "最早同步优先",
+			syncTimeRange: "同步时间范围",
+			allSyncTimes: "全部时间",
+			thisWeek: "本周同步",
+			thisMonth: "本月同步",
+			customRange: "自定义日期范围",
+			fromDate: "开始日期",
+			toDate: "结束日期",
+			markReviewed: "标记为已 Review",
+			markPending: "移回待 Review",
+			allCategories: "全部分类",
+			category: "分类",
+			searchPlaceholder: "搜索标题…",
+			manageCategories: "管理分类",
+			manageCategoriesTitle: "管理分类枚举",
+			manageCategoriesDesc: "维护可分配给收藏内容的分类；删除分类会清空对应条目的分类。",
+			addCategory: "添加分类",
+			categoryNamePlaceholder: "输入分类名称",
+			newCategory: "新分类",
+			removeCategory: "删除分类",
+			categoryRequired: "分类名称不能为空。",
+			categoryExists: "分类名称不能重复。",
+			categoriesSaved: "分类已保存。",
+			empty: "还没有内容收藏，点击这里同步各个平台的收藏。",
+			noMatches: "没有符合筛选条件的内容收藏。",
+			uncategorized: "未分类",
+			saveFailed: "无法保存收藏内容。",
+			save: "保存",
+			cancel: "取消",
+		},
 		tasks: {
 			createNewTask: "新建任务",
+			quickCreateTitle: "创建待办",
+			quickCreate: "创建",
+			title: "标题",
+			taskTitleRequired: "请输入任务标题。",
+			taskCreateFailed: "无法创建任务。",
+			projectLevel: "项目级 Todo",
+			project: "项目",
+			projectPlaceholder: "项目名称",
+			projectRequired: "项目级 Todo 需要填写项目名称。",
+			jiraLink: "关联 Jira 子任务",
+			jiraLinkDesc: "可选。显示分配给你的未完成 Jira 子任务；创建待办不会修改 Jira。",
+			jiraNotConfigured: "请先在 Jira 卡片中配置主机和令牌，才能列出分配给你的子任务。",
+			jiraNoLink: "不关联 Jira",
+			jiraRefresh: "刷新我的未完成 Jira 子任务",
+			jiraLoadFailed: "无法加载你的 Jira 子任务。",
 			toDo: "待办",
 			done: "已完成",
 			statusInProgress: "进行中",
@@ -3154,17 +3684,22 @@ export const zh: Translations = {
 		base: "嵌入 base",
 		excalidraw: "Excalidraw 绘图",
 		canvas: "嵌入白板",
-		daily: "日记（今天）",
+		daily: "待办清单",
+		"time-reports": "时间报告",
 		periodic: "周期笔记",
 		web: "网页（iframe）",
 		bookmarks: "书签",
 		favorites: "收藏",
+		savedlinks: "收藏资料库",
+		douyin: "抖音收藏",
+		social: "内容收藏",
 		recent: "最近文件",
 		links: "链接 / 启动台",
 		commands: "命令",
 		templater: "从模板新建笔记",
 		clock: "时钟与问候",
 		tasks: "任务",
+		projecttodos: "项目 Todo",
 		calendar: "迷你日历",
 		schedule: "日历",
 		stats: "仓库统计",
@@ -3176,15 +3711,18 @@ export const zh: Translations = {
 		dataview: "Dataview 查询",
 		datacore: "Datacore 查询",
 		rss: "RSS 订阅",
+		"jira-assigned-to-me": "分配给我的 Jira 任务",
 		jira: "Jira 筛选器",
 		weather: "天气",
 		git: "Git",
 		"operon-tasks": "Operon 任务",
 		"operon-board": "Operon 看板",
 		"operon-agenda": "Operon 日程",
-		"operon-timer": "Operon 计时器",
+		timer: "时间追踪",
 		leaf: "插件视图（测试版）",
 		pet: "宠物",
+		imagearchive: "图片归档",
+		knowledge: "个人知识工作台",
 	},
 
 	/** One line per template, shown under its name in the add-card picker and
@@ -3197,17 +3735,21 @@ export const zh: Translations = {
 		base: "一个 .base 文件，由 Obsidian 的 Bases 渲染",
 		excalidraw: "一幅 Excalidraw 绘图，支持原生平移与缩放",
 		canvas: "一块可以就地平移的白板",
-		daily: "始终是今天的笔记，首次点击时创建",
+		daily: "直接保存在 Dashboard 中、可勾选完成的待办清单",
 		periodic: "来自 Periodic Notes 的本周、本月或本年笔记",
 		web: "iframe 中的网页，按计时器刷新",
 		bookmarks: "您的 Obsidian 书签，一键可达",
-		favorites: "您在 Hearth 中标星的笔记",
+		favorites: "您在 Flexible Workbench 中标星的笔记",
+		savedlinks: "按数据源、分类和 Review 状态管理已同步的平台收藏",
+		douyin: "同步到仓库中的抖音收藏",
+		social: "同步并查看五个平台的内容收藏",
 		recent: "您最近打开的文件",
 		links: "链接、笔记与文件夹的启动台",
 		commands: "运行 Obsidian 命令的按钮",
 		templater: "从 Templater 模板在您指定的文件夹中创建笔记的按钮",
 		clock: "时间、日期与一句问候",
 		tasks: "来自仓库的复选框，以列表或看板呈现",
+		projecttodos: "按项目分组的项目级 Todo，并显示完成进度",
 		calendar: "一个月一目了然，并显示您的笔记",
 		schedule: "月、周、日和列表视图，并显示您的事件",
 		stats: "仓库的笔记数、字数和文件数",
@@ -3219,15 +3761,18 @@ export const zh: Translations = {
 		dataview: "一条 DQL 或 DataviewJS 查询，由 Dataview 渲染",
 		datacore: "一条 Datacore 查询或脚本",
 		rss: "您关注的订阅源的头条",
+		"jira-assigned-to-me": "当前分配给您的任务，以及开始和结束日期",
 		jira: "来自 Jira 筛选器或 JQL 搜索的事项",
 		weather: "您所选地点的天气预报",
 		git: "存储库状态，并可提交、拉取和推送",
 		"operon-tasks": "您的 Operon 任务，按您的喜好筛选",
 		"operon-board": "把 Operon 的流程状态作为看板列",
 		"operon-agenda": "接下来几天的 Operon 工作，逐日呈现",
-		"operon-timer": "Operon 正在运行的时间追踪，实时跳动",
+		timer: "为每段工作填写描述和总结，也可关联面板待办",
 		leaf: "在卡片中承载另一个插件的侧边面板",
 		pet: "住在您面板上的小伙伴",
+		imagearchive: "一键把散落的图片移进 archive/image，不断链",
+		knowledge: "随手记录，并每天回顾 Codex 与 Claude 会话日志",
 	},
 
 	// ---- Add-card picker -----------------------------------------------
@@ -3253,7 +3798,7 @@ export const zh: Translations = {
 			railLabel: "申请一种卡片",
 			heading: "申请一种卡片",
 			intro:
-				"缺了什么？请描述您希望 Hearth 拥有的卡片 — 它应该显示什么，" +
+				"缺了什么？请描述您希望 Flexible Workbench 拥有的卡片 — 它应该显示什么，" +
 				"数据又从哪里来。",
 			footPrompt: "没找到您想要的？",
 			footLink: "申请一种卡片",
@@ -3265,7 +3810,7 @@ export const zh: Translations = {
 			emailDesc: "如果您不想用 GitHub，可以直接发给维护者。会打开您的邮件应用。",
 			emailAction: "打开邮件",
 			prefilledNote:
-				"两种方式都会预填几个提示问题以及您的 Hearth 和 Obsidian 版本 — 发送前可任意修改。",
+				"两种方式都会预填几个提示问题以及您的 Flexible Workbench 和 Obsidian 版本 — 发送前可任意修改。",
 		},
 	},
 
@@ -3293,8 +3838,8 @@ export const zh: Translations = {
 		notAnObject: "布局必须是一个 JSON 对象。",
 		noValidDashboards: "布局中没有有效的面板。",
 		noValidCards: "布局中没有有效的卡片。",
-		notAHearthLayout: '这不是 Hearth 布局 — 未找到 "dashboards" 或 "cards" 数组。',
-		notHearthSettings:
-			'这不是 Hearth 设置备份 — 未找到 "hearthSettings" 标记或布局。',
+		notAFlexibleWorkbenchLayout: '这不是 Flexible Workbench 布局 — 未找到 "dashboards" 或 "cards" 数组。',
+		notFlexibleWorkbenchSettings:
+			'这不是 Flexible Workbench 设置备份 — 未找到 "flexibleWorkbenchSettings" 标记或布局。',
 	},
 };

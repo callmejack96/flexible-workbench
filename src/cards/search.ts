@@ -69,14 +69,14 @@ export function renderSavedSearch(view: HomeView, card: DashboardCard, body: HTM
 
 
 function renderQueryList(view: HomeView, body: HTMLElement, list: QueryHit[]): void {
-	const el = body.createDiv("hearth-list");
+	const el = body.createDiv("flexible-workbench-list");
 	const icons = fileIconOptions(view.plugin.settings);
 	for (const hit of list) {
-		const row = el.createDiv("hearth-list-item");
+		const row = el.createDiv("flexible-workbench-list-item");
 		// A badge icon describes *why* the file matched (tag, property, body), so
 		// it outranks the file's own icon.
 		applyFileIcon(
-			row.createDiv("hearth-list-icon"),
+			row.createDiv("flexible-workbench-list-icon"),
 			hit.badge?.icon ?? resolveFileIcon(view.app, hit.file, icons),
 		);
 		const name = hit.file instanceof TFile ? hit.file.basename : hit.file.name;
@@ -84,16 +84,16 @@ function renderQueryList(view: HomeView, body: HTMLElement, list: QueryHit[]): v
 			// A body excerpt is a sentence, not a chip: it goes on its own line
 			// under the file name, muted, with the matched words picked out.
 			row.addClass("has-excerpt");
-			const text = row.createDiv("hearth-list-text");
-			text.createDiv({ cls: "hearth-list-label", text: name });
+			const text = row.createDiv("flexible-workbench-list-text");
+			text.createDiv({ cls: "flexible-workbench-list-label", text: name });
 			renderHighlighted(
-				text.createDiv("hearth-list-excerpt"),
+				text.createDiv("flexible-workbench-list-excerpt"),
 				hit.badge.label,
 				hit.badge.matches,
 			);
 		} else {
-			row.createDiv({ cls: "hearth-list-label", text: name });
-			if (hit.badge) row.createDiv({ cls: "hearth-task-status", text: hit.badge.label });
+			row.createDiv({ cls: "flexible-workbench-list-label", text: name });
+			if (hit.badge) row.createDiv({ cls: "flexible-workbench-task-status", text: hit.badge.label });
 		}
 		const open = () => {
 			if (hit.file instanceof TFile) void openFile(view, hit.file, "search");
@@ -105,18 +105,18 @@ function renderQueryList(view: HomeView, body: HTMLElement, list: QueryHit[]): v
 
 
 function renderQueryTiles(view: HomeView, body: HTMLElement, list: QueryHit[]): void {
-	const grid = body.createDiv("hearth-links hearth-tiles-sized");
+	const grid = body.createDiv("flexible-workbench-links flexible-workbench-tiles-sized");
 	const baseTile = 90;
-	grid.style.setProperty("--hearth-tile", `${baseTile}px`);
+	grid.style.setProperty("--flexible-workbench-tile", `${baseTile}px`);
 	const icons = fileIconOptions(view.plugin.settings);
 	for (const hit of list) {
-		const tile = grid.createDiv("hearth-link-tile");
+		const tile = grid.createDiv("flexible-workbench-link-tile");
 		applyFileIcon(
-			tile.createDiv("hearth-link-icon"),
+			tile.createDiv("flexible-workbench-link-icon"),
 			hit.badge?.icon ?? resolveFileIcon(view.app, hit.file, icons),
 		);
 		const name = hit.file instanceof TFile ? hit.file.basename : hit.file.name;
-		tile.createDiv({ cls: "hearth-link-label", text: name });
+		tile.createDiv({ cls: "flexible-workbench-link-label", text: name });
 		const open = () => {
 			if (hit.file instanceof TFile) void openFile(view, hit.file, "search");
 		};
@@ -162,7 +162,7 @@ export function savedSearchEditor(ctx: CardEditorContext, containerEl: HTMLEleme
 			ctx.opts.save();
 		});
 		t.inputEl.type = "number";
-		t.inputEl.addClass("hearth-count-input");
+		t.inputEl.addClass("flexible-workbench-count-input");
 	});
 	addResetButton(ctx, maxResults, t().settings.resetField, () => {
 		cfg.count = undefined;

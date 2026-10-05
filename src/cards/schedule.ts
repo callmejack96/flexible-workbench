@@ -75,7 +75,7 @@ export function renderSchedule(
 
 	const state = scheduleState(card, cfg);
 	const ics = buildIcsContext(view, cfg, sources, component);
-	const wrap = body.createDiv("hearth-sched");
+	const wrap = body.createDiv("flexible-workbench-sched");
 
 	const draw = (): void => {
 		wrap.empty();
@@ -90,7 +90,7 @@ export function renderSchedule(
 			range.end.clone().add(7, "days").valueOf(),
 		);
 		if (cfg.hideToolbar !== true) renderToolbar(wrap, state, cfg, range.label, draw);
-		const main = wrap.createDiv("hearth-sched-body");
+		const main = wrap.createDiv("flexible-workbench-sched-body");
 		const noteAt = options ? dailyNoteFinder(view, options) : null;
 		const ctx: ViewContext = { view, cfg, options, noteAt, ics, component, redraw: draw };
 		if (state.view === "month") renderMonth(main, state, ctx);
@@ -259,11 +259,11 @@ function renderToolbar(
 	redraw: () => void,
 ): void {
 	const strings = t().cards.schedule;
-	const bar = wrap.createDiv("hearth-sched-toolbar");
+	const bar = wrap.createDiv("flexible-workbench-sched-toolbar");
 
-	const nav = bar.createDiv("hearth-sched-nav");
+	const nav = bar.createDiv("flexible-workbench-sched-nav");
 	const navButton = (icon: string, aria: string, onClick: () => void): void => {
-		const btn = nav.createEl("button", { cls: "hearth-sched-navbtn", attr: { "aria-label": aria } });
+		const btn = nav.createEl("button", { cls: "flexible-workbench-sched-navbtn", attr: { "aria-label": aria } });
 		setIcon(btn, icon);
 		btn.addEventListener("click", onClick);
 	};
@@ -271,7 +271,7 @@ function renderToolbar(
 		step(state, cfg, -1);
 		redraw();
 	});
-	const today = nav.createEl("button", { cls: "hearth-sched-today", text: strings.today });
+	const today = nav.createEl("button", { cls: "flexible-workbench-sched-today", text: strings.today });
 	today.addEventListener("click", () => {
 		state.anchor = moment().startOf("day").valueOf();
 		redraw();
@@ -281,14 +281,14 @@ function renderToolbar(
 		redraw();
 	});
 
-	bar.createDiv({ cls: "hearth-sched-title", text: label });
+	bar.createDiv({ cls: "flexible-workbench-sched-title", text: label });
 
 	const views = offeredViews(cfg);
 	// One view on offer is not a choice — the label alone says where you are.
 	if (views.length < 2) return;
-	const switcher = bar.createDiv("hearth-sched-views");
+	const switcher = bar.createDiv("flexible-workbench-sched-views");
 	for (const v of views) {
-		const btn = switcher.createEl("button", { cls: "hearth-sched-view", text: viewName(v) });
+		const btn = switcher.createEl("button", { cls: "flexible-workbench-sched-view", text: viewName(v) });
 		btn.toggleClass("is-active", v === state.view);
 		btn.setAttribute("aria-pressed", String(v === state.view));
 		btn.addEventListener("click", () => {
@@ -357,15 +357,15 @@ function chipTime(ev: IcsOccurrence, cfg: ScheduleConfig): string {
  * the same event popup the mini calendar uses. */
 function eventChip(parent: HTMLElement, ev: IcsOccurrence, ctx: ViewContext): void {
 	const task = taskNotesMeta(ev);
-	const chip = parent.createDiv("hearth-sched-chip");
+	const chip = parent.createDiv("flexible-workbench-sched-chip");
 	chip.style.setProperty("--ev-color", ctx.ics.eventColor(ev));
 	chip.toggleClass("is-allday", ev.allDay);
 	chip.toggleClass("is-done", task?.done === true);
 	if (!ev.allDay) {
-		chip.createSpan({ cls: "hearth-sched-chiptime", text: chipTime(ev, ctx.cfg) });
+		chip.createSpan({ cls: "flexible-workbench-sched-chiptime", text: chipTime(ev, ctx.cfg) });
 	}
 	chip.createSpan({
-		cls: "hearth-sched-chiptitle",
+		cls: "flexible-workbench-sched-chiptitle",
 		text: ev.summary || t().cards.calendar.untitledEvent,
 	});
 	const open = (e?: MouseEvent) => {
@@ -387,14 +387,14 @@ function renderMonth(main: HTMLElement, state: ScheduleState, ctx: ViewContext):
 	const first = firstDay(cfg);
 	const columns = weekdayColumns(first, cfg.hideWeekends === true);
 	const anchor = moment(state.anchor).startOf("month");
-	const grid = main.createDiv("hearth-sched-month");
+	const grid = main.createDiv("flexible-workbench-sched-month");
 	grid.style.setProperty("--sched-cols", String(columns.length));
 	grid.toggleClass("has-week-numbers", cfg.weekNumbers === true);
 	grid.toggleClass("is-dots", cfg.monthStyle === "dots");
 
-	if (cfg.weekNumbers) grid.createDiv({ cls: "hearth-sched-dow hearth-sched-wk", text: "" });
+	if (cfg.weekNumbers) grid.createDiv({ cls: "flexible-workbench-sched-dow flexible-workbench-sched-wk", text: "" });
 	for (const dow of columns) {
-		grid.createDiv({ cls: "hearth-sched-dow", text: moment().day(dow).format("ddd") });
+		grid.createDiv({ cls: "flexible-workbench-sched-dow", text: moment().day(dow).format("ddd") });
 	}
 
 	// Whole weeks covering the month, so every cell sits under its weekday.
@@ -407,7 +407,7 @@ function renderMonth(main: HTMLElement, state: ScheduleState, ctx: ViewContext):
 	for (let w = 0; w < weeks; w++) {
 		const weekFirst = gridStart.clone().add(w * 7, "days");
 		if (cfg.weekNumbers) {
-			grid.createDiv({ cls: "hearth-sched-wk", text: weekFirst.format("W") });
+			grid.createDiv({ cls: "flexible-workbench-sched-wk", text: weekFirst.format("W") });
 		}
 		for (const dow of columns) {
 			// The offset of this weekday within the week being drawn.
@@ -430,14 +430,14 @@ function renderMonthCell(
 	const events = ctx.ics.on(dayKey);
 	const note = noteFor(ctx, day);
 
-	const cell = grid.createDiv("hearth-sched-cell");
+	const cell = grid.createDiv("flexible-workbench-sched-cell");
 	cell.toggleClass("is-outside", day.month() !== month.month());
 	cell.toggleClass("is-today", isToday(day));
 	cell.toggleClass("has-note", note !== null);
 
-	const head = cell.createDiv("hearth-sched-cellhead");
-	const num = head.createDiv({ cls: "hearth-sched-daynum", text: String(day.date()) });
-	if (note) head.createDiv("hearth-sched-notedot");
+	const head = cell.createDiv("flexible-workbench-sched-cellhead");
+	const num = head.createDiv({ cls: "flexible-workbench-sched-daynum", text: String(day.date()) });
+	if (note) head.createDiv("flexible-workbench-sched-notedot");
 	const openNote = () => openDayNote(ctx, state, day);
 	num.addEventListener("click", (e) => {
 		e.stopPropagation();
@@ -446,11 +446,11 @@ function renderMonthCell(
 	makeClickable(num, openNote, day.format("dddd, LL"));
 
 	if (events.length) {
-		const list = cell.createDiv("hearth-sched-cellevents");
+		const list = cell.createDiv("flexible-workbench-sched-cellevents");
 		const shown = max > 0 ? events.slice(0, max) : events;
 		for (const ev of shown) {
 			if (ctx.cfg.monthStyle === "dots") {
-				const dot = list.createDiv("hearth-sched-dot");
+				const dot = list.createDiv("flexible-workbench-sched-dot");
 				dot.style.setProperty("--ev-color", ctx.ics.eventColor(ev));
 				dot.toggleClass("is-done", taskNotesMeta(ev)?.done === true);
 				dot.setAttribute("aria-label", ev.summary || t().cards.calendar.untitledEvent);
@@ -464,7 +464,7 @@ function renderMonthCell(
 		}
 		if (shown.length < events.length) {
 			const more = list.createDiv({
-				cls: "hearth-sched-more",
+				cls: "flexible-workbench-sched-more",
 				text: t().cards.schedule.more(events.length - shown.length),
 			});
 			const open = (e?: MouseEvent) => {
@@ -494,24 +494,24 @@ function renderTimeGrid(main: HTMLElement, state: ScheduleState, ctx: ViewContex
 	const hourHeight = clampHourHeight(cfg.hourHeight);
 	const hours = win.endHour - win.startHour;
 
-	const frame = main.createDiv("hearth-sched-timegrid");
+	const frame = main.createDiv("flexible-workbench-sched-timegrid");
 	frame.style.setProperty("--sched-cols", String(days.length));
 	frame.style.setProperty("--sched-hour", `${hourHeight}px`);
 
 	renderGridHeader(frame, days, state, ctx);
 	renderAllDayRow(frame, days, win, ctx);
 
-	const scroller = frame.createDiv("hearth-sched-scroll");
-	const canvas = scroller.createDiv("hearth-sched-canvas");
+	const scroller = frame.createDiv("flexible-workbench-sched-scroll");
+	const canvas = scroller.createDiv("flexible-workbench-sched-canvas");
 	canvas.style.setProperty("--sched-height", `${hours * hourHeight}px`);
 
-	const gutter = canvas.createDiv("hearth-sched-gutter");
+	const gutter = canvas.createDiv("flexible-workbench-sched-gutter");
 	for (let h = win.startHour; h < win.endHour; h++) {
-		const cell = gutter.createDiv("hearth-sched-hour");
-		cell.createSpan({ cls: "hearth-sched-hourlabel", text: hourLabel(h, cfg) });
+		const cell = gutter.createDiv("flexible-workbench-sched-hour");
+		cell.createSpan({ cls: "flexible-workbench-sched-hourlabel", text: hourLabel(h, cfg) });
 	}
 
-	const columns = canvas.createDiv("hearth-sched-cols");
+	const columns = canvas.createDiv("flexible-workbench-sched-cols");
 	for (const day of days) renderDayColumn(columns, day, win, hourHeight, ctx);
 
 	if (cfg.nowLine !== false) mountNowLine(columns, days, win, ctx);
@@ -560,15 +560,15 @@ function renderGridHeader(
 	state: ScheduleState,
 	ctx: ViewContext,
 ): void {
-	const head = frame.createDiv("hearth-sched-gridhead");
-	head.createDiv("hearth-sched-gutterhead");
-	const cols = head.createDiv("hearth-sched-headcols");
+	const head = frame.createDiv("flexible-workbench-sched-gridhead");
+	head.createDiv("flexible-workbench-sched-gutterhead");
+	const cols = head.createDiv("flexible-workbench-sched-headcols");
 	for (const day of days) {
-		const cell = cols.createDiv("hearth-sched-headday");
+		const cell = cols.createDiv("flexible-workbench-sched-headday");
 		cell.toggleClass("is-today", isToday(day));
-		cell.createDiv({ cls: "hearth-sched-headdow", text: day.format("ddd") });
-		cell.createDiv({ cls: "hearth-sched-headnum", text: String(day.date()) });
-		if (noteFor(ctx, day)) cell.createDiv("hearth-sched-notedot");
+		cell.createDiv({ cls: "flexible-workbench-sched-headdow", text: day.format("ddd") });
+		cell.createDiv({ cls: "flexible-workbench-sched-headnum", text: String(day.date()) });
+		if (noteFor(ctx, day)) cell.createDiv("flexible-workbench-sched-notedot");
 		const activate = () => zoomToDay(ctx, state, day);
 		cell.addEventListener("click", activate);
 		makeClickable(cell, activate, day.format("dddd, LL"));
@@ -593,13 +593,13 @@ function renderAllDayRow(
 	});
 	if (!rows.some((r) => r.length)) return;
 
-	const band = frame.createDiv("hearth-sched-allday");
-	const label = band.createDiv("hearth-sched-alldaylabel");
+	const band = frame.createDiv("flexible-workbench-sched-allday");
+	const label = band.createDiv("flexible-workbench-sched-alldaylabel");
 	setIcon(label, "sun");
 	label.setAttribute("aria-label", t().cards.calendar.allDay);
-	const cols = band.createDiv("hearth-sched-alldaycols");
+	const cols = band.createDiv("flexible-workbench-sched-alldaycols");
 	for (const events of rows) {
-		const col = cols.createDiv("hearth-sched-alldaycol");
+		const col = cols.createDiv("flexible-workbench-sched-alldaycol");
 		for (const ev of events) eventChip(col, ev, ctx);
 	}
 }
@@ -613,7 +613,7 @@ function renderDayColumn(
 	hourHeight: number,
 	ctx: ViewContext,
 ): void {
-	const col = parent.createDiv("hearth-sched-col");
+	const col = parent.createDiv("flexible-workbench-sched-col");
 	col.toggleClass("is-today", isToday(day));
 	const dayStart = day.clone().startOf("day").valueOf();
 
@@ -631,7 +631,7 @@ function renderDayColumn(
 	const top = win.startHour * 60;
 	placed.forEach((p, i) => {
 		const { column, columns: count } = columns[i];
-		const block = col.createDiv("hearth-sched-block");
+		const block = col.createDiv("flexible-workbench-sched-block");
 		const task = taskNotesMeta(p.ev);
 		block.toggleClass("is-done", task?.done === true);
 		block.toggleClass("is-clipped-start", p.span.clippedStart);
@@ -650,15 +650,15 @@ function renderDayColumn(
 		// that doesn't fit used to spill out through the block's bottom edge.
 		const lines = blockLines((p.span.endMin - p.span.startMin) * (hourHeight / 60));
 		block.toggleClass("is-inline", lines === 1);
-		block.createDiv({ cls: "hearth-sched-blocktitle", text: title });
+		block.createDiv({ cls: "flexible-workbench-sched-blocktitle", text: title });
 		if (lines === 1) {
 			// One line: the time trails the title on the same row, and drops out
 			// entirely when the block is too narrow for both.
-			if (time) block.createSpan({ cls: "hearth-sched-blocktime", text: time });
+			if (time) block.createSpan({ cls: "flexible-workbench-sched-blocktime", text: time });
 		} else {
-			if (time) block.createDiv({ cls: "hearth-sched-blocktime", text: time });
+			if (time) block.createDiv({ cls: "flexible-workbench-sched-blocktime", text: time });
 			if (lines >= 3 && p.ev.location) {
-				block.createDiv({ cls: "hearth-sched-blockplace", text: p.ev.location });
+				block.createDiv({ cls: "flexible-workbench-sched-blockplace", text: p.ev.location });
 			}
 		}
 		// Whatever didn't fit is one hover away, without opening the event.
@@ -691,7 +691,7 @@ function mountNowLine(
 	const col = columns.children[index];
 	if (!col?.instanceOf(HTMLElement)) return;
 
-	const line = col.createDiv("hearth-sched-now");
+	const line = col.createDiv("flexible-workbench-sched-now");
 	const total = (win.endHour - win.startHour) * 60;
 	const place = (): void => {
 		const now = moment();
@@ -738,7 +738,7 @@ function clampHourHeight(value: number | undefined): number {
 function renderList(main: HTMLElement, state: ScheduleState, ctx: ViewContext): void {
 	const start = moment(state.anchor).startOf("day");
 	const days = listDays(ctx.cfg);
-	const list = main.createDiv("hearth-sched-list");
+	const list = main.createDiv("flexible-workbench-sched-list");
 
 	let drawn = 0;
 	for (let i = 0; i < days; i++) {
@@ -749,11 +749,11 @@ function renderList(main: HTMLElement, state: ScheduleState, ctx: ViewContext): 
 		if (!events.length && !note) continue;
 		drawn++;
 
-		const head = list.createDiv("hearth-sched-listday");
+		const head = list.createDiv("flexible-workbench-sched-listday");
 		head.toggleClass("is-today", isToday(day));
-		head.createSpan({ cls: "hearth-sched-listdate", text: day.format("ddd D MMM") });
-		head.createSpan({ cls: "hearth-sched-listrel", text: formatRelativeDate(dayKey) });
-		if (note) head.createDiv("hearth-sched-notedot");
+		head.createSpan({ cls: "flexible-workbench-sched-listdate", text: day.format("ddd D MMM") });
+		head.createSpan({ cls: "flexible-workbench-sched-listrel", text: formatRelativeDate(dayKey) });
+		if (note) head.createDiv("flexible-workbench-sched-notedot");
 		if (ctx.options) {
 			const activate = () =>
 				openDailyNote(ctx.view, day, ctx.options, note, isToday(day));
@@ -763,7 +763,7 @@ function renderList(main: HTMLElement, state: ScheduleState, ctx: ViewContext): 
 			head.addClass("is-static");
 		}
 
-		const rows = list.createDiv("hearth-sched-listevents");
+		const rows = list.createDiv("flexible-workbench-sched-listevents");
 		for (const ev of events) renderEventRow(ctx.view, rows, ev, day, ctx.ics);
 	}
 
@@ -807,7 +807,7 @@ export function scheduleEditor(ctx: CardEditorContext, containerEl: HTMLElement)
 		const on = offered.includes(v);
 		new Setting(containerEl)
 			.setName(viewName(v))
-			.setClass("hearth-sched-viewtoggle")
+			.setClass("flexible-workbench-sched-viewtoggle")
 			.addToggle((tg) =>
 				tg
 					// The last one standing can't be switched off: a card with no view

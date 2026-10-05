@@ -1,7 +1,7 @@
 {
   "name": "flexible-workbench",
 	"version": "2.2.0",
-  "description": "A personal, flexible Obsidian workbench forked from Hearth.",
+  "description": "A personal, flexible Obsidian dashboard and workbench.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/callmejack96/flexible-workbench.git"
@@ -17,6 +17,7 @@
 		"typecheck": "tsc -noEmit -skipLibCheck",
 		"lint": "eslint src test",
 		"lint:fix": "eslint src test --fix",
+		"import:source-sync": "node scripts/import-multi-source-sync.mjs",
 		"test": "vitest run",
 		"verify:manifests": "node scripts/verify-manifests.mjs"
 	},
@@ -27,7 +28,7 @@
 		"home",
 		"launcher"
 	],
-	"author": "ondreu",
+	"author": "callmejack96",
 	"license": "MIT",
 	"devDependencies": {
 		"@stratejya/operon-cli": "^1.0.8",

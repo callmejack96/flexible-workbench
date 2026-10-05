@@ -1,6 +1,6 @@
 /**
  * English base locale — the source of truth for every user-facing string in
- * Hearth. All other locales are typed against `typeof en` (see
+ * Flexible Workbench. All other locales are typed against `typeof en` (see
  * `src/locales/index.ts`), so this file defines the complete set of keys a
  * translation must provide.
  *
@@ -17,77 +17,81 @@ export const en = {
 	// ---- Commands (command palette) & ribbon ---------------------------
 	commands: {
 		openHome: "Open home dashboard",
+		openKnowledge: "Open Knowledge Workbench",
 		newNote: "Create new note (default location)",
 		newDrawing: "Create new Excalidraw drawing",
 		recordVoice: "Start/stop voice recording",
 		openDailyNote: "Open today's daily note",
-		runSetup: "Set up Hearth (first-run wizard)",
+		runSetup: "Set up Flexible Workbench (first-run wizard)",
 		switchDashboard: (n: number) => `Switch to dashboard ${n}`,
 		nextDashboard: "Next dashboard",
 		previousDashboard: "Previous dashboard",
+		openSourceSync: "Open RedNote Source Sync",
+		syncRedNoteNow: "Sync RedNote favorites now",
 	},
 	ribbon: {
-		openHome: "Open Hearth home",
+		openHome: "Open Flexible Workbench home",
 	},
 
 	// ---- Notices (transient toasts) ------------------------------------
 	notices: {
-		couldNotCreateNote: "Hearth: could not create a new note.",
+		couldNotCreateNote: "Flexible Workbench: could not create a new note.",
+		knowledgeReviewReminder: (count: number) => `Daily review: ${count} Codex or Claude session${count === 1 ? "" : "s"} waiting. Open Knowledge Workbench → Daily review.`,
 		operonTaskMissing:
-			"Hearth: that Operon task's note is no longer in the vault.",
-		operonRechecked: "Hearth: rechecked the Operon connection.",
-		operonWriteFailed: (reason: string) => `Hearth: Operon refused the change — ${reason}`,
+			"Flexible Workbench: that Operon task's note is no longer in the vault.",
+		operonRechecked: "Flexible Workbench: rechecked the Operon connection.",
+		operonWriteFailed: (reason: string) => `Flexible Workbench: Operon refused the change — ${reason}`,
 		/** A refused create, with the Operon setting that decided the target —
 		 * the error alone names a configured target without saying which one. */
 		operonCreateFailed: (reason: string, where: string) =>
-			`Hearth: Operon refused to create the task — ${reason} ${where} ` +
+			`Flexible Workbench: Operon refused to create the task — ${reason} ${where} ` +
 			"Change it in Operon's settings, or pick a different target under “New tasks” " +
 			"in this card's settings.",
-		/** The mutation may have landed. Hearth has already spent its one legal
+		/** The mutation may have landed. Flexible Workbench has already spent its one legal
 		 * recovery attempt, so the honest report is "unknown", not "failed" —
 		 * and never an offer to retry, which could apply the change twice. */
 		operonWriteUnknown: (reason: string) =>
-			`Hearth: Operon couldn't confirm whether the change was applied (${reason}). ` +
+			`Flexible Workbench: Operon couldn't confirm whether the change was applied (${reason}). ` +
 			"The card has been re-read — check the task before trying again.",
 		enableExcalidraw:
-			"Hearth: enable the Excalidraw plugin to create drawings.",
+			"Flexible Workbench: enable the Excalidraw plugin to create drawings.",
 		excalidrawCommandMissing:
-			"Hearth: couldn't find Excalidraw's \"new drawing\" command.",
-		enableAudioRecorder: "Hearth: enable the core Audio recorder plugin.",
-		couldNotRecordVoice: "Hearth: couldn't start voice recording.",
-		enableDailyNotes: "Hearth: enable the core Daily notes plugin.",
-		couldNotOpenDaily: "Hearth: couldn't open today's daily note.",
-		couldNotOpenPeriodic: "Hearth: Periodic Notes couldn't make that note.",
-		commandNotFound: (id: string) => `Hearth: command not found: ${id}`,
+			"Flexible Workbench: couldn't find Excalidraw's \"new drawing\" command.",
+		enableAudioRecorder: "Flexible Workbench: enable the core Audio recorder plugin.",
+		couldNotRecordVoice: "Flexible Workbench: couldn't start voice recording.",
+		enableDailyNotes: "Flexible Workbench: enable the core Daily notes plugin.",
+		couldNotOpenDaily: "Flexible Workbench: couldn't open today's daily note.",
+		couldNotOpenPeriodic: "Flexible Workbench: Periodic Notes couldn't make that note.",
+		commandNotFound: (id: string) => `Flexible Workbench: command not found: ${id}`,
 		couldNotCreateNoteForDay: (day: string) =>
-			`Hearth: couldn't create a note for ${day}.`,
-		couldNotCreateEventNote: "Hearth: couldn't create a note for that event.",
-		taskNotesCreateFailed: "Hearth: couldn't run TaskNotes: Create new task.",
-		taskChangedOnDisk: "Hearth: that task changed on disk — refreshed.",
-		couldNotOpenTaskNote: "Hearth: couldn't open that task's note.",
-		couldNotUpdateTaskStatus: "Hearth: couldn't update the task status.",
+			`Flexible Workbench: couldn't create a note for ${day}.`,
+		couldNotCreateEventNote: "Flexible Workbench: couldn't create a note for that event.",
+		taskNotesCreateFailed: "Flexible Workbench: couldn't run TaskNotes: Create new task.",
+		taskChangedOnDisk: "Flexible Workbench: that task changed on disk — refreshed.",
+		couldNotOpenTaskNote: "Flexible Workbench: couldn't open that task's note.",
+		couldNotUpdateTaskStatus: "Flexible Workbench: couldn't update the task status.",
 		couldNotCompleteRecurring:
-			"Hearth: couldn't mark the recurring task instance complete.",
+			"Flexible Workbench: couldn't mark the recurring task instance complete.",
 		couldNotUndoRecurring:
-			"Hearth: couldn't undo the recurring task completion.",
-		couldNotAddKanbanCard: "Hearth: couldn't add the card to the Kanban board.",
-		couldNotConvertCard: "Hearth: couldn't convert the card into a note.",
+			"Flexible Workbench: couldn't undo the recurring task completion.",
+		couldNotAddKanbanCard: "Flexible Workbench: couldn't add the card to the Kanban board.",
+		couldNotConvertCard: "Flexible Workbench: couldn't convert the card into a note.",
 		templaterNoTemplate: (path: string) =>
-			`Hearth: template not found: ${path}`,
+			`Flexible Workbench: template not found: ${path}`,
 		templaterFailed: (name: string) =>
-			`Hearth: Templater didn't create a note from ${name}.`,
-		templaterCreated: (path: string) => `Hearth: created ${path}`,
+			`Flexible Workbench: Templater didn't create a note from ${name}.`,
+		templaterCreated: (path: string) => `Flexible Workbench: created ${path}`,
 		newNoteTemplaterMissing:
-			"Hearth: the “New note” button is set to a Templater template, but " +
+			"Flexible Workbench: the “New note” button is set to a Templater template, but " +
 			"Templater isn’t enabled — making a blank note instead.",
-		layoutExported: "Hearth: layout exported.",
-		layoutImported: "Hearth: layout imported.",
-		layoutImportError: (error: string) => `Hearth: ${error}`,
-		settingsExported: "Hearth: settings exported.",
-		settingsImported: "Hearth: settings imported.",
+		layoutExported: "Flexible Workbench: layout exported.",
+		layoutImported: "Flexible Workbench: layout imported.",
+		layoutImportError: (error: string) => `Flexible Workbench: ${error}`,
+		settingsExported: "Flexible Workbench: settings exported.",
+		settingsImported: "Flexible Workbench: settings imported.",
 		exportedToVault: (file: string) =>
-			`Hearth: saved ${file} to your vault's root folder.`,
-		exportFailed: "Hearth: couldn't save the export file.",
+			`Flexible Workbench: saved ${file} to your vault's root folder.`,
+		exportFailed: "Flexible Workbench: couldn't save the export file.",
 		cardCopied: "Card copied to the dashboard.",
 	},
 
@@ -100,6 +104,8 @@ export const en = {
 	header: {
 		newNote: "New note",
 		newNoteAria: "Create new note",
+		newTask: "New task",
+		newTaskAria: "Create a new task",
 		searchOnline: "Search online",
 		searchOnlineAria: "Search the web for the current query",
 	},
@@ -118,7 +124,7 @@ export const en = {
 
 	// ---- "What's new" release-notes dialog -----------------------------
 	whatsNew: {
-		title: "What's new in Hearth",
+		title: "What's new in Flexible Workbench",
 		intro: "Thanks for updating! Here's what's changed since you last checked.",
 		/** Shown instead of {@link intro} when there are headlines to click. */
 		introHint:
@@ -161,7 +167,7 @@ export const en = {
 		},
 		/** The heading at the top of each step. */
 		stepTitles: {
-			welcome: "Welcome to Hearth",
+			welcome: "Welcome to Flexible Workbench",
 			vault: "Name your home screen",
 			look: "Pick a look",
 			purpose: "What do you use your vault for?",
@@ -170,14 +176,14 @@ export const en = {
 		},
 		/** The line under each heading. */
 		stepDescs: {
-			welcome: "A few questions, then Hearth builds your first dashboard.",
+			welcome: "A few questions, then Flexible Workbench builds your first dashboard.",
 			vault: "The title and its icon across the top of this board.",
 			look:
 				"This applies to the board being built — every other board keeps its " +
 				"own look. You can change any of it later from the board's own settings.",
 			purpose: "Pick as many as you like — each one adds cards to your board.",
 			integrations:
-				"Hearth found these already installed. Turn on the ones you'd like it to use.",
+				"Flexible Workbench found these already installed. Turn on the ones you'd like it to use.",
 			finish:
 				"Nothing has been changed yet. Here's what will be built — as one " +
 				"dashboard, leaving your vault-wide settings alone.",
@@ -190,20 +196,20 @@ export const en = {
 		},
 		welcome: {
 			lead:
-				"Hearth turns a tab into a home screen for your vault — search, a dashboard " +
+				"Flexible Workbench turns a tab into a home screen for your vault — search, a dashboard " +
 				"of cards, and a launcher. This wizard sets up a board that fits how you " +
 				"actually work, so you're not starting from a blank grid.",
 			bullets: [
 				{
 					icon: "layout-dashboard",
 					title: "A dashboard built for you",
-					desc: "Tell Hearth what you use your vault for and it picks the cards.",
+					desc: "Tell Flexible Workbench what you use your vault for and it picks the cards.",
 				},
 				{
 					icon: "plug",
 					title: "Your plugins, already wired up",
 					desc:
-						"Hearth looks for TaskNotes, Dataview, Git and more, and offers to " +
+						"Flexible Workbench looks for TaskNotes, Dataview, Git and more, and offers to " +
 						"connect them — reading their own settings so cards work right away.",
 				},
 				{
@@ -214,7 +220,7 @@ export const en = {
 			],
 			detected: (names: string) => `Found in this vault: ${names}.`,
 			detectedNone:
-				"No supported plugins detected yet — that's fine, Hearth works on its own " +
+				"No supported plugins detected yet — that's fine, Flexible Workbench works on its own " +
 				"and you can connect them later.",
 		},
 		vault: {
@@ -225,7 +231,7 @@ export const en = {
 			titleIcon: "Title icon",
 			titleIconDesc:
 				"An emoji, a couple of characters, a Lucide icon id, a vault image path or " +
-				"an image URL, shown beside the title. Leave empty for the Hearth crystal.",
+				"an image URL, shown beside the title. Leave empty for the Flexible Workbench workbench mark.",
 			themeColor: "Follow the theme's accent colour",
 			themeColorDesc: "Which parts of the brand mark take your theme's colour.",
 			themeColorOptions: {
@@ -274,8 +280,8 @@ export const en = {
 		backgrounds: {
 			default: {
 				icon: "image",
-				name: "Hearth's wallpaper",
-				desc: "The image that ships with Hearth.",
+				name: "Flexible Workbench's wallpaper",
+				desc: "The image that ships with Flexible Workbench.",
 			},
 			weather: {
 				icon: "cloud-sun",
@@ -333,7 +339,7 @@ export const en = {
 		},
 		integrations: {
 			lead:
-				"Each one Hearth turns on here adds a card to this board, configured for " +
+				"Each one Flexible Workbench turns on here adds a card to this board, configured for " +
 				"you — nothing is installed or changed in the other plugin, and nothing " +
 				"outside this dashboard is touched.",
 			recommended: "Recommended",
@@ -350,7 +356,7 @@ export const en = {
 				git: "Add a Git card showing your repository's status, with commit and sync buttons.",
 				operon:
 					"Add an Operon tasks card, reading through Operon's Developer API. " +
-					"You'll be asked to approve Hearth in Operon's own settings the first " +
+					"You'll be asked to approve Flexible Workbench in Operon's own settings the first " +
 					"time the card loads; until then it says what it's waiting for.",
 				bases: "Add a card embedding a base from your vault.",
 				dailyNotes: "Add a card showing today's daily note, editable in place.",
@@ -361,7 +367,7 @@ export const en = {
 			taskNotesDue: "Due field",
 			taskNotesPriority: "Priority field",
 			taskNotesDone: "Counts as done",
-			taskNotesDoneNone: "none defined — Hearth will use \"done\"",
+			taskNotesDoneNone: "none defined — Flexible Workbench will use \"done\"",
 		},
 		finish: {
 			empty:
@@ -381,17 +387,17 @@ export const en = {
 			defaultName: "Home",
 			calloutTitle: "A starting point, not a preset",
 			calloutLead:
-				"This board should be a solid start — enough to show you what Hearth can " +
+				"This board should be a solid start — enough to show you what Flexible Workbench can " +
 				"do for you.",
 			calloutBody:
-				"But Hearth is built above all to be heavily customizable, and this wizard " +
+				"But Flexible Workbench is built above all to be heavily customizable, and this wizard " +
 				"only touches a fraction of it. Every card can be moved, resized, retitled, " +
 				"recoloured, reconfigured or thrown out, boards can be added and switched " +
 				"between, and there is a great deal more in the settings than was asked " +
 				"about here. Dig around in there and edit everything to your liking — that " +
-				"is what Hearth is for.",
+				"is what Flexible Workbench is for.",
 			calloutHint:
-				"Arrange (top-right of the board) edits the cards; Settings → Hearth has the " +
+				"Arrange (top-right of the board) edits the cards; Settings → Flexible Workbench has the " +
 				"rest. You can run this wizard again any time from Settings → About.",
 		},
 		plan: {
@@ -419,7 +425,7 @@ export const en = {
 			},
 			/** Why each card is on the board, shown beside it in the review list. */
 			reasons: {
-				always: "Every Hearth board starts with one",
+				always: "Every Flexible Workbench board starts with one",
 				daily: "Daily notes & journaling",
 				dailyNotes: "Daily notes is enabled",
 				tasks: "Tasks & to-dos",
@@ -443,8 +449,8 @@ export const en = {
 		notice: {
 			done: (n: number) =>
 				n === 1
-					? "Hearth: your dashboard is ready — 1 card added."
-					: `Hearth: your dashboard is ready — ${n} cards added.`,
+					? "Flexible Workbench: your dashboard is ready — 1 card added."
+					: `Flexible Workbench: your dashboard is ready — ${n} cards added.`,
 		},
 	},
 
@@ -528,7 +534,7 @@ export const en = {
 			linkedWorkspaceNone: "None",
 			mobileDefault: "Default on mobile",
 			mobileDefaultDesc:
-				"Open this dashboard when Hearth loads on a phone or tablet. Only one board can be the mobile default; enabling this clears it on the others.",
+				"Open this dashboard when Flexible Workbench loads on a phone or tablet. Only one board can be the mobile default; enabling this clears it on the others.",
 			titleVisibility: "Title visibility",
 			titleVisibilityDesc:
 				"Show or hide only the title block for this dashboard. Overrides the global setting.",
@@ -547,7 +553,7 @@ export const en = {
 			titleTextDesc: "Override the global title text for this dashboard.",
 			titleIcon: "Title icon",
 			titleIconDesc:
-				"The mark beside this dashboard's title: a Lucide icon id, an emoji or short text, a vault image path, or an image URL. Clear it to wear the Hearth crystal on this board alone.",
+				"The mark beside this dashboard's title: a Lucide icon id, an emoji or short text, a vault image path, or an image URL. Clear it to wear the Flexible Workbench workbench mark on this board alone.",
 			titleAlign: "Title alignment",
 			titleAlignDesc:
 				"Align only the title block. The search bar keeps its own layout.",
@@ -576,7 +582,7 @@ export const en = {
 			fitOptionScroll: "Allow scrolling",
 			themeColorTarget: "Accent colour on the title",
 			themeColorTargetDesc:
-				"Which parts of this board's brand mark follow the theme's icon colour. Overrides the global setting for this board; Hearth's tab and ribbon icons keep following the global one.",
+				"Which parts of this board's brand mark follow the theme's icon colour. Overrides the global setting for this board; Flexible Workbench's tab and ribbon icons keep following the global one.",
 			themeColorTargetDefault: (state: string) => `Use global default (${state})`,
 			themeColorTargetOptions: {
 				none: "Neither",
@@ -624,7 +630,7 @@ export const en = {
 		backgroundOptions: {
 			default: "Use global default",
 			none: "None",
-			hdefault: "Hearth default",
+			hdefault: "Flexible Workbench default",
 			color: "Solid color",
 			image: "Vault image",
 			url: "Image URL",
@@ -663,7 +669,7 @@ export const en = {
 			dashboard: "Grid, card surface, and the controls around the board.",
 			behaviour: "Startup, how notes open, and privacy.",
 			mobile: "The stacked layout on a phone, and the action bar.",
-			integrations: "TaskNotes, file icons, and every plugin Hearth reads.",
+			integrations: "TaskNotes, file icons, and every plugin Flexible Workbench reads.",
 			backup: "Export and import your layout and settings.",
 			about: "Version, what's new, and where to report things.",
 		},
@@ -703,19 +709,19 @@ export const en = {
 			startup: "Startup & tabs",
 			startupDesc: "When and where the home view opens.",
 			opening: "Opening notes",
-			openingDesc: "Where a note opens when you click it in Hearth.",
+			openingDesc: "Where a note opens when you click it in Flexible Workbench.",
 			mobileMode: "Layout",
 			mobileModeDesc:
 				"How the board is laid out when the screen is too narrow for its own layout.",
 			privacy: "Privacy & network",
-			privacyDesc: "Control the outbound requests Hearth is allowed to make.",
+			privacyDesc: "Control the outbound requests Flexible Workbench is allowed to make.",
 		},
 		about: {
-			heading: "About Hearth",
+			heading: "About Flexible Workbench",
 			headingDesc: "Project links, support and version.",
-			setup: "Set up Hearth",
+			setup: "Set up Flexible Workbench",
 			setupDesc:
-				"Answer a few questions about how you work and what's installed, and Hearth " +
+				"Answer a few questions about how you work and what's installed, and Flexible Workbench " +
 				"builds a dashboard to match. It's added as a new board — nothing you " +
 				"already have is changed.",
 			setupAgain: "Build a dashboard",
@@ -735,13 +741,13 @@ export const en = {
 			reportIssueDesc:
 				"Hit a bug or have a feature idea? Open an issue on GitHub.",
 			reportIssueButton: "Report issue",
-			kofi: "Support Hearth",
+			kofi: "Support Flexible Workbench",
 			kofiDesc:
-				"Hearth is free and always will be. If it's earned a spot on your home " +
+				"Flexible Workbench is free and always will be. If it's earned a spot on your home " +
 				"screen, you can leave a tip — completely optional, no features are locked.",
 			kofiButton: "Tip me on Ko-fi",
 			version: (v: string) => `Version ${v}`,
-			versionDesc: "The Hearth build you're running.",
+			versionDesc: "The Flexible Workbench build you're running.",
 		},
 		appearance: {
 			heading: "Appearance",
@@ -759,16 +765,16 @@ export const en = {
 				"The mark drawn next to the title. It takes any of: a Lucide icon id " +
 				"(browse the set with the 🔍 button), an emoji or a couple of " +
 				"characters, the vault path of an image (📷 button), or the URL of an " +
-				"image on the web. Leave it empty for the Hearth crystal. Each " +
+				"image on the web. Leave it empty for the Flexible Workbench workbench mark. Each " +
 				"dashboard can override it in its own settings.",
 			tabIcon: "Tab icon",
 			tabIconDesc:
-				"A Lucide icon for Hearth's tab header and ribbon button, in place of " +
-				"the Hearth crystal. Browse the set or type an id; leave empty for the crystal.",
+				"A Lucide icon for Flexible Workbench's tab header and ribbon button, in place of " +
+				"the Flexible Workbench workbench mark. Browse the set or type an id; leave empty for the workbench mark.",
 			themeColorTarget: "Follow theme icon color",
 			themeColorTargetDesc:
-				"Draw the crystal icon and/or the title text in your theme's icon " +
-				"color instead of the default purple crystal and normal text.",
+				"Draw the workbench mark icon and/or the title text in your theme's icon " +
+				"color instead of the default purple workbench mark and normal text.",
 			themeColorNone: "Off",
 			themeColorIcon: "Icon",
 			themeColorTitle: "Title",
@@ -782,7 +788,7 @@ export const en = {
 			searchEngineDesc:
 				"Which engine powers the search bar. Omnisearch requires the " +
 				"Omnisearch community plugin to be installed and enabled.",
-			searchEngineBuiltin: "Hearth (built-in)",
+			searchEngineBuiltin: "Flexible Workbench (built-in)",
 			searchEngineOmnisearch: "Omnisearch",
 			omnisearchMissing:
 				"Omnisearch isn’t installed or enabled. Install and enable it, " +
@@ -790,6 +796,9 @@ export const en = {
 			omnisearchInstallLink: "Open Omnisearch in Community plugins",
 			showNewNoteButton: "Show “New note” button",
 			showNewNoteButtonDesc: "Show the action button beside the search field.",
+			showNewTaskButton: "Show “New task” button",
+			showNewTaskButtonDesc:
+				"Show a TaskNotes quick-create button beside the search field when TaskNotes is enabled.",
 			newNoteButtonMode: "Search-bar button",
 			newNoteButtonModeDesc:
 				"What the button beside the search bar does: create a new note, or " +
@@ -800,7 +809,7 @@ export const en = {
 			newNoteHeadingDesc:
 				"What the button makes, and where. The same settings drive the " +
 				"button beside the search bar, the one on a search-bar card, and " +
-				"Hearth’s “Create new note” command.",
+				"Flexible Workbench’s “Create new note” command.",
 			newNoteButtonLabel: "Button text",
 			newNoteButtonLabelDesc:
 				"Text on the button. Leave empty for “New note”.",
@@ -868,7 +877,7 @@ export const en = {
 			pauseWhenUnfocused: "Pause animation when Obsidian isn't in front",
 			pauseWhenUnfocusedDesc:
 				"Hold every animation while you are working in another app or " +
-				"another window. A Hearth tab hidden behind another tab already " +
+				"another window. A Flexible Workbench tab hidden behind another tab already " +
 				"costs nothing; this covers a visible board in a window you are not " +
 				"using — beside a browser, or on a second screen. Turn it off if you " +
 				"keep the dashboard running on a second display.",
@@ -927,7 +936,7 @@ export const en = {
 			bannerFullWidthDesc:
 				"Run the banner edge to edge instead of lining it up with the content below.",
 			labels: {
-				default: "Hearth default",
+				default: "Flexible Workbench default",
 				none: "None",
 				color: "Solid color",
 				image: "Vault image",
@@ -962,7 +971,7 @@ export const en = {
 		behaviour: {
 			heading: "Behaviour",
 			headingDesc:
-				"When and where Hearth opens, and the phone/tablet search-only mode.",
+				"When and where Flexible Workbench opens, and the phone/tablet search-only mode.",
 			openOnStartup: "Open on startup",
 			openOnStartupDesc: "Open the home view when the vault loads.",
 			replaceNewTabs: "Replace new tabs",
@@ -975,7 +984,7 @@ export const en = {
 			liveRefreshDesc:
 				"Keep an open home view current as the vault changes — Recent, Bookmarks " +
 				"and saved-query cards update without reopening the tab. Switching back to " +
-				"the Hearth tab always refreshes it regardless of this setting.",
+				"the Flexible Workbench tab always refreshes it regardless of this setting.",
 			mobileSearchOnly: "Mobile mode (search only)",
 			mobileSearchOnlyDesc:
 				"On phones and tablets, hide the dashboard and show only the search " +
@@ -995,16 +1004,16 @@ export const en = {
 			mobileTierMatch: "Match desktop",
 			disableExternalCalls: "Disable external calls",
 			disableExternalCallsDesc:
-				"Block all outbound network requests Hearth makes, including Jira, " +
+				"Block all outbound network requests Flexible Workbench makes, including Jira, " +
 				"external calendars, RSS feeds, and the calculator's currency-rate lookup.",
 			openIn: "Open notes in",
 			openInDesc:
-				"Where a note goes when you open one from Hearth. \"Current tab\" replaces " +
-				"the home view, so Hearth behaves like any other tab. Ctrl/Cmd-click always " +
+				"Where a note goes when you open one from Flexible Workbench. \"Current tab\" replaces " +
+				"the home view, so Flexible Workbench behaves like any other tab. Ctrl/Cmd-click always " +
 				"opens a new tab regardless.",
 			openInModes: {
 				tab: "A new tab",
-				same: "The current tab (replace Hearth)",
+				same: "The current tab (replace Flexible Workbench)",
 				split: "A split pane",
 				window: "A new window",
 			},
@@ -1020,18 +1029,18 @@ export const en = {
 				cardDesc:
 					"Notes listed by Recent, Bookmarks, Favourites, Calendar, Heatmap and " +
 					"Tasks cards, and by mobile action buttons.",
-				newNote: "Notes Hearth creates",
+				newNote: "Notes Flexible Workbench creates",
 				newNoteDesc: "New notes, daily notes and event notes, opened as they're made.",
 			},
-			openFromOutside: "Notes opened from outside Hearth",
+			openFromOutside: "Notes opened from outside Flexible Workbench",
 			openFromOutsideDesc:
 				"The file explorer, the quick switcher, the graph — and anything a card " +
 				"embeds that opens links itself. Obsidian hands those to whichever tab " +
-				"is focused, so a Hearth tab gets taken over. Choose \"a new tab\" to keep " +
-				"the Hearth tab; the file explorer then stops following what you open.",
+				"is focused, so a Flexible Workbench tab gets taken over. Choose \"a new tab\" to keep " +
+				"the Flexible Workbench tab; the file explorer then stops following what you open.",
 			openFromOutsideModes: {
-				same: "The current tab (replace Hearth)",
-				tab: "A new tab (keep Hearth open)",
+				same: "The current tab (replace Flexible Workbench)",
+				tab: "A new tab (keep Flexible Workbench open)",
 			},
 		},
 		mobileActions: {
@@ -1054,18 +1063,37 @@ export const en = {
 			addButton: "Add button",
 			resetDefaults: "Reset to defaults",
 		},
+		sourceSync: {
+			heading: "RedNote content sync",
+			headingDesc:
+				"The former Obsidian Source Sync plugin is built into Flexible Workbench. " +
+				"It keeps login, favorites, comments, media and sync progress in a separate local settings file.",
+			statusLabel: "Source Sync",
+			status: {
+				embedded: "Built-in sync is loaded and ready.",
+				native: "Using the separately installed Source Sync plugin to avoid running two sync schedulers.",
+				"desktop-only": "Source Sync needs Obsidian desktop and is unavailable on mobile.",
+				failed: "The built-in sync module could not be loaded. Check the developer console for details.",
+			},
+			open: "Open settings",
+			openTooltip: "Open the full Source Sync console, account and output settings.",
+			syncNow: "Sync now",
+			desktopOnlyNotice: "Source sync is available in Obsidian desktop only.",
+			failedNotice: "Source sync failed to load. Check the developer console for details.",
+			syncFailedNotice: "Source sync failed. Check the sync log for details.",
+		},
 		/** The full catalogue shown at the top of the Integrations tab. Every
 		 * integration is listed here whether or not it has a setting and whether
 		 * or not the plugin is installed — see `src/integrations.ts`. */
 		integrations: {
 			heading: "All integrations",
 			headingDesc:
-				"Everything Hearth can work with, listed whether or not it's installed. " +
+				"Everything Flexible Workbench can work with, listed whether or not it's installed. " +
 				"Most integrations need no setup — the ones that do say where their " +
 				"settings live.",
 			groups: {
 				plugin: "Community plugins",
-				pluginDesc: "Hearth picks these up automatically once they're enabled.",
+				pluginDesc: "Flexible Workbench picks these up automatically once they're enabled.",
 				core: "Obsidian core plugins",
 				coreDesc:
 					"Built into Obsidian. Enable them in Settings → Core plugins if a " +
@@ -1082,11 +1110,11 @@ export const en = {
 				external: "Network",
 				always: "Always available",
 			},
-			/** Tooltip on the status pill, spelling out what it means for Hearth. */
+			/** Tooltip on the status pill, spelling out what it means for Flexible Workbench. */
 			statusTooltip: {
-				enabled: "Installed and enabled — Hearth is using it.",
-				disabled: "Installed but turned off, so Hearth can't use it right now.",
-				missing: "Not installed. Everything else in Hearth works without it.",
+				enabled: "Installed and enabled — Flexible Workbench is using it.",
+				disabled: "Installed but turned off, so Flexible Workbench can't use it right now.",
+				missing: "Not installed. Everything else in Flexible Workbench works without it.",
 				external: "An outbound request, not a plugin.",
 				always: "Nothing to install.",
 			},
@@ -1095,7 +1123,7 @@ export const en = {
 				section: "Settings below on this tab.",
 				tab: (tab: string) => `Settings under ${tab}.`,
 				card: "Configured on the card itself, on your dashboard.",
-				pluginSettings: "Uses that plugin's own settings — nothing to set in Hearth.",
+				pluginSettings: "Uses that plugin's own settings — nothing to set in Flexible Workbench.",
 				none: "Nothing to configure.",
 			},
 			/** Row buttons. */
@@ -1109,7 +1137,7 @@ export const en = {
 					name: "Omnisearch",
 					desc:
 						"Swaps the search bar over to Omnisearch's fuzzy, full-text index " +
-						"instead of Hearth's built-in engine. Pick the engine under " +
+						"instead of Flexible Workbench's built-in engine. Pick the engine under " +
 						"Search → Search bar; the choice only sticks while Omnisearch is enabled.",
 				},
 				tasknotes: {
@@ -1157,15 +1185,15 @@ export const en = {
 				operon: {
 					name: "Operon",
 					desc:
-						"The Operon cards — tasks, board, agenda and timer — read through " +
+						"Operon task, board and agenda cards read through " +
 						"Operon's own Developer API, so its statuses, priorities and " +
 						"recurrence stay its to define. Desktop only, needs Obsidian 1.12.2 " +
-						"or newer, and Operon must approve Hearth's read request.",
+						"or newer, and Operon must approve Flexible Workbench's read request.",
 				},
 				iconic: {
 					name: "Iconic",
 					desc:
-						"Per-file icons set with Iconic show up wherever Hearth lists a file — " +
+						"Per-file icons set with Iconic show up wherever Flexible Workbench lists a file — " +
 						"Recent, Favorites, saved searches and search results.",
 				},
 				iconize: {
@@ -1206,7 +1234,7 @@ export const en = {
 				},
 				fileExplorer: {
 					name: "File explorer",
-					desc: "Powers “Reveal in file explorer” on Hearth's search results.",
+					desc: "Powers “Reveal in file explorer” on Flexible Workbench's search results.",
 				},
 				workspaces: {
 					name: "Workspaces",
@@ -1282,7 +1310,7 @@ export const en = {
 			fieldsEnable: "Customize task fields",
 			fieldsEnableDesc:
 				"Replace the fixed metadata Tasks cards show with fields you define " +
-				"yourself — any frontmatter property or anything Hearth reads, named, " +
+				"yourself — any frontmatter property or anything Flexible Workbench reads, named, " +
 				"colored and ordered how you like. Off by default, and tasks keep " +
 				"their usual look until you turn it on. Turning it on starts from a " +
 				"blank slate: tasks show only the fields you add.",
@@ -1295,16 +1323,16 @@ export const en = {
 			heading: "File icons / Iconic / Iconize",
 			headingDesc:
 				"Use the per-file icons you've set with the Iconic or Iconize " +
-				"plugins wherever Hearth shows a file — Recent, Favorites, saved " +
+				"plugins wherever Flexible Workbench shows a file — Recent, Favorites, saved " +
 				"searches and the search bar. Lucide icons and emoji are shown; " +
-				"files using an icon from a downloaded icon pack keep Hearth's own " +
+				"files using an icon from a downloaded icon pack keep Flexible Workbench's own " +
 				"file-type icon.",
 			enable: "Use icons from Iconic / Iconize",
 			enableDesc:
-				"Off shows Hearth's file-type icon for every file, ignoring both plugins.",
+				"Off shows Flexible Workbench's file-type icon for every file, ignoring both plugins.",
 			enableDescNoPlugin:
 				"Neither Iconic nor Iconize is enabled right now, so every file " +
-				"shows Hearth's file-type icon. This can stay on — it takes effect " +
+				"shows Flexible Workbench's file-type icon. This can stay on — it takes effect " +
 				"as soon as one of them is installed.",
 			property: "Iconize frontmatter property",
 			propertyDesc:
@@ -1315,13 +1343,13 @@ export const en = {
 		operon: {
 			heading: "Operon",
 			headingDesc:
-				"Read tasks, boards, agendas and the running timer from the Operon " +
+				"Read tasks, boards and agendas from the Operon " +
 				"plugin through its own developer API — Operon stays the source of " +
-				"truth for what a task is, and Hearth only displays what it returns.",
+				"truth for what a task is. Flexible Workbench's time tracker runs independently.",
 			enable: "Connect to Operon",
 			enableDesc:
-				"Off is a kill switch: Operon cards stop reading and Hearth never " +
-				"asks Operon for access. Nothing is requested until an Operon card " +
+				"Off is a kill switch: Operon cards stop reading and Flexible Workbench never " +
+				"asks Operon for access. Nothing is requested until an Operon task, board or agenda card " +
 				"is on a dashboard.",
 			status: "Connection",
 			statusAbsent: "Operon isn't installed or enabled.",
@@ -1330,34 +1358,33 @@ export const en = {
 			statusBooting: "Operon is running but still starting up.",
 			statusPending:
 				"Waiting for approval. Open Settings → Operon → Core → General → " +
-				"Developer API Integrations and approve Hearth.",
+				"Developer API Integrations and approve Flexible Workbench.",
 			statusSuspended:
-				"Access is suspended. Review Hearth's pending scope in Operon's " +
+				"Access is suspended. Review Flexible Workbench's pending scope in Operon's " +
 				"Developer API Integrations.",
 			statusRevoked:
 				"Access was revoked. Grant it again in Operon's Developer API Integrations.",
 			statusReady: "Connected — Operon cards can read tasks.",
-			statusIdle: "Not connected yet. Add an Operon card to open a session.",
-			statusOff: "The integration is switched off, so Hearth isn't reading anything from Operon.",
+			statusIdle: "Not connected yet. Add an Operon task, board or agenda card to open a session.",
+			statusOff: "The integration is switched off, so Flexible Workbench isn't reading anything from Operon.",
 			statusError: "Operon refused the connection.",
 			detail: "Operon reported",
 			install: "Open Operon in Community plugins",
 			writes: "Allow changes",
 			writesDesc:
-				"Lets the board card move a task to another status by dragging it, and " +
-				"adds a “+” for creating one. Operon decides where a new task goes and " +
-				"whether a move is legal; Hearth only asks. Turning this on widens what " +
-				"Hearth requests, so you'll need to approve it again in Operon's " +
-				"Developer API Integrations. Off means Hearth can only read.",
+				"Lets the board card move a task to another status by dragging it and adds a “+” for creating one. " +
+				"Operon decides where a new task goes and whether a move is legal. Turning this on widens what " +
+				"Flexible Workbench requests, so you'll need to approve it again in Operon's " +
+				"Developer API Integrations. Off means Flexible Workbench can only read.",
 			writesPending:
 				"Reading works, but the change permissions haven't been granted yet — " +
-				"approve Hearth again in Operon's Developer API Integrations. Until then " +
+				"approve Flexible Workbench again in Operon's Developer API Integrations. Until then " +
 				"the cards stay read-only.",
 			capabilities: "Requested access",
 			capabilitiesDesc:
-				"Hearth asks for all of these at once because Operon does not open a " +
+				"Flexible Workbench asks for all of these at once because Operon does not open a " +
 				"partly approved session. Read-only unless “Allow changes” is on, which " +
-				"adds the task-transition and task-creation permissions.",
+				"adds task-transition and task-creation permissions.",
 			missing: (names: string) => `Not yet granted: ${names}`,
 			recheck: "Recheck",
 			recheckDesc:
@@ -1411,7 +1438,7 @@ export const en = {
 			heading: "Import / export",
 			headingDesc:
 				"Back up or share your dashboard layout (cards, grid, favorites) — or every " +
-				"Hearth setting — as a JSON file.",
+				"Flexible Workbench setting — as a JSON file.",
 			export: "Export layout",
 			exportDesc: "Download the current dashboard layout as a JSON file.",
 			exportButton: "Export file",
@@ -1426,14 +1453,14 @@ export const en = {
 				"This replaces your current dashboards, pinned cards and layout settings. This can't be undone.",
 			exportSettings: "Export settings",
 			exportSettingsDesc:
-				"Download every Hearth setting — the full layout plus header, background, " +
+				"Download every Flexible Workbench setting — the full layout plus header, background, " +
 				"behaviour, appearance and TaskNotes options — as a JSON backup file.",
 			importSettings: "Import settings",
 			importSettingsDesc:
-				"Choose a previously exported settings file. This replaces all your Hearth settings.",
+				"Choose a previously exported settings file. This replaces all your Flexible Workbench settings.",
 			importSettingsTitle: "Import settings?",
 			importSettingsMessage:
-				"This replaces all your Hearth settings — dashboards, layout, header, " +
+				"This replaces all your Flexible Workbench settings — dashboards, layout, header, " +
 				"background, behaviour and appearance. This can't be undone.",
 		},
 	},
@@ -1484,18 +1511,22 @@ export const en = {
 		kinds: {
 			embed: "Embed (note / image / base)",
 			slideshow: "Slideshow",
-			daily: "Daily note (today)",
+			daily: "Todo List",
+			"time-reports": "Time reports",
 			periodic: "Periodic note (week / month / year)",
 			web: "Web page (iframe)",
 			bookmarks: "Bookmarks",
 			favorites: "Favorites",
+			savedlinks: "Saved links",
 			text: "Text / jot-down",
 			recent: "Recent files",
 			links: "Links / launchpad",
 			commands: "Commands",
 			templater: "New note from template",
 			clock: "Clock & greeting",
+			timer: "Time tracker",
 			tasks: "Tasks",
+			projecttodos: "Project Todos",
 			calendar: "Mini calendar",
 			schedule: "Calendar",
 			stats: "Vault statistics",
@@ -1506,12 +1537,16 @@ export const en = {
 			dataview: "Dataview query",
 			datacore: "Datacore query",
 			rss: "RSS feed",
+			social: "Content favorites",
+			douyin: "Douyin favorites",
 			jira: "Jira filter",
 			weather: "Weather",
 			git: "Git",
 			operon: "Operon",
 			leaf: "Plugin view (beta)",
 			pet: "Pet",
+			imagearchive: "Image archiver",
+			knowledge: "Knowledge Workbench",
 		},
 		linkTypes: {
 			note: "Note",
@@ -1728,7 +1763,7 @@ export const en = {
 			count: "Number of files",
 			countDesc: (max: number) =>
 				`How many recently-opened files to list — at most ${max}, which is as ` +
-				`far back as Hearth's recent-file history goes.`,
+				`far back as Flexible Workbench's recent-file history goes.`,
 			types: "File types",
 			typesDesc: "Only list files of the selected types. Pick any combination; none selected shows every type.",
 		},
@@ -1751,7 +1786,7 @@ export const en = {
 			operonTasksDesc:
 				"Mark days that have an Operon task due, and list those tasks in the " +
 				"agenda. Reads through Operon's developer API, so it needs Operon " +
-				"approved in Settings → Hearth → Integrations. Tasks that are only " +
+				"approved in Settings → Flexible Workbench → Integrations. Tasks that are only " +
 				"scheduled (no due date) aren't included.",
 			operonTaskColor: "Operon task colour",
 			operonTaskColorDesc: "Colour of the task markers. Defaults to the accent colour.",
@@ -1856,7 +1891,7 @@ export const en = {
 				`${count} event${count === 1 ? "" : "s"} loaded.`,
 			taskNotesSubPending: "Not loaded yet — refresh below.",
 			taskNotesSubDisabled: "Disabled in TaskNotes.",
-			taskNotesSubBlocked: "Not fetched: external calls are disabled in Hearth's settings.",
+			taskNotesSubBlocked: "Not fetched: external calls are disabled in Flexible Workbench's settings.",
 			taskNotesSubFailed: (reason: string) => `Couldn't load: ${reason}`,
 			taskNotesSubNotCalendar: "the response wasn't an iCalendar feed.",
 			taskNotesSubMissingFile: "that file isn't in the vault.",
@@ -2107,7 +2142,7 @@ export const en = {
 			sourceDesc:
 				"Markdown checkboxes work anywhere. TaskNotes reads that plugin's " +
 				"task notes via frontmatter (field names configurable in Settings → " +
-				"Hearth, since TaskNotes has no API for other plugins to query it). " +
+				"Flexible Workbench, since TaskNotes has no API for other plugins to query it). " +
 				"Kanban reads a single Kanban-plugin board note, one column per heading.",
 			sourceCheckbox: "Markdown checkboxes",
 			sourceTaskNotes: "TaskNotes plugin",
@@ -2177,12 +2212,12 @@ export const en = {
 			doneStatusesDesc:
 				"TaskNotes source: which status values are treated as complete (hidden " +
 				"unless “Show completed” is on, and struck through when shown), one per " +
-				"line. Leave empty to use just the done value from Settings → Hearth. " +
+				"line. Leave empty to use just the done value from Settings → Flexible Workbench. " +
 				"Add, e.g., “canceled” to count cancelled tasks as complete too.",
 			doneStatusesPlaceholder: "done\ncanceled",
 			fields: "Fields",
 			fieldsFollowGlobal:
-				"Following the fields from Settings → Hearth → Integrations. Turn on " +
+				"Following the fields from Settings → Flexible Workbench → Integrations. Turn on " +
 				"to give this card its own.",
 			fieldsCustomize: "Customize…",
 			fieldsTitle: "Task fields",
@@ -2241,15 +2276,15 @@ export const en = {
 			fieldNoKeys: "No keys",
 			fieldAddKey: "Add a key",
 			fieldAddKeyDesc:
-				"Hearth's own values reach a checkbox line's priority, a board column " +
+				"Flexible Workbench's own values reach a checkbox line's priority, a board column " +
 				"and the parsed dates; a property reads anything in your frontmatter.",
-			fieldAddBuiltin: "What Hearth reads",
+			fieldAddBuiltin: "What Flexible Workbench reads",
 			fieldAddProperty: "Frontmatter property",
 			fieldAddKeyTyped: "Type a property name…",
 			fieldAddKeyPlaceholder: "Property name",
 			fieldRemoveKey: "Remove key",
 			fieldPickProperty: "Properties found in your notes",
-			fieldPickBuiltin: "Values Hearth parses itself",
+			fieldPickBuiltin: "Values Flexible Workbench parses itself",
 			fieldKeyAlreadyAdded: (key: string) => `“${key}” is already a key on this field.`,
 			fieldMapValues: "Values & colors",
 			fieldMappedValues: (n: number) => `${n} value(s) mapped`,
@@ -2327,6 +2362,39 @@ export const en = {
 			remove: "Remove",
 			addFavorite: "Add favorite",
 		},
+		douyin: {
+			cookie: "Douyin Cookie",
+			cookieDesc:
+				"Paste the Cookie header from a logged-in douyin.com browser session. Keep it private; it grants access to your account.",
+			storagePath: "Snapshot path",
+			storagePathDesc: "Vault-relative JSON path for the synced favorites. Defaults to .flexible-workbench/douyin-favorites.json.",
+			itemLimit: "Videos shown",
+			itemLimitDesc: "Maximum number of videos displayed in this card (1–100).",
+		},
+			social: {
+			credentialsHeading: "Login credentials",
+			credential: (source: string) => `${source} credential`,
+			credentialDesc: {
+				rednote: "Full xiaohongshu.com Cookie header. Optional when Source Sync is already logged in.",
+				wechat: "IMA Open API credential as clientId:apiKey (optionally clientId:apiKey:kbId). Get it at ima.qq.com/agent-interface.",
+				douyin: "Full douyin.com Cookie header from a logged-in browser session.",
+				zhihu: "Full zhihu.com Cookie header from a logged-in browser session.",
+				bilibili: "Auto-detected from a logged-in browser, or paste a Bilibili Cookie. Used only to read your own favorites.",
+			},
+			autoDetect: "Get from the logged-in browser",
+			initialSource: "Default source",
+			initialSourceDesc: "The source selected when this card first opens.",
+			rednoteFolder: "RedNote folder",
+			wechatFolder: "WeChat Official Accounts folder",
+			douyinFolder: "Douyin folder",
+			zhihuFolder: "Zhihu folder",
+			bilibiliFolder: "Bilibili folder",
+			folderDesc: "Vault folder containing this source's synced Markdown notes.",
+			itemLimit: "Items shown",
+			itemLimitDesc: "Maximum number of notes displayed for each source (1–100).",
+			syncLimit: "Sync fetch limit",
+			syncLimitDesc: "How many favorites to fetch per source on each sync (1–1000). Independent of the display count above — raise it to pull your whole favorites list.",
+		},
 		clock: {
 			style: "Style",
 			styleDigital: "Digital",
@@ -2394,7 +2462,7 @@ export const en = {
 			languageTs: "Script (TS)",
 			query: "Query",
 			queryDesc:
-				"A Datacore query, e.g. @page and #project. Hearth renders the matches as a " +
+				"A Datacore query, e.g. @page and #project. Flexible Workbench renders the matches as a " +
 				"live list of links. Runs with no “current note”, so global queries work " +
 				"fully but file-relative ones have no file to resolve to.",
 			queryPlaceholder: "@page and #project",
@@ -2409,6 +2477,19 @@ export const en = {
 			pageSizeDesc: "Page the generated list at this many rows. 0 shows every match at once.",
 		},
 		git: {
+			repositories: "Local repositories",
+			repositoriesDesc:
+				"Pin several desktop repositories here. The card reads status only; remote update counts reflect the latest fetch.",
+			addRepository: "Add repository",
+			removeRepository: "Remove repository",
+			repoName: "Display name",
+			repoNamePlaceholder: "Uses the folder name",
+			repoPath: "Repository path",
+			repoPathDesc: "Absolute path on this device.",
+			repoPathPlaceholder: "/Users/me/Projects/my-repo",
+			repoDetail: "Obsidian detail note",
+			repoDetailDesc: "Vault-relative note opened by the Details button.",
+			repoDetailPlaceholder: "Projects/my-repo.md",
 			missing: "The Git plugin isn't enabled",
 			missingDesc:
 				"This card is a window onto the Git community plugin — install and enable " +
@@ -2466,7 +2547,6 @@ export const en = {
 			viewList: "Task list",
 			viewBoard: "Status board",
 			viewAgenda: "Agenda",
-			viewTimer: "Timer",
 			scope: "Scope",
 			scopeDesc:
 				"Use one of Operon's own scoped views, or apply the filters below. " +
@@ -2529,7 +2609,7 @@ export const en = {
 			removeFeed: "Remove feed",
 			github: "Add from GitHub",
 			githubDesc:
-				"Enter a repository as owner/repo (or paste its URL) and pick what to follow — Hearth builds the Atom feed for you.",
+				"Enter a repository as owner/repo (or paste its URL) and pick what to follow — Flexible Workbench builds the Atom feed for you.",
 			githubPlaceholder: "owner/repo",
 			githubReleases: "Releases",
 			githubCommits: "Commits",
@@ -2562,10 +2642,10 @@ export const en = {
 			location: "Location",
 			search: "Find a place",
 			searchDesc:
-				"Search by name — Hearth stores the coordinates on the card, so this " +
+				"Search by name — Flexible Workbench stores the coordinates on the card, so this " +
 				"lookup happens once.",
 			searchDisabled:
-				"Place search is unavailable while external calls are disabled in Hearth " +
+				"Place search is unavailable while external calls are disabled in Flexible Workbench " +
 				"settings. You can still enter coordinates below.",
 			searchPlaceholder: "Prague, Lisbon, Kyoto…",
 			searchButton: "Search",
@@ -2639,10 +2719,19 @@ export const en = {
 			hostDesc: "The Jira site origin. HTTPS is required when sending a personal access token.",
 			hostPlaceholder: "https://jira.example.com",
 			pat: "Personal access token",
-			patDesc: "Bearer PAT used for this card. Stored in Hearth's plugin data.",
+			patDesc: "Bearer PAT used for this card. Stored in Flexible Workbench's plugin data.",
 			apiBase: "API base path",
 			apiBaseDesc: "A relative Jira REST path. Full URLs are rejected.",
 			apiBasePlaceholder: "/rest/api/latest",
+			jql: "JQL query",
+			jqlDesc: "Optional. Takes precedence over the saved filter. Use assignee = currentUser() for your tasks.",
+			jqlPlaceholder: "assignee = currentUser() ORDER BY duedate ASC",
+			showStartDate: "Show start date",
+			showStartDateDesc: "Show the issue's Jira Start date in the task row.",
+			showEndDate: "Show end date",
+			showEndDateDesc: "Show Jira End date, falling back to Due date when needed.",
+			sortDueDateDesc: "Sort by due date descending",
+			sortDueDateDescDesc: "Show later Due dates first, with recently updated issues as the tie-breaker.",
 			savedFilter: "Saved filter",
 			savedFilterDesc: "Load your favorite Jira filters, then choose one.",
 			selectedFilter: (name: string) => `Selected: ${name}`,
@@ -2651,7 +2740,7 @@ export const en = {
 			noFavoriteFilters: "Jira returned no favorite filters.",
 			loadFailed: "Couldn't load Jira filters. Check the host, API path, and token.",
 			externalCallsDisabled:
-				"Favorite filters can't be loaded while external calls are disabled in Hearth settings.",
+				"Favorite filters can't be loaded while external calls are disabled in Flexible Workbench settings.",
 			controls: "Filter controls",
 			maxResults: "Max results",
 			maxResultsDesc: "The most refined issues to show, up to 200.",
@@ -2682,7 +2771,7 @@ export const en = {
 				"arrows and menu. Handy when the card shows a single file.",
 			perfLabel: "Performance",
 			perfNote:
-				"This is by far the heaviest card Hearth has. It runs another " +
+				"This is by far the heaviest card Flexible Workbench has. It runs another " +
 				"plugin's full view live inside the dashboard, so it keeps that " +
 				"plugin's own timers, listeners and rendering going for as long as " +
 				"the board is open — every one of these cards costs again. Use one " +
@@ -2750,6 +2839,14 @@ export const en = {
 			showName: "Show name",
 			showMood: "Show mood",
 			showActivity: "Show today's activity",
+		},
+		imagearchive: {
+			targetFolder: "Target folder",
+			targetFolderDesc: "Where stray images are moved. Defaults to archive/image. Links are updated automatically.",
+		},
+		dailyTodo: {
+			archiveFolder: "Todo archive folder",
+			archiveFolderDesc: "Completed todos are saved as Markdown notes here. Defaults to archive/todos.",
 		},
 		colors: {
 			heading: "Colors",
@@ -2829,6 +2926,7 @@ export const en = {
 			gitEnable: "Enable the Git plugin to manage your vault's repository",
 			gitNotReady: "No repository open yet — set one up in the Git plugin",
 			rssNoSources: "Add a feed in card settings",
+			douyin: "Douyin favorites",
 			weatherNoLocation: "Pick a location in card settings",
 			renderFailed: "This card couldn't be drawn — see the console for details",
 			leafPickView: "Pick a plugin view in card settings",
@@ -2836,13 +2934,13 @@ export const en = {
 				"This view isn't available — enable the plugin that provides it",
 			operonEnable: "Enable the Operon plugin to show its tasks",
 			operonDisabled:
-				"The Operon integration is off — turn it on in Settings → Hearth → Integrations",
+				"The Operon integration is off — turn it on in Settings → Flexible Workbench → Integrations",
 			operonUnsupported:
 				"Operon's developer API is desktop-only and needs Obsidian 1.12.2 or newer",
 			operonPending:
-				"Approve Hearth in Settings → Operon → Core → General → Developer API Integrations",
+				"Approve Flexible Workbench in Settings → Operon → Core → General → Developer API Integrations",
 			operonSuspended:
-				"Operon suspended Hearth's access — review it in Operon's Developer API Integrations",
+				"Operon suspended Flexible Workbench's access — review it in Operon's Developer API Integrations",
 			operonRevoked:
 				"Operon access was revoked — grant it again in Operon's Developer API Integrations",
 			operonBooting: "Operon is still starting up",
@@ -2851,14 +2949,86 @@ export const en = {
 			operonNoAgenda: "Nothing scheduled in this window",
 			operonNoColumns: "No Operon statuses to show — pick a pipeline in card settings",
 		},
+		todoList: {
+			addPlaceholder: "Add a todo…",
+			addButton: "Add todo",
+			startTimer: (text: string) => `Start a timer for ${text}`,
+			remove: (text: string) => `Remove ${text}`,
+			timerAlreadyRunning: "A timer is already running. Finish it before starting another.",
+			finishTimerFirst: "Finish and summarize this todo's timer before archiving the todo.",
+			archiveFailed: (reason: string) => `Couldn't archive this todo: ${reason}`,
+			archiveTimeEntries: "Time entries",
+			archiveStarted: "Started",
+			archiveEnded: "Ended",
+			archiveDuration: "Duration",
+			archiveSummary: "Summary",
+			archiveTimeIncomplete: "Not finished",
+			reportUpdateFailed: (reason: string) => `Todo completed, but its time reports couldn't be updated: ${reason}`,
+		},
+		timeReports: {
+			periods: { day: "Day", week: "Week", month: "Month", year: "Year" },
+			previous: "Previous period",
+			next: "Next period",
+			openReport: "Open / update report note",
+			emptyReport: "Complete a todo and track time to build a timeline and period reports here.",
+			noReportToOpen: "There is no report to open for this period yet.",
+			reportSaveFailed: (reason: string) => `Couldn't save the time report: ${reason}`,
+			reportRenderFailed: (reason: string) => `Couldn't display the time report: ${reason}`,
+			completedCount: (count: number) => `${count} completed`,
+			totalFocus: (duration: string) => `${duration} focused`,
+			sessionCount: (count: number) => `${count} sessions`,
+			timeline: "Timeline",
+			emptyTimeline: "No time entries or completions in this period.",
+			completedTasks: "Completed todos",
+			noCompletedTasks: "No completed todos in this period.",
+			todoCompleted: (text: string) => `Completed: ${text}`,
+			standaloneTimer: "Standalone timer",
+			estimated: "legacy estimate",
+			byDay: "By day",
+			byWeek: "By week",
+			byMonth: "By month",
+			periodColumn: "Period",
+			totalFocusLabel: "Focus time",
+			completedLabel: "Completed todos",
+			noActivity: "No activity",
+		},
+		timer: {
+			timerIdle: "No timer running",
+			timerRunning: "In progress",
+			timerStarting: "Starting…",
+			timerStopping: "Saving summary…",
+			timerStart: "Start timer",
+			timerPause: "Pause timer",
+			timerResume: "Resume timer",
+			timerStop: "Finish and summarize",
+			timerPaused: "Paused",
+			timerStartTitle: "Start a time entry",
+			timerDescriptionLabel: "What are you working on?",
+			timerDescriptionPlaceholder: "For example: Draft the project plan",
+			timerStopTitle: "Finish this time entry",
+			timerSummaryLabel: "What did you get done?",
+			timerSummaryPlaceholder: "Note the result, progress or next steps…",
+			timerEditDescription: "Edit description",
+			timerEditDescriptionTitle: "Edit this description",
+			timerEditSummary: "Edit summary",
+			timerEditSummaryTitle: "Edit this summary",
+			timerHistory: "Recent time entries",
+			timerHistoryEmpty: "Completed sessions will appear here with their descriptions and summaries.",
+			timerToday: "Today",
+			timerYesterday: "Yesterday",
+			timerIncomplete: "Not finished",
+			timerNoSummary: "No summary yet",
+			timerTodo: (text: string) => `Todo: ${text}`,
+			timerAlreadyRunning: "A timer is already running. Finish it before starting another.",
+			timerDescriptionRequired: "Add a description before starting the timer.",
+			timerSummaryRequired: "Add a summary before finishing this time entry.",
+			timerChangedWhilePrompting: "The timer changed while the prompt was open. Its current state has been refreshed; try again.",
+			timerSaveFailed: (reason: string) => `Couldn't save the time entry: ${reason}`,
+		},
 		operon: {
 			loading: "Reading Operon…",
 			untitled: "Untitled task",
 			settling: "Operon is still settling",
-			timerIdle: "No timer running",
-			timerStarting: "Starting…",
-			timerStopping: "Stopping…",
-			timerUnassigned: "Unassigned time",
 			truncated: (shown: number, total: number) => `Showing ${shown} of ${total}`,
 			readFailed: (reason: string) => `Operon couldn't answer: ${reason}`,
 			/** Operon's own words, shown verbatim under an empty state so the
@@ -2880,7 +3050,7 @@ export const en = {
 			addTaskDue: "Due date",
 			confirmTitle: "Operon needs a confirmation",
 			/** Operon assessed the change and asked for consent; its own summary
-			 * of what would happen is shown rather than Hearth's guess at it. */
+			 * of what would happen is shown rather than Flexible Workbench's guess at it. */
 			confirmMessage: (risk: string, effects: string) =>
 				effects
 					? `Operon rates this change as ${risk}: ${effects}`
@@ -2894,6 +3064,117 @@ export const en = {
 			createsIn: (destination: string) => `Creates ${destination}`,
 			promptTitle: "Name the new note",
 			promptPlaceholder: "What is it about?",
+		},
+		knowledge: {
+			codexName: "Codex",
+			claudeCodeName: "Claude Code",
+			inboxTab: "Inbox",
+			reviewTab: "Daily review",
+			sessionsTab: "Session logs",
+			askTab: "Ask",
+			inboxHeading: "Quick capture",
+			inboxDesc: (folder: string) => `Save a thought or link straight to ${folder}. Nothing needs a tag first.`,
+			capturePlaceholder: "Write a thought or paste a link…",
+			captureButton: "Save",
+			saving: "Saving…",
+			captured: "Saved to your inbox.",
+			geminiOpen: "Open Gemini",
+			searchVault: "Search the vault",
+			searchUnavailable: "Show the workbench search area to search your vault.",
+			geminiPastePlaceholder: "Paste a useful Gemini reply here to save it as an unreviewed note…",
+			geminiSave: "Save pasted text",
+			unreviewedHeading: "To sort",
+			inboxEmpty: "Your inbox is clear.",
+			unreviewed: "Unreviewed",
+			reviewHeading: "Daily review",
+			reviewDesc: "Reads local Codex and Claude Code logs. On first use, logs from before today count as reviewed. Marking a session records its current modified time; later updates make it pending again. The reminder appears at most once per day. Reviewed sessions can be summarized and saved to Wiki after preview.",
+			codexLogPath: "Codex logs folder",
+			claudeLogPath: "Claude Code logs folder",
+			logFilePath: "Log file location",
+			allProviders: "All sessions",
+			pendingLogCount: (pending: number, total: number) => `${pending} waiting · ${total} session${total === 1 ? "" : "s"} found`,
+			refreshLogs: "Refresh logs",
+			loadMoreLogs: (count: number) => `Load ${count} more sessions`,
+			loadEarlierMessages: "Load earlier messages",
+			loadingEarlierMessages: "Loading earlier messages…",
+			loadingLogs: "Loading…",
+			logsEmpty: "No session logs found. Check the folder paths above.",
+			logsDesktopOnly: "Local session logs are available on desktop only.",
+			logUnreadable: "This log has no readable text messages.",
+			markLogReviewed: "Mark this session reviewed",
+			summarizeLog: "Organize and summarize",
+			summarizingLog: "Summarizing…",
+			summarizingWith: (provider: string) => `Summarizing with ${provider} CLI…`,
+			summaryPreviewHeading: "Session summary draft",
+			summaryPreviewDesc: (provider: string) => `The session text will be sent to ${provider} CLI to draft a summary. You can edit it before saving to Wiki.`,
+			summaryTitlePlaceholder: "Summary title",
+			summaryBodyPlaceholder: "Summary…",
+			cancelSummary: "Cancel",
+			saveSummary: "Save to Wiki",
+			savingSummary: "Saving…",
+			summarySaved: (path: string) => `Saved to Wiki: ${path}`,
+			userRole: "You",
+			assistantRole: "Assistant",
+			topicPlaceholder: "Topic or question for the wiki draft (optional)",
+			aiSession: "AI session",
+			favorite: "Favorite",
+			rawSource: "Inbox note",
+			reviewed: "Reviewed",
+			reviewEmpty: "No inbox notes, favorites or saved sessions to review yet.",
+			aiDesktopOnly: "AI generation runs on desktop. You can still capture and search here.",
+			draftWith: "Draft with",
+			makeDraft: "Draft selected notes",
+			drafting: "Drafting…",
+			pickSources: "Select at least one source note first.",
+			generating: "Generating…",
+			emptyDraft: "The agent returned an empty draft.",
+			previewUnreviewed: "Preview · unreviewed",
+			sourcesHeading: "Sources",
+			confirmWiki: "Confirm and save to Wiki",
+			updateHeading: (date: string) => `Review update · ${date}`,
+			wikiSaved: (path: string) => `Saved and marked reviewed: ${path}`,
+			sessionsHeading: "Desktop agent sessions",
+			sessionsDesktopOnly: "CLI agents run on desktop. Saved session notes can still be opened here.",
+			projectDirectory: "Project directory",
+			chooseVaultFolder: "Browse vault folders",
+			workingDirectory: (path: string) => `Working directory: ${path}`,
+			activityHeading: "Agent activity",
+			agent: "Agent",
+			autoAcceptNote: "Tool operations are automatically accepted in this directory. The agent can read and change its files. The active directory is shown above.",
+			newSession: "New session",
+			statusState: "State",
+			statusIdle: "Idle",
+			statusTokens: "Last turn tokens",
+			statusModel: "Model",
+			statusModelUnknown: "Not provided by CLI events",
+			statusHelp: "/status · session and token usage\n/new · start a new session\n/help · available commands\n⌘/Ctrl + Enter · send",
+			unsupportedCommand: (command: string) => `Unsupported command: ${command}`,
+			taskPlaceholder: "Ask Codex or Claude to work in this project…",
+			startSession: "Send",
+			cancelRun: "Cancel",
+			cancelled: "Cancelled.",
+			alreadyRunning: "An AI task is already running in this card.",
+			untitledSession: "Project session",
+			providerMismatch: "Switch the agent to match the selected session before continuing.",
+			projectRequired: "Set an absolute project directory first.",
+			running: "Running…",
+			userTurn: (date: string) => `You · ${date}`,
+			assistantTurn: "Agent",
+			noResponse: "No response text was returned.",
+			sessionSaved: "Session transcript saved.",
+			sessionCancelled: "Session stopped; the partial transcript was saved.",
+			askHeading: "Ask your knowledge base",
+			askDesc: "Reviewed Wiki pages are searched first. Matching raw notes may be added as unreviewed context.",
+			questionPlaceholder: "What do you want to know?",
+			answerWith: "Answer with",
+			askButton: "Ask",
+			saveAnswer: "Save answer to inbox",
+			addToReview: "Add to weekly review",
+			answerNoteTitle: "Knowledge answer",
+			questionHeading: "Question",
+			answerHeading: "Answer",
+			noSources: "No matching reviewed Wiki pages or inbox notes. Add material or try another wording.",
+			answerReady: "Answer ready · open a citation to read its note.",
 		},
 		pet: {
 			species: {
@@ -2916,6 +3197,20 @@ export const en = {
 					? `${count} new note${count === 1 ? "" : "s"} today`
 					: `${count} note${count === 1 ? "" : "s"} today`,
 			streak: (days: number) => `${days}-day streak`,
+		},
+		imagearchive: {
+			summary: (count: number, folder: string) =>
+				`${count} stray image${count === 1 ? "" : "s"} · move to ${folder}`,
+			empty: (folder: string) => `No stray images — everything is already in ${folder}.`,
+			button: "Tidy images",
+			confirmTitle: "Move stray images",
+			confirmMessage: (count: number, folder: string) =>
+				`Move ${count} image${count === 1 ? "" : "s"} into ${folder}? Links in your notes are updated automatically.`,
+			confirmButton: "Move",
+			moved: (count: number) => `Moved ${count} image${count === 1 ? "" : "s"}, links updated.`,
+			movedWithFailures: (count: number, failed: number) =>
+				`Moved ${count}; ${failed} failed (see console).`,
+			failed: (reason: string) => `Couldn't tidy images: ${reason}`,
 		},
 		embed: {
 			openFile: "Open this file",
@@ -2947,6 +3242,91 @@ export const en = {
 			error: "Couldn't load this feed",
 			disabled: "Feeds are off (external calls disabled)",
 			refresh: "Refresh",
+		},
+		douyin: {
+			loading: "Syncing Douyin favorites…",
+			notSynced: "Douyin favorites are not synced yet",
+			notSyncedDesc: "Set a Cookie in card settings, then click the refresh button.",
+			empty: "No Douyin favorites found",
+			summary: (items: number, folders: number) => `${items} videos · ${folders} folders`,
+			showing: (shown: number, total: number) => `Showing ${shown} of ${total}`,
+			untitled: "(untitled)",
+			open: (title: string) => `Open ${title} in Douyin`,
+			sync: "Sync Douyin favorites",
+			synced: (count: number) => `Douyin favorites synced: ${count} videos`,
+			configure: "Set a logged-in Douyin Cookie in card settings first.",
+			loginRequired: "Douyin login expired. Update the Cookie in card settings.",
+			rateLimited: "Douyin temporarily rate-limited this sync. Try again later.",
+			error: "Couldn't sync Douyin favorites",
+			disabled: "Douyin sync is off (external calls disabled)",
+		},
+		social: {
+			sources: {
+				rednote: "RedNote",
+				wechat: "Official Accounts",
+				douyin: "Douyin",
+				zhihu: "Zhihu",
+				bilibili: "Bilibili",
+			},
+			summary: (count: number, folder: string) => `${count} items · ${folder}`,
+			configure: "Configure login credential",
+			sync: "Sync favorites",
+			disabled: "Favorites sync is off because external calls are disabled.",
+			credentialRequired: (source: string) => `Configure the ${source} login credential first.`,
+			detectingCredential: (source: string) => `Looking for a logged-in ${source} browser session…`,
+			credentialDetected: (source: string) => `${source} Cookie was obtained from the browser.`,
+			autoDetectFailed: "No logged-in browser Cookie was found. Log in with Chrome/Arc/Edge/Brave, or paste it manually.",
+			synced: (source: string, count: number) => `${source} favorites synced: ${count} items`,
+			syncFailed: (source: string, reason: string) => `${source} sync failed: ${reason}`,
+			empty: (folder: string) => `No synced content yet. Notes in ${folder} will appear here.`,
+			showing: (shown: number, total: number) => `Showing ${shown} of ${total}`,
+			open: (title: string) => `Open ${title}`,
+			syncAll: "Sync all",
+			syncingAll: "Syncing all favorites…",
+			syncedAll: (count: number) => `Synced ${count} items from all sources`,
+			syncedAllPartial: (count: number, failures: string) =>
+				`Synced ${count} items · some sources failed — ${failures}`,
+			credentialRequiredShort: (source: string) => `${source} login needed`,
+			collect: "Collect",
+			rednoteDesktopOnly: "RedNote sync needs the desktop app.",
+			rednoteCollectHint: "Open your RedNote 收藏 (Saved) page in this window, then click Collect.",
+			imaCredentialHint: "Paste your IMA Open API credential as clientId:apiKey (from ima.qq.com/agent-interface).",
+			imaNoKb: "No IMA knowledge base found for this API key.",
+			imaKeyExpired: "IMA API Key expired. Renew it in the IMA client (设置 → 一键续期).",
+			douyinDesktopOnly: "Douyin sync needs the desktop app.",
+			douyinLoginRequired:
+				"Log in to Douyin in the sync window; it finishes automatically once your favorites load.",
+			bilibiliLoginRequired: "Log in to Bilibili in your browser, then sync to read video links from your favorite folders.",
+			bilibiliNetworkBlocked: "The local network client blocked the Bilibili request (net::ERR_BLOCKED_BY_CLIENT). Allow api.bilibili.com in your network filter, ad blocker, or security software, then retry.",
+			log: {
+				title: "Favorites sync log",
+				file: "Favorites sync log.md",
+				runAll: "Sync all",
+				colSource: "Source",
+				colNew: "New",
+				colUpdated: "Updated",
+				colFetched: "Fetched",
+				colStatus: "Status",
+				ok: "✅",
+				totals: (created: number, updated: number) => `${created} new, ${updated} updated in total.`,
+			},
+			archive: {
+				filterUnarchived: "Inbox",
+				filterArchived: "Archived",
+				count: (unarchived: number, archived: number) => `${unarchived} inbox · ${archived} archived`,
+				manage: "Manage archive",
+				manageTitle: "Organize favorites · Archive",
+				manageIntro: "Tick the favorites you've finished with to archive them; archived items are hidden from the card's inbox view.",
+				archiveToggle: "Archive",
+				archiveAll: "Archive all",
+				unarchiveAll: "Unarchive all",
+				save: "Save",
+				saved: "Archive state saved.",
+				empty: "Nothing to organize yet — sync first.",
+				missing: "Note deleted",
+				removeEntry: "Remove from index",
+				open: (title: string) => `Open ${title}`,
+			},
 		},
 		weather: {
 			loading: "Loading forecast…",
@@ -3023,11 +3403,13 @@ export const en = {
 			controls: {
 				status: "Status",
 				assignee: "Assignee",
+				startDate: "Start date",
+				dueDate: "Due date",
 				priority: "Priority",
 				issueType: "Issue type",
-				sprint: "Sprint",
 				fixVersion: "Fix version",
 			},
+			thisWeek: "This week",
 			controlCount: (label: string, count: number) => `${label} (${count})`,
 			searchPlaceholder: "Search options…",
 			searchAria: (label: string) => `Search ${label} options`,
@@ -3038,9 +3420,105 @@ export const en = {
 			error: "Couldn't load Jira issues",
 			empty: "No issues match these filters",
 			disabled: "Jira is off (external calls disabled)",
-			notConfigured: "Configure a Jira host, token, and saved filter in card settings",
+			notConfigured: "Configure a Jira host, token, and either JQL or a saved filter in card settings",
+			startDate: "Start",
+			endDate: "End",
+			noDate: "—",
+			openIssue: (key: string) => `Open ${key} in Jira`,
+			markDone: "Mark as Done",
+			markDoneFor: (key: string) => `Mark ${key} as Done`,
+			markedDone: (key: string, status: string) => `${key} was moved to ${status}`,
+			linkedTodos: (count: number) => `Linked Todo${count === 1 ? "" : "s"} (${count})`,
+			markDoneBlocked: (key: string, count: number) =>
+				`Complete ${count} linked Todo${count === 1 ? "" : "s"} before marking ${key} as Done.`,
+			markDoneFailed: (detail: string) =>
+				detail === "no-done-transition"
+					? "Neither a direct Done transition nor a Doing transition is available"
+					: detail === "doing-without-done-transition"
+						? "Moved to Doing, but Jira still did not provide a Done transition"
+					: detail
+						? `Couldn't mark the Jira issue as Done: ${detail}`
+						: "Couldn't mark the Jira issue as Done",
+			createSubtask: "Create sub-task",
+			createSubtaskFor: (key: string) => `Create a sub-task for ${key}`,
+			subtaskCategory: "Title prefix",
+			jiraSubtaskType: "Jira Sub-task Type",
+			subtaskName: "Sub-task name",
+			subtaskPlaceholder: "Describe the work to do",
+			subtaskAssignee: "Assignee",
+			subtaskStoryPoints: "Story Points",
+			chooseDate: "Choose a date",
+			subtaskFieldsMissing: "Jira's Start Date or Story Points field couldn't be found",
+			subtaskCapacityExceeded: (dates: string[]) =>
+				`Can't create this sub-task. Daily capacity would exceed 1 on: ${dates.join(", ")}`,
+			subtaskValidation: {
+				summary: "Enter a sub-task name.",
+				subtaskType: "Choose a Jira Sub-task Type.",
+				assignee: "Choose an assignee.",
+				startDate: "Choose a valid Start Date.",
+				dueDate: "Choose a valid Due Date.",
+				dateOrder: "Due Date must be on or after Start Date.",
+				storyPoints:
+					"Story Points must be greater than 0 and cannot exceed the weekdays in the selected date range.",
+			},
+			subtaskCreated: (key: string) => `${key} was created`,
+			weeklyScheduleLoading: "Checking this week's schedule…",
+			weeklyScheduleUnavailable: "Schedule check unavailable",
+			weeklyScheduleComplete: "Fully scheduled",
+			weeklyScheduleMissing: (
+				schedules: { assignee: string; shortages: { date: string; missing: number }[] }[],
+			) =>
+				schedules
+					.filter((item) => item.shortages.length)
+					.map(
+						(item) =>
+							`${item.assignee}: ${item.shortages
+								.map((shortage) => `${shortage.date} short ${shortage.missing}`)
+								.join(", ")}`,
+					)
+					.join("; "),
+			subtaskCreateFailed: (detail: string) =>
+				detail ? `Couldn't create the Jira sub-task: ${detail}` : "Couldn't create the Jira sub-task",
+			subtaskPartiallyCreated: (key: string, detail: string) =>
+				`${key} was created, but some follow-up fields couldn't be updated: ${detail}`,
 		},
 		git: {
+			repositories: {
+				manage: "Manage repositories",
+				eyebrow: "LOCAL REPOSITORIES",
+				summary: (total: number, pending: number, updates: number) =>
+					`${total} repositories · ${pending} with uncommitted work · ${updates} with updates`,
+				total: "repositories",
+				pending: "to commit",
+				updates: "to pull",
+				conflicts: "conflicts",
+				refresh: "Refresh all repositories",
+				syncNpt: "Sync NPT",
+				syncNptDesc: "Merge the tracked live branches into the fixed NPT UAT branches and push them.",
+				syncNptConfirm:
+					"This updates and pushes the NPT UAT branches for warehouse_id, warehouse_ph, and warehouse_sg. Merge conflicts use the live branch version. Continue?",
+				syncNptComplete: (count: number) => `NPT sync complete: ${count} repositories pushed.`,
+				syncNptFailed: (succeeded: number, details: string) =>
+					`NPT sync finished: ${succeeded} succeeded. Failed:\n${details}`,
+				changed: "Uncommitted files",
+				ahead: "Commits to push",
+				behind: "Updates to pull (as of the latest fetch)",
+				clean: "Up to date",
+				loadingBranch: "Reading branch…",
+				noBranch: "No branch",
+				detail: "Details",
+				details: (name: string) => `Open ${name} details in Obsidian`,
+				configureDetail: "Choose an Obsidian detail note for this repository in the card settings.",
+				noteMissing: (path: string) => `The Obsidian detail note “${path}” was not found.`,
+				desktopOnly: "Local repository status is available in the Obsidian desktop app.",
+				unnamed: "New repository",
+				errors: {
+					desktopOnly: "Desktop only",
+					invalidPath: "Path not found",
+					notRepository: "Not a Git repository",
+					unavailable: "Git status unavailable",
+				},
+			},
 			sections: {
 				status: "Repository status",
 				actions: "Buttons",
@@ -3170,8 +3648,64 @@ export const en = {
 		bookmarks: {
 			untitled: "Untitled",
 		},
+		savedLinks: {
+			all: "All",
+			toReview: "To review",
+			reviewed: "Reviewed",
+			syncAll: "Sync all",
+			syncingAll: "Syncing…",
+			editCategory: "Edit category",
+			dataSource: "Data source",
+			allDataSources: "All data sources",
+			sortBySyncTime: "Sync time order",
+			newestFirst: "Newest first",
+			oldestFirst: "Oldest first",
+			syncTimeRange: "Sync time range",
+			allSyncTimes: "Any time",
+			thisWeek: "Synced this week",
+			thisMonth: "Synced this month",
+			customRange: "Custom date range",
+			fromDate: "From",
+			toDate: "To",
+			markReviewed: "Mark reviewed",
+			markPending: "Move to review",
+			allCategories: "All categories",
+			category: "Category",
+			searchPlaceholder: "Search titles…",
+			manageCategories: "Manage categories",
+			manageCategoriesTitle: "Manage categories",
+			manageCategoriesDesc: "Maintain the categories available for favorites. Deleting one clears it from assigned items.",
+			addCategory: "Add category",
+			categoryNamePlaceholder: "Enter a category name",
+			newCategory: "New category",
+			removeCategory: "Delete category",
+			categoryRequired: "Category names can't be empty.",
+			categoryExists: "Category names must be unique.",
+			categoriesSaved: "Categories saved.",
+			empty: "No content favorites yet. Sync your sources here.",
+			noMatches: "No content favorites match these filters.",
+			uncategorized: "Uncategorized",
+			saveFailed: "Couldn't save your favorites.",
+			save: "Save",
+			cancel: "Cancel",
+		},
 		tasks: {
 			createNewTask: "Create new task",
+			quickCreateTitle: "Create task",
+			quickCreate: "Create",
+			title: "Title",
+			taskTitleRequired: "Enter a task title.",
+			taskCreateFailed: "Couldn't create the task.",
+			projectLevel: "Project-level Todo",
+			project: "Project",
+			projectPlaceholder: "Project name",
+			projectRequired: "Enter a project name for a project-level Todo.",
+			jiraLink: "Link Jira sub-task",
+			jiraLinkDesc: "Optional. Shows your open Jira sub-tasks; creating this Todo does not change Jira.",
+			jiraNotConfigured: "Configure a Jira card with a host and token to list your assigned sub-tasks.",
+			jiraNoLink: "No Jira link",
+			jiraRefresh: "Refresh my open Jira sub-tasks",
+			jiraLoadFailed: "Couldn't load your Jira sub-tasks.",
 			toDo: "To do",
 			done: "Done",
 			statusInProgress: "In progress",
@@ -3373,17 +3907,22 @@ export const en = {
 		base: "Embedded base",
 		excalidraw: "Excalidraw drawing",
 		canvas: "Embedded canvas",
-		daily: "Daily note (today)",
+		daily: "Todo List",
+		"time-reports": "Time reports",
 		periodic: "Periodic note",
 		web: "Web page (iframe)",
 		bookmarks: "Bookmarks",
 		favorites: "Favorites",
+		savedlinks: "Saved links",
+		douyin: "Douyin favorites",
+		social: "Content favorites",
 		recent: "Recent files",
 		links: "Links / launchpad",
 		commands: "Commands",
 		templater: "New note from template",
 		clock: "Clock & greeting",
 		tasks: "Tasks",
+		projecttodos: "Project Todos",
 		calendar: "Mini calendar",
 		schedule: "Calendar",
 		stats: "Vault statistics",
@@ -3395,15 +3934,18 @@ export const en = {
 		dataview: "Dataview query",
 		datacore: "Datacore query",
 		rss: "RSS feed",
+		"jira-assigned-to-me": "My Jira tasks",
 		jira: "Jira filter",
 		weather: "Weather",
 		git: "Git",
 		"operon-tasks": "Operon tasks",
 		"operon-board": "Operon board",
 		"operon-agenda": "Operon agenda",
-		"operon-timer": "Operon timer",
+		timer: "Time tracker",
 		leaf: "Plugin view (beta)",
 		pet: "Pet",
+		imagearchive: "Image archiver",
+		knowledge: "Knowledge Workbench",
 	},
 
 	/** One line per template, shown under its name in the add-card picker and
@@ -3416,17 +3958,21 @@ export const en = {
 		base: "A .base file, rendered by Obsidian's Bases",
 		excalidraw: "An Excalidraw drawing with native pan and zoom",
 		canvas: "A canvas you can pan around in place",
-		daily: "Always today's note, created on first click",
+		daily: "A checklist that lives directly on your dashboard",
 		periodic: "This week's, month's or year's note, from Periodic Notes",
 		web: "A web page in an iframe, refreshed on a timer",
 		bookmarks: "Your Obsidian bookmarks, one click away",
-		favorites: "The notes you starred in Hearth",
+		favorites: "The notes you starred in Flexible Workbench",
+		savedlinks: "Manage synced platform favorites by data source, category, and review status",
+		douyin: "Your Douyin collection, synced into the vault",
+		social: "Sync and browse favorites from five social platforms",
 		recent: "The files you opened most recently",
 		links: "A launchpad of links, notes and folders",
 		commands: "Buttons that run Obsidian commands",
 		templater: "Buttons that make a note from a Templater template, in a folder you pick",
 		clock: "The time, the date and a greeting",
 		tasks: "Checkboxes from your vault, as a list or a board",
+		projecttodos: "Project-level Todos grouped by project, with completion progress",
 		calendar: "A month at a glance, with your notes on it",
 		schedule: "Month, week, day and list, with your events on them",
 		stats: "Note, word and file counts for the vault",
@@ -3438,15 +3984,18 @@ export const en = {
 		dataview: "A DQL or DataviewJS query, rendered by Dataview",
 		datacore: "A Datacore query or script",
 		rss: "Headlines from the feeds you follow",
+		"jira-assigned-to-me": "Tasks currently assigned to you, with start and end dates",
 		jira: "Issues from a Jira filter or JQL search",
 		weather: "The forecast for a place you pick",
 		git: "Repository status, with commit, pull and push",
 		"operon-tasks": "Your Operon tasks, filtered the way you like",
 		"operon-board": "Operon's pipeline statuses as board columns",
 		"operon-agenda": "The next few days of Operon work, day by day",
-		"operon-timer": "Operon's running time tracker, ticking live",
+		timer: "Track each work session with a description and summary, with optional dashboard todo links",
 		leaf: "Another plugin's side panel, hosted in a card",
 		pet: "A small companion that lives on your board",
+		imagearchive: "Move stray images into archive/image, links intact",
+		knowledge: "Capture notes and review local Codex and Claude session logs each day",
 	},
 
 	// ---- Add-card picker -----------------------------------------------
@@ -3472,7 +4021,7 @@ export const en = {
 			railLabel: "Request a card",
 			heading: "Request a card",
 			intro:
-				"Missing something? Describe the card you wish Hearth had — what it " +
+				"Missing something? Describe the card you wish Flexible Workbench had — what it " +
 				"should show and where its data would come from.",
 			footPrompt: "Not what you were looking for?",
 			footLink: "Request a card",
@@ -3484,7 +4033,7 @@ export const en = {
 			emailDesc: "Straight to the maintainer, if you'd rather not use GitHub. Opens your mail app.",
 			emailAction: "Open email",
 			prefilledNote:
-				"Both open pre-filled with a few prompts and your Hearth and Obsidian versions — edit anything before sending.",
+				"Both open pre-filled with a few prompts and your Flexible Workbench and Obsidian versions — edit anything before sending.",
 		},
 	},
 
@@ -3512,9 +4061,9 @@ export const en = {
 		notAnObject: "Layout must be a JSON object.",
 		noValidDashboards: "Layout contained no valid dashboards.",
 		noValidCards: "Layout contained no valid cards.",
-		notAHearthLayout:
-			'Not a Hearth layout — no "dashboards" or "cards" array found.',
-		notHearthSettings:
-			'Not a Hearth settings backup — no "hearthSettings" marker or layout found.',
+		notAFlexibleWorkbenchLayout:
+			'Not a Flexible Workbench layout — no "dashboards" or "cards" array found.',
+		notFlexibleWorkbenchSettings:
+			'Not a Flexible Workbench settings backup — no "flexibleWorkbenchSettings" marker or layout found.',
 	},
 };

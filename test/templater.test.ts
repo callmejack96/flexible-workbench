@@ -16,7 +16,7 @@ import {
 /**
  * The Templater integration. The calls *into* Templater are Obsidian API and
  * stay untested (per the no-mocks rule); what's covered here is everything
- * Hearth decides on its own — which files count as templates, what a filename
+ * Flexible Workbench decides on its own — which files count as templates, what a filename
  * pattern expands to, and where the note is going to land — plus that the
  * plugin probes survive every shape of app object Obsidian can hand them.
  */
@@ -48,7 +48,7 @@ describe("reaching the plugin", () => {
 		expect(isTemplaterAvailable(fakeApp())).toBe(false);
 	});
 
-	it("reports unavailable when the one method Hearth needs is gone", () => {
+	it("reports unavailable when the one method Flexible Workbench needs is gone", () => {
 		// A Templater that renamed create_new_note_from_template must disable the
 		// card, not throw inside a dashboard render.
 		expect(isTemplaterAvailable(fakeApp({ templater: {} }))).toBe(false);

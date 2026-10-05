@@ -19,7 +19,7 @@ export function renderHeatmap(view: HomeView, card: DashboardCard, body: HTMLEle
 	const activity = activityByDay(view.app, metric);
 	const options = dailyNotesOptions(view);
 
-	const wrap = body.createDiv("hearth-heatmap");
+	const wrap = body.createDiv("flexible-workbench-heatmap");
 	const startOfWeek = moment.localeData().firstDayOfWeek();
 	const today = moment().startOf("day");
 	const todayKey: string = today.format("YYYY-MM-DD");
@@ -35,14 +35,14 @@ export function renderHeatmap(view: HomeView, card: DashboardCard, body: HTMLEle
 		if (key <= todayKey) peak = Math.max(peak, activity.get(key) ?? 0);
 	}
 
-	const grid = wrap.createDiv("hearth-heatmap-grid");
+	const grid = wrap.createDiv("flexible-workbench-heatmap-grid");
 	grid.style.gridTemplateColumns = `repeat(${weeks}, 1fr)`;
 	// Column-major fill (top-to-bottom, then next week): 7 rows, auto-flow column.
 	for (let w = 0; w < weeks; w++) {
 		for (let r = 0; r < 7; r++) {
 			const day = start.clone().add(w * 7 + r, "days");
 			const key: string = day.format("YYYY-MM-DD");
-			const cellEl = grid.createDiv("hearth-heatmap-cell");
+			const cellEl = grid.createDiv("flexible-workbench-heatmap-cell");
 			if (key > todayKey) {
 				cellEl.addClass("is-empty");
 				continue;
@@ -65,14 +65,14 @@ export function renderHeatmap(view: HomeView, card: DashboardCard, body: HTMLEle
 	}
 
 	// A small Less→More legend.
-	const legend = wrap.createDiv("hearth-heatmap-legend");
-	legend.createSpan({ cls: "hearth-heatmap-legend-label", text: t().cards.heatmap.less });
+	const legend = wrap.createDiv("flexible-workbench-heatmap-legend");
+	legend.createSpan({ cls: "flexible-workbench-heatmap-legend-label", text: t().cards.heatmap.less });
 	for (let l = 0; l <= 4; l++) {
-		const sq = legend.createDiv("hearth-heatmap-cell");
+		const sq = legend.createDiv("flexible-workbench-heatmap-cell");
 		sq.style.setProperty("--heat", String(l));
 		if (l > 0) sq.addClass("has-heat");
 	}
-	legend.createSpan({ cls: "hearth-heatmap-legend-label", text: t().cards.heatmap.more });
+	legend.createSpan({ cls: "flexible-workbench-heatmap-legend-label", text: t().cards.heatmap.more });
 }
 
 

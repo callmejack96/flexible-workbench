@@ -44,11 +44,11 @@ import { t } from "./i18n";
 type PickerScope = "all" | "request" | CardCategory;
 
 /** localStorage key for the scope the picker reopens on. */
-const SCOPE_KEY = "hearth-card-picker-scope";
+const SCOPE_KEY = "flexible-workbench-card-picker-scope";
 
 export interface CardPickerOptions {
-	/** The running Hearth version, stamped into a card request. */
-	hearthVersion: string;
+	/** The running Flexible Workbench version, stamped into a card request. */
+	flexibleWorkbenchVersion: string;
 	/** Add this template to the dashboard. */
 	onChoose: (template: CardTemplateDef) => void;
 }
@@ -62,7 +62,7 @@ class CardPickerModal extends Modal {
 	private opts: CardPickerOptions;
 	/** Named `pickerScope`, not `scope`: `Modal` already has a `scope` (its
 	 * keymap `Scope`), and shadowing it would break the modal's key handling —
-	 * the #52 naming hazard documented on `HearthTabbedModal`. */
+	 * the #52 naming hazard documented on `FlexibleWorkbenchTabbedModal`. */
 	private pickerScope: PickerScope = "all";
 	private query = "";
 
@@ -87,14 +87,14 @@ class CardPickerModal extends Modal {
 		const { contentEl, modalEl } = this;
 		// The frame is sized on modalEl (a grid of tiles needs more than the
 		// default modal width); the content layout hangs off contentEl.
-		modalEl.addClass("hearth-card-picker-modal");
+		modalEl.addClass("flexible-workbench-card-picker-modal");
 		contentEl.empty();
-		contentEl.addClass("hearth-card-picker");
+		contentEl.addClass("flexible-workbench-card-picker");
 
 		this.renderSearch(contentEl);
-		const body = contentEl.createDiv("hearth-picker-body");
-		this.railEl = body.createDiv("hearth-picker-rail");
-		this.resultsEl = body.createDiv("hearth-picker-results");
+		const body = contentEl.createDiv("flexible-workbench-picker-body");
+		this.railEl = body.createDiv("flexible-workbench-picker-rail");
+		this.resultsEl = body.createDiv("flexible-workbench-picker-results");
 		this.renderRail();
 		this.renderResults();
 
@@ -127,10 +127,10 @@ class CardPickerModal extends Modal {
 	// ---- Search ---------------------------------------------------------
 
 	private renderSearch(containerEl: HTMLElement): void {
-		const row = containerEl.createDiv("hearth-picker-search");
-		setIcon(row.createSpan("hearth-picker-search-icon"), "search");
+		const row = containerEl.createDiv("flexible-workbench-picker-search");
+		setIcon(row.createSpan("flexible-workbench-picker-search-icon"), "search");
 		const input = row.createEl("input", {
-			cls: "hearth-picker-search-input",
+			cls: "flexible-workbench-picker-search-input",
 			attr: {
 				type: "text",
 				placeholder: t().cardPicker.searchPlaceholder,
@@ -141,7 +141,7 @@ class CardPickerModal extends Modal {
 		input.addEventListener("input", () => {
 			this.query = input.value.trim();
 			// Typing searches the whole catalogue: a query that matches nothing in
-			// the category you happen to be standing in reads as "Hearth has no
+			// the category you happen to be standing in reads as "Flexible Workbench has no
 			// such card", which is exactly the wrong answer.
 			if (this.query && this.pickerScope !== "all") this.setScope("all");
 			else this.renderResults();
@@ -172,17 +172,17 @@ class CardPickerModal extends Modal {
 		for (const category of CARD_CATEGORIES) {
 			this.railButton(rail, category, strings.categories[category], CATEGORY_ICONS[category]);
 		}
-		rail.createDiv("hearth-picker-rail-sep");
+		rail.createDiv("flexible-workbench-picker-rail-sep");
 		this.railButton(rail, "request", strings.request.railLabel, "message-square-plus");
 	}
 
 	private railButton(rail: HTMLElement, scope: PickerScope, label: string, icon: string): void {
-		const btn = rail.createEl("button", { cls: "hearth-picker-rail-btn" });
+		const btn = rail.createEl("button", { cls: "flexible-workbench-picker-rail-btn" });
 		btn.toggleClass("is-active", this.pickerScope === scope);
 		btn.toggleClass("is-request", scope === "request");
 		btn.setAttribute("aria-pressed", String(this.pickerScope === scope));
-		setIcon(btn.createSpan("hearth-picker-rail-icon"), icon);
-		btn.createSpan({ cls: "hearth-picker-rail-label", text: label });
+		setIcon(btn.createSpan("flexible-workbench-picker-rail-icon"), icon);
+		btn.createSpan({ cls: "flexible-workbench-picker-rail-label", text: label });
 		btn.addEventListener("click", () => this.setScope(scope));
 	}
 
@@ -215,7 +215,7 @@ class CardPickerModal extends Modal {
 				const inCategory = matches.filter((tpl) => templateCategory(tpl.id) === category);
 				if (!inCategory.length) continue;
 				results.createDiv({
-					cls: "hearth-picker-section",
+					cls: "flexible-workbench-picker-section",
 					text: t().cardPicker.categories[category],
 				});
 				this.renderGrid(results, inCategory);
@@ -224,10 +224,10 @@ class CardPickerModal extends Modal {
 
 		// A quiet way out at the end of the list, for the case the picker can't
 		// answer: you scrolled everything and none of it was the card you wanted.
-		const foot = results.createDiv("hearth-picker-foot");
+		const foot = results.createDiv("flexible-workbench-picker-foot");
 		foot.createSpan({ text: t().cardPicker.request.footPrompt });
 		const link = foot.createEl("button", {
-			cls: "hearth-picker-foot-link",
+			cls: "flexible-workbench-picker-foot-link",
 			text: t().cardPicker.request.footLink,
 		});
 		link.addEventListener("click", () => this.setScope("request"));
@@ -243,7 +243,7 @@ class CardPickerModal extends Modal {
 
 		// Name and description both feed the match, so "todo" finds Tasks and
 		// "iframe" finds the web card. Obsidian's own fuzzy matcher, for the same
-		// feel as every other search surface in Hearth.
+		// feel as every other search surface in Flexible Workbench.
 		const fuzzy = prepareFuzzySearch(this.query);
 		const ranked: { template: CardTemplateDef; score: number }[] = [];
 		for (const template of scoped) {
@@ -259,23 +259,23 @@ class CardPickerModal extends Modal {
 	}
 
 	private renderGrid(containerEl: HTMLElement, templates: CardTemplateDef[]): void {
-		const grid = containerEl.createDiv("hearth-picker-grid");
+		const grid = containerEl.createDiv("flexible-workbench-picker-grid");
 		for (const template of templates) this.renderTile(grid, template);
 	}
 
 	private renderTile(grid: HTMLElement, template: CardTemplateDef): void {
 		const missing = unmetRequirement(this.app, template);
-		const tile = grid.createEl("button", { cls: "hearth-card-tile" });
+		const tile = grid.createEl("button", { cls: "flexible-workbench-card-tile" });
 		tile.toggleClass("is-unmet", !!missing);
-		setIcon(tile.createSpan("hearth-card-tile-icon"), template.icon);
+		setIcon(tile.createSpan("flexible-workbench-card-tile-icon"), template.icon);
 
-		const text = tile.createDiv("hearth-card-tile-text");
-		text.createDiv({ cls: "hearth-card-tile-name", text: templateName(template) });
+		const text = tile.createDiv("flexible-workbench-card-tile-text");
+		text.createDiv({ cls: "flexible-workbench-card-tile-name", text: templateName(template) });
 		const description = templateDescription(template);
-		if (description) text.createDiv({ cls: "hearth-card-tile-desc", text: description });
+		if (description) text.createDiv({ cls: "flexible-workbench-card-tile-desc", text: description });
 		if (missing) {
-			const badge = text.createDiv("hearth-card-tile-badge");
-			setIcon(badge.createSpan("hearth-card-tile-badge-icon"), "puzzle");
+			const badge = text.createDiv("flexible-workbench-card-tile-badge");
+			setIcon(badge.createSpan("flexible-workbench-card-tile-badge-icon"), "puzzle");
 			badge.createSpan({ text: t().cardPicker.requires(missing.name) });
 		}
 
@@ -330,9 +330,9 @@ class CardPickerModal extends Modal {
 	}
 
 	private renderNoMatches(containerEl: HTMLElement): void {
-		const empty = containerEl.createDiv("hearth-picker-empty");
-		setIcon(empty.createSpan("hearth-picker-empty-icon"), "search-x");
-		empty.createDiv({ cls: "hearth-picker-empty-text", text: t().cardPicker.noMatches });
+		const empty = containerEl.createDiv("flexible-workbench-picker-empty");
+		setIcon(empty.createSpan("flexible-workbench-picker-empty-icon"), "search-x");
+		empty.createDiv({ cls: "flexible-workbench-picker-empty-text", text: t().cardPicker.noMatches });
 		const btn = empty.createEl("button", {
 			cls: "mod-cta",
 			text: t().cardPicker.request.railLabel,
@@ -344,12 +344,12 @@ class CardPickerModal extends Modal {
 
 	private renderRequest(containerEl: HTMLElement): void {
 		const strings = t().cardPicker.request;
-		const page = containerEl.createDiv("hearth-picker-request");
-		page.createDiv({ cls: "hearth-picker-section", text: strings.heading });
-		page.createDiv({ cls: "hearth-picker-request-intro", text: strings.intro });
+		const page = containerEl.createDiv("flexible-workbench-picker-request");
+		page.createDiv({ cls: "flexible-workbench-picker-section", text: strings.heading });
+		page.createDiv({ cls: "flexible-workbench-picker-request-intro", text: strings.intro });
 
 		const context = {
-			hearthVersion: this.opts.hearthVersion,
+			flexibleWorkbenchVersion: this.opts.flexibleWorkbenchVersion,
 			obsidianVersion: apiVersion,
 			platform: Platform.isMobile ? "Mobile" : "Desktop",
 		};
@@ -371,18 +371,18 @@ class CardPickerModal extends Modal {
 			url: cardRequestMailtoUrl(context),
 		});
 
-		page.createDiv({ cls: "hearth-picker-request-note", text: strings.prefilledNote });
+		page.createDiv({ cls: "flexible-workbench-picker-request-note", text: strings.prefilledNote });
 	}
 
 	private requestOption(
 		containerEl: HTMLElement,
 		opts: { icon: string; title: string; description: string; action: string; url: string },
 	): void {
-		const row = containerEl.createDiv("hearth-picker-request-option");
-		setIcon(row.createSpan("hearth-picker-request-icon"), opts.icon);
-		const text = row.createDiv("hearth-picker-request-text");
-		text.createDiv({ cls: "hearth-picker-request-title", text: opts.title });
-		text.createDiv({ cls: "hearth-picker-request-desc", text: opts.description });
+		const row = containerEl.createDiv("flexible-workbench-picker-request-option");
+		setIcon(row.createSpan("flexible-workbench-picker-request-icon"), opts.icon);
+		const text = row.createDiv("flexible-workbench-picker-request-text");
+		text.createDiv({ cls: "flexible-workbench-picker-request-title", text: opts.title });
+		text.createDiv({ cls: "flexible-workbench-picker-request-desc", text: opts.description });
 		const btn = row.createEl("button", { cls: "mod-cta", text: opts.action });
 		btn.addEventListener("click", () => {
 			// mailto: and https: both go through the OS handler — the browser (or

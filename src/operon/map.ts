@@ -5,7 +5,7 @@ import type { OperonPriority, OperonStatus, OperonTask, OperonTaxonomy } from ".
  * Pure shaping of Operon's read DTOs into what a card draws: due buckets, day
  * grouping, board columns, sort order, elapsed time.
  *
- * Deliberately free of Obsidian imports — Hearth's Vitest setup runs in a node
+ * Deliberately free of Obsidian imports — Flexible Workbench's Vitest setup runs in a node
  * environment with no Obsidian API mocks, so the logic worth testing has to
  * live somewhere it can be imported directly. Nothing here re-derives anything
  * Operon already decided: statuses, priorities and recurrence come from its

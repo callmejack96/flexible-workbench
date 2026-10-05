@@ -14,9 +14,9 @@ export function renderText(
 	body: HTMLElement,
 	component: Component,
 ): void {
-	const wrap = body.createDiv("hearth-jot");
+	const wrap = body.createDiv("flexible-workbench-jot");
 	body.addClass("is-jot-host");
-	const preview = wrap.createDiv("hearth-jot-preview markdown-rendered");
+	const preview = wrap.createDiv("flexible-workbench-jot-preview markdown-rendered");
 	preview.setAttribute("title", t().cards.embed.editHint);
 	wireMarkdownLinks(view, preview, "");
 	// Ticking a checkbox edits the card's own text (issue #143). The jot isn't a
@@ -36,7 +36,7 @@ export function renderText(
 		{ skipFrontmatter: false },
 	);
 	const area = wrap.createEl("textarea", {
-		cls: "hearth-text hearth-jot-edit",
+		cls: "flexible-workbench-text flexible-workbench-jot-edit",
 		attr: { placeholder: t().cards.text.placeholder },
 	});
 	area.hide();

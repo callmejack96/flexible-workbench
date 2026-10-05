@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to Hearth are documented in this file.
+All notable changes to Flexible Workbench are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to a numeric-only versioning scheme
@@ -9,13 +9,13 @@ carry a fourth `.N-beta` segment and are omitted here; each entry aggregates its
 preceding beta series.
 
 History begins at 1.5.0. For releases before 1.5.0, see the
-[GitHub Releases](https://github.com/ondreu/Hearth/releases) page.
+[GitHub Releases](https://github.com/callmejack96/flexible-workbench/releases) page.
 
 ## [3.0.0]
 
 ### Added
 
-- **Hearth works on a phone.** Mobile used to have exactly two settings: the
+- **Flexible Workbench works on a phone.** Mobile used to have exactly two settings: the
   full desktop board, laid out for a screen ten times wider, or **Mobile mode**
   — the search field and nothing else. That was not a gap in the features, it
   was a gap in the *layout*. Cards are placed as fractions of the board's width,
@@ -28,7 +28,7 @@ History begins at 1.5.0. For releases before 1.5.0, see the
   is untouched — the stacked view is worked out fresh on every render and never
   written back — so the same board is a launcher in your pocket and a wall of
   cards on your monitor, and neither reshapes the other. It can be turned off
-  under **Settings → Hearth → Mobile** (#205).
+  under **Settings → Flexible Workbench → Mobile** (#205).
 
   The threshold is the **measured width of the board**, not the platform. A
   narrow desktop pane had exactly the same problem and gets exactly the same
@@ -73,11 +73,11 @@ History begins at 1.5.0. For releases before 1.5.0, see the
   its label to a tooltip.
 
   **Its own category, and its own performance tier.** The mobile settings moved
-  out of **Behaviour** into a **Mobile** category of their own: Hearth runs on a
+  out of **Behaviour** into a **Mobile** category of their own: Flexible Workbench runs on a
   phone as a first-class board now rather than as a reduced mode of the desktop
   one, and the settings pane is where that is either stated or quietly
   contradicted. It carries a performance tier of its own, defaulting to
-  **Balanced** — the animated sky is the most expensive thing Hearth draws, and
+  **Balanced** — the animated sky is the most expensive thing Flexible Workbench draws, and
   on a phone it is drawn on the smallest screen there is and paid for out of a
   battery. Your desktop tier is stored separately and is not touched; set the
   mobile one to **Match desktop** for the previous behaviour.
@@ -201,7 +201,7 @@ History begins at 1.5.0. For releases before 1.5.0, see the
   a long tab scrolls past, and a pinned strip has to paint over whatever passes
   underneath it. It painted with the *note* background — a colour plenty of
   themes reserve for notes alone — so on those themes the tabs sat on a
-  rectangle in the wrong shade. Hearth now measures the colour the dialog is
+  rectangle in the wrong shade. Flexible Workbench now measures the colour the dialog is
   actually painted with as it opens, however the theme sets it, and pins the
   strip only when there is a colour it can match exactly. A dialog wearing no
   such colour — a glass or translucent theme, where painting even the dialog's
@@ -244,12 +244,12 @@ History begins at 1.5.0. For releases before 1.5.0, see the
   - the **vault path of an image** (`Assets/logo.png`), pickable from a new 📷
     button — so a board can wear your own mark rather than a stock icon;
   - the **URL of an image on the web**;
-  - or nothing at all, for the Hearth crystal.
+  - or nothing at all, for the Flexible Workbench workbench mark.
 
   A picture is sized off the same **Title icon size** slider (renamed from
   "Logo size") that a Lucide icon uses, so it lines up with the title at any
   scale, and a vault image that has been moved or deleted falls back to the
-  crystal rather than leaving a gap. The setup wizard asks once instead of
+  workbench mark rather than leaving a gap. The setup wizard asks once instead of
   twice, and its field takes all of the above too.
 
   **On upgrade, every board keeps the mark it was already showing.** The old
@@ -258,7 +258,7 @@ History begins at 1.5.0. For releases before 1.5.0, see the
   icon keeps the icon, and one that had opted out of that icon keeps its text.
   A board whose merged value matches the vault-wide one drops its override
   entirely, so a later change to the global icon still reaches it. The fold is
-  one-way: downgrading below 3.0.0 afterwards shows the Hearth crystal again
+  one-way: downgrading below 3.0.0 afterwards shows the Flexible Workbench workbench mark again
   until the old fields are set anew. A settings export taken before 3.0.0
   imports through the same fold (#252).
 
@@ -296,9 +296,9 @@ History begins at 1.5.0. For releases before 1.5.0, see the
   button's **text** is configurable too, so it can read "Capture" or "New
   meeting note". Templater does the templating, exactly as it does from its own
   command: your user scripts, `tp.system.prompt()` dialogs and cursor placement
-  all behave unchanged, and the note opens the way Hearth opens notes rather
+  all behave unchanged, and the note opens the way Flexible Workbench opens notes rather
   than replacing your board. The settings drive the header button, a search-bar
-  card's button and Hearth's "Create new note" command alike; leave them alone
+  card's button and Flexible Workbench's "Create new note" command alike; leave them alone
   and the button does what it always did. Folder and filename apply to a blank
   note too, so it is configurable without Templater installed (#227).
 
@@ -307,13 +307,13 @@ History begins at 1.5.0. For releases before 1.5.0, see the
   same move on each row's **right-click menu**, so it is reachable without a
   pointer — and the
   board and list cards offer a **+** that creates a task. Both are off until you
-  switch on **Allow changes** under Settings → Hearth → Integrations → Operon:
+  switch on **Allow changes** under Settings → Flexible Workbench → Integrations → Operon:
   Operon's developer grant is all-or-nothing, so asking for write access by
   default would make every read-only vault approve it, and turning it on widens
   the request and needs a fresh approval in Operon's own Developer API
   Integrations.
 
-  Operon stays in charge of both. Hearth previews a change, Operon rates it and
+  Operon stays in charge of both. Flexible Workbench previews a change, Operon rates it and
   applies it, and any plan it marks as needing consent — or as more than routine
   — is confirmed with you before it runs. A move carries the status the board
   was drawn from, so a drag on a board that has gone stale is refused instead of
@@ -326,7 +326,7 @@ History begins at 1.5.0. For releases before 1.5.0, see the
   them can't be resolved. A refused create now names the target Operon was
   configured to use, so *"Configured Daily Note target is unavailable or
   invalid"* says which setting it means. And if Operon can't confirm whether
-  a change landed, Hearth resolves that one plan with Operon and then says the
+  a change landed, Flexible Workbench resolves that one plan with Operon and then says the
   outcome is uncertain — it never re-applies, which is how a task ends up moved
   twice.
 
@@ -343,16 +343,16 @@ History begins at 1.5.0. For releases before 1.5.0, see the
   Operon task due and list them in the agenda alongside external-calendar events.
 
   Unlike the TaskNotes integration, this reads nothing off disk: Operon ships an
-  in-process developer API, and Hearth uses it, so recurrence, statuses,
+  in-process developer API, and Flexible Workbench uses it, so recurrence, statuses,
   priorities and what counts as done all stay Operon's to define and keep working
   as Operon changes. The integration is **read-only** — no card here modifies a
   task.
 
   Operon's developer API is **desktop-only, needs Obsidian 1.12.2 or newer**, and
-  requires **your approval**: Hearth's first request appears under Settings →
+  requires **your approval**: Flexible Workbench's first request appears under Settings →
   Operon → Core → General → Developer API Integrations, and the cards say exactly
-  what they're waiting for until you approve it. Settings → Hearth →
-  Integrations shows the connection status, the read access Hearth asks for, and
+  what they're waiting for until you approve it. Settings → Flexible Workbench →
+  Integrations shows the connection status, the read access Flexible Workbench asks for, and
   a switch to turn the whole thing off.
 
 - **Filter TaskNotes tasks by Context and Project.** The Tasks card's filter
@@ -366,10 +366,10 @@ History begins at 1.5.0. For releases before 1.5.0, see the
   Developer API is desktop-only and needs Obsidian 1.12.2, so the wizard uses
   the same two checks the Add card picker does rather than merely noticing the
   plugin is installed. It is off by default, and says up front that Operon will
-  ask you to approve Hearth the first time the card loads.
+  ask you to approve Flexible Workbench the first time the card loads.
 
-- **Hearth speaks Simplified Chinese.** A full `zh` locale joins English, so
-  every string Hearth draws — commands, notices, the setup wizard, all of the
+- **Flexible Workbench speaks Simplified Chinese.** A full `zh` locale joins English, so
+  every string Flexible Workbench draws — commands, notices, the setup wizard, all of the
   plugin and card settings, card bodies and the add-card picker — comes out in
   简体中文 when Obsidian's own display language is Chinese. It is picked up from
   Obsidian's language at load and needs no setting of its own; regional codes
@@ -380,12 +380,12 @@ History begins at 1.5.0. For releases before 1.5.0, see the
 
 - **Hovering the search bar no longer lights a grey slab inside it.** Obsidian
   paints every text input on hover, and that rule outranked the one that makes
-  Hearth's search field transparent, so a second rounded rectangle — carrying
+  Flexible Workbench's search field transparent, so a second rounded rectangle — carrying
   the field's own corner radius, not the bar's — appeared inset inside the bar.
   The bar keeps drawing its own hover and focus affordance; only the stray
   rectangle is gone.
 - **The setup wizard no longer changes your vault-wide settings.** Running setup
-  — or re-running it later from **Settings → Hearth → About → Build a
+  — or re-running it later from **Settings → Flexible Workbench → About → Build a
   dashboard** — used to write its answers straight into the global settings: the
   title, logo and accent, the card surface preset, compact spacing, the
   background, and the TaskNotes field mapping. On a fresh install that was
@@ -396,18 +396,18 @@ History begins at 1.5.0. For releases before 1.5.0, see the
   touch another board or a vault-wide preference. Two new per-board overrides
   came out of it, both also available from a board's own settings: **Compact
   spacing** and **Accent colour on the title**. And the wizard no longer asks
-  about the things that can only be vault-wide — opening Hearth on startup,
+  about the things that can only be vault-wide — opening Flexible Workbench on startup,
   using it for new tabs, focusing search on open, where notes open, Omnisearch
   as the search engine, and Iconic/Iconize file icons — since it cannot set them
-  without changing Hearth everywhere; each is one toggle in **Settings →
-  Hearth**.
+  without changing Flexible Workbench everywhere; each is one toggle in **Settings →
+  Flexible Workbench**.
 - **Daily notes are found even when their name spells the weekday in another
   language.** A daily-note format with a locale-dependent token — `dd`, `dddd`,
   `Do` — was resolved by formatting the date in whatever locale Obsidian is
   running in now, so a note written under a different one ("Wed, 19.08.2026"
   next to a moment locale that spells it "Mi") looked missing: the day streak
   read 0, the calendar day lost its dot and the daily card offered to create a
-  note that already existed. For those formats Hearth now reads the date back
+  note that already existed. For those formats Flexible Workbench now reads the date back
   out of the filenames in the daily-note folder, ignoring the parts only the
   locale decides, so notes made by Periodic Notes with its own locale override
   — or carried over from another machine — resolve the same as any other
@@ -425,15 +425,15 @@ History begins at 1.5.0. For releases before 1.5.0, see the
   (or edit or delete just that one) and the calendar card listed it in both
   places at once. The feed says as much in two parts — the series keeps its
   repeat rule untouched, and a second entry carries the same event with the
-  original time it replaces — and Hearth read those as two separate events.
-  Hearth now folds the second entry back into the series: the occurrence appears
+  original time it replaces — and Flexible Workbench read those as two separate events.
+  Flexible Workbench now folds the second entry back into the series: the occurrence appears
   where you moved it and nowhere else, a deleted one disappears, and an edit
   that takes over "this and all following events" splits the series at that
   point (#232).
 - **Recent files shows every file you asked for — or as many as the card is
   tall.** Setting **Number of files** to 15 listed ten and left the rest of the
   card empty, because Obsidian's own recent-files list stops at ten entries and
-  no amount of asking afterwards makes it longer. Hearth now keeps its own
+  no amount of asking afterwards makes it longer. Flexible Workbench now keeps its own
   recent-file history — up to 50 files, deduplicated, most recent first, stored
   per vault on this machine like Obsidian's own and following renames — so a
   larger number is a number the card can actually fill. The setting is clamped
@@ -478,10 +478,10 @@ History begins at 1.5.0. For releases before 1.5.0, see the
   features that had their own rules for it. Card blur defaults to 0 for new
   vaults; existing vaults keep the value they have (#223).
 
-- **Deprecated Obsidian APIs cleared out of the settings UI.** Hearth no longer
+- **Deprecated Obsidian APIs cleared out of the settings UI.** Flexible Workbench no longer
   calls `setDynamicTooltip()` on its sliders: Obsidian draws a slider's value
   inline itself as of 1.13, where the call did nothing. On Obsidian 1.8.7–1.12.x
-  — still Hearth's declared minimum — a slider now shows no number while you
+  — still Flexible Workbench's declared minimum — a slider now shows no number while you
   drag it; the value it lands on is the one the setting keeps, as before.
 
 - **"What's new" reads as a list of headlines, not a wall of text.** The dialog
@@ -499,7 +499,7 @@ History begins at 1.5.0. For releases before 1.5.0, see the
 
 ### Added
 
-- **A launchpad that makes notes: the Templater card.** Hearth's third tile card
+- **A launchpad that makes notes: the Templater card.** Flexible Workbench's third tile card
   sits beside Links and Commands, but each of its buttons creates a note. A tile
   carries three things — one of your
   [Templater](https://github.com/SilentVoid13/Templater) templates, the folder
@@ -517,11 +517,11 @@ History begins at 1.5.0. For releases before 1.5.0, see the
   is one click and one line typed. Leave the field empty and Templater names the
   note, as it does from its own command.
 
-  **Templater does the templating.** Hearth calls
+  **Templater does the templating.** Flexible Workbench calls
   `create_new_note_from_template` on the running plugin and nothing else: your
   user scripts, `tp.system.prompt()` dialogs, folder templates and
   `tp.file.cursor()` placement all behave exactly as they do everywhere else.
-  What Hearth adds is where the note *opens* — through its own "Open notes in"
+  What Flexible Workbench adds is where the note *opens* — through its own "Open notes in"
   setting, so a click from the dashboard no longer replaces the dashboard.
 
   Tiles drag, resize and overlap like every other launchpad tile, take a Lucide
@@ -531,7 +531,7 @@ History begins at 1.5.0. For releases before 1.5.0, see the
   template you already have.
 
 - **A setup wizard that builds your first dashboard.** A new install no longer
-  lands on a generic starter grid and a wallpaper nobody chose. Hearth asks
+  lands on a generic starter grid and a wallpaper nobody chose. Flexible Workbench asks
   instead — a title and logo, a card style and a background, what you actually
   use the vault for, how it should behave on startup — and lays out a board from
   the answers.
@@ -546,7 +546,7 @@ History begins at 1.5.0. For releases before 1.5.0, see the
   inside the other plugin.
 
   **TaskNotes is read properly, not merely noticed.** Its field names are
-  remappable and its statuses are user-defined, so Hearth reads the running
+  remappable and its statuses are user-defined, so Flexible Workbench reads the running
   plugin's own configuration — the status, due and priority properties, and
   every status it counts as complete — and copies them across. The step shows
   you exactly what it found. A vault that renamed `due` to `deadline`, or that
@@ -560,19 +560,19 @@ History begins at 1.5.0. For releases before 1.5.0, see the
 
   **And it says so up front.** The final step *opens* by saying that the board
   it is about to build is a starting point rather than a preset: enough to show
-  what Hearth can do for you, but only a fraction of what there is. Every card
+  what Flexible Workbench can do for you, but only a fraction of what there is. Every card
   can be moved, resized, retitled, recoloured, reconfigured or thrown out, and
   there is a great deal more in the settings than the wizard asks about — so go
   and edit all of it to your liking.
 
-  Run it again any time from **Settings → Hearth → About → Build a dashboard**
-  or the **Set up Hearth** command. Run that way it **always adds a new
+  Run it again any time from **Settings → Flexible Workbench → About → Build a dashboard**
+  or the **Set up Flexible Workbench** command. Run that way it **always adds a new
   dashboard** and never touches an existing one, so it is safe to press just to
   see what it would make. Only the first-run prompt offers to replace the
   untouched starter board.
 
   Existing vaults are never interrupted: the wizard is offered only to an
-  install with no saved Hearth settings at all, and dismissing it counts as an
+  install with no saved Flexible Workbench settings at all, and dismissing it counts as an
   answer, so it can't nag.
 
 - **A board that wears its background as a banner.** **Appearance → Background →
@@ -601,11 +601,11 @@ History begins at 1.5.0. For releases before 1.5.0, see the
   leaves the *layout* alone: a bannered board keeps its banner, so toggling the
   mode no longer moves every card on it.
 
-- **Lucide icons for the tab and the title.** Hearth's crystal is no longer the
+- **Lucide icons for the tab and the title.** Flexible Workbench's workbench mark is no longer the
   only mark it can wear. **Appearance → Home → Tab icon** picks any Lucide icon
-  for Hearth's tab header and ribbon button, and **Title icon** does the same for
+  for Flexible Workbench's tab header and ribbon button, and **Title icon** does the same for
   the icon beside the big title on the board. Leave either empty and nothing
-  changes: the crystal, and the emoji/text logo, stay exactly as they were.
+  changes: the workbench mark, and the emoji/text logo, stay exactly as they were.
 
   **Each dashboard can set its own title icon**, under **Header → Title icon** in
   that board's settings — one board a flame, the next a rocket, or one board back
@@ -615,7 +615,7 @@ History begins at 1.5.0. For releases before 1.5.0, see the
   magnifier and search the whole Lucide set with each icon drawn beside its name;
   a preview beside the field shows what you'll get. That applies to the dashboard
   switcher's icon too, which until now was an id typed from memory. An id that
-  names no icon falls back — to the crystal, the logo text, or the switcher's
+  names no icon falls back — to the workbench mark, the logo text, or the switcher's
   number — rather than leaving a blank where the icon should be.
 
 - **The calculator converts number bases.** Binary, octal, decimal and hex now
@@ -853,7 +853,7 @@ History begins at 1.5.0. For releases before 1.5.0, see the
   not the Git plugin is installed — without it, the card says so and points at
   it — and Git joins the Integrations catalogue.
 - **Datacore card.** Dataview is winding down in favour of
-  [Datacore](https://github.com/blacksmithgu/datacore), so Hearth now has a card
+  [Datacore](https://github.com/blacksmithgu/datacore), so Flexible Workbench now has a card
   for it, in the same shape as the Dataview card: pick a query type, write a
   query, get a live result. **Query** is the no-code mode — type a Datacore
   query like `@page and #project` and the card renders the matches as a list of
@@ -865,13 +865,13 @@ History begins at 1.5.0. For releases before 1.5.0, see the
   is offered whether or not Datacore is installed — without it, the card says so
   and points at it. Datacore also joins the Integrations catalogue.
 - **Every integration in one place.** **Settings → Integrations** now opens with
-  a complete catalogue of everything Hearth works with — community plugins
+  a complete catalogue of everything Flexible Workbench works with — community plugins
   (Omnisearch, TaskNotes, Dataview, Git, Iconic, Iconize, Excalidraw), Obsidian's own
   core plugins (Bases, Canvas, Daily notes, Bookmarks, Search, File explorer,
   Workspaces, Audio recorder, plus any plugin whose side panel a Plugin view
   card can host) and the external services some cards fetch from (Jira, RSS and Atom
   feeds, iCalendar subscriptions, exchange rates, web search). Every one is
-  listed whether or not it's installed, so the tab answers "what does Hearth
+  listed whether or not it's installed, so the tab answers "what does Flexible Workbench
   work with?" and not just "what did I already set up". Each row says what the
   integration does, carries a live status (enabled, disabled, not installed),
   and points at where its settings actually live — the section below on that
@@ -879,7 +879,7 @@ History begins at 1.5.0. For releases before 1.5.0, see the
   card itself, the other plugin's own settings, or nowhere at all. Rows link
   straight there, and anything not installed gets a one-click Install button.
 - **Low power mode.** One switch at the top of **Settings → Appearance** trades
-  Hearth's visual effects for battery life and smoothness on slower hardware.
+  Flexible Workbench's visual effects for battery life and smoothness on slower hardware.
   While it is on the background becomes a flat colour (a muted grey-purple by
   default, and you can change it) instead of an image, GIF, opacity layer and
   blur; cards go opaque with no frosted glass behind them; transitions, hover
@@ -915,23 +915,23 @@ History begins at 1.5.0. For releases before 1.5.0, see the
   TaskNotes records it), and the event popup shows the task's status, priority,
   contexts, projects and estimate with an **Open task** button that hands off to
   TaskNotes' own editor.
-- **Choose where Hearth opens notes.** Settings → Hearth → Behaviour → **Opening
-  notes** has a single **Open notes in** choice that governs every note Hearth
+- **Choose where Flexible Workbench opens notes.** Settings → Flexible Workbench → Behaviour → **Opening
+  notes** has a single **Open notes in** choice that governs every note Flexible Workbench
   opens: **a new tab** (what it has always done), **the current tab**, which
-  replaces the home view so Hearth behaves like any other tab and the back
+  replaces the home view so Flexible Workbench behaves like any other tab and the back
   arrow brings it straight back, **a split pane**, or **a new window**. Four
   optional rows under it take exceptions, each starting on *Same as above*, so
-  links, search results, notes listed in cards and notes Hearth creates can each
-  land somewhere different — a search hit taking over the Hearth tab while a
+  links, search results, notes listed in cards and notes Flexible Workbench creates can each
+  land somewhere different — a search hit taking over the Flexible Workbench tab while a
   link from a card opens beside it. Ctrl/Cmd-click still opens a new tab
   whatever the setting says, and the modifier combinations Obsidian understands
   for a split or a window work here too.
 
-  A last row covers what Hearth doesn't control: **Notes opened from outside
-  Hearth** — the file explorer, the quick switcher, the graph — which Obsidian
-  hands to whichever tab is focused, taking a Hearth tab over. It still does by
+  A last row covers what Flexible Workbench doesn't control: **Notes opened from outside
+  Flexible Workbench** — the file explorer, the quick switcher, the graph — which Obsidian
+  hands to whichever tab is focused, taking a Flexible Workbench tab over. It still does by
   default (the dashboard acts like an ordinary tab, and the explorer's selection
-  follows what you open), but set it to **A new tab** and the Hearth tab is left
+  follows what you open), but set it to **A new tab** and the Flexible Workbench tab is left
   alone. Links inside an embedded Bases table now follow the **Links** rule too,
   instead of always replacing the dashboard (#106).
 - **An embedded note can be opened in its own tab.** Note embed cards have a new
@@ -939,13 +939,13 @@ History begins at 1.5.0. For releases before 1.5.0, see the
   opens the embedded file properly — following the open-behaviour setting above.
   Off by default, so no existing board changes (#144).
 - **Build your own task fields.** Turn on **Customize task fields** under
-  Settings → Hearth → Integrations and the fixed metadata Tasks cards show is
+  Settings → Flexible Workbench → Integrations and the fixed metadata Tasks cards show is
   replaced by fields you define yourself. You start from a blank slate — a task
   shows its text and nothing else — and add fields one at a time:
 
   - **Name** the field, and choose how it's drawn: a **chip**, a bare
     **colored dot**, or **plain text**.
-  - Give it a **key**: any frontmatter property, or one of the values Hearth
+  - Give it a **key**: any frontmatter property, or one of the values Flexible Workbench
     reads itself (a checkbox line's ⏫ priority, a Kanban board column, a due
     date, the TaskNotes status). A field can have several keys, and each one
     that has a value shows one — so related metadata can live under one name.
@@ -982,7 +982,7 @@ History begins at 1.5.0. For releases before 1.5.0, see the
 - **Editable notes can use Obsidian's Live Preview editor.** An editable Note
   embed or Daily note card has a new **Live preview** toggle beside
   **Editable**. Turned on, the card hosts Obsidian's own editor instead of
-  Hearth's plain raw-Markdown box: formatting renders as you type, there's no
+  Flexible Workbench's plain raw-Markdown box: formatting renders as you type, there's no
   double-click to get into edit mode, and links, embeds, undo and your editor
   plugins all behave exactly as they do in a normal tab. The card's own settings
   make the choice per card and per embed view, so a scratchpad can stay in raw
@@ -1001,9 +1001,9 @@ History begins at 1.5.0. For releases before 1.5.0, see the
 - **Request a card, from inside the picker.** The last entry in the rail is
   **Request a card**, for the moment you have looked through the whole catalogue
   and the card you wanted isn't in it. It offers two routes — a **GitHub issue**,
-  opened on Hearth's feature-request form, or an **email** to the maintainer —
+  opened on Flexible Workbench's feature-request form, or an **email** to the maintainer —
   and both open pre-filled: a few prompts about what the card should show and
-  where its data would come from, plus your Hearth and Obsidian versions. Edit
+  where its data would come from, plus your Flexible Workbench and Obsidian versions. Edit
   anything before you send it.
 - **A search bar you can put anywhere on the board.** **Vault insight → Search
   bar** is the header's search field as a card — the same field, not a lesser
@@ -1135,7 +1135,7 @@ History begins at 1.5.0. For releases before 1.5.0, see the
 - **No grey box under an editable note.** Double-clicking an editable Note
   embed, Daily note or jot card to edit it dropped a grey form-field panel
   behind the text — permanently so on mobile, where Obsidian's own textarea
-  rule outranked the transparent background Hearth asks for. The raw editor
+  rule outranked the transparent background Flexible Workbench asks for. The raw editor
   now keeps the card's surface in every state, so switching between the
   rendered note and its source no longer changes the card's background (#160).
 - **Note-content search results are readable.** A hit inside a note's body
@@ -1172,7 +1172,7 @@ History begins at 1.5.0. For releases before 1.5.0, see the
 - **Omnisearch results highlight the matched words again.** Omnisearch reports
   the words it matched stemmed and stripped of their accents (`banan` for a note
   that says *Banánové*), so looking for them literally found nothing and both
-  the title and the excerpt came back unhighlighted. Hearth now also reads the
+  the title and the excerpt came back unhighlighted. Flexible Workbench now also reads the
   spans Omnisearch itself marked in the excerpt — which carry the words exactly
   as the note spells them — and matches without accents on top of that.
 - **Searching with the folders filter no longer comes up empty on Omnisearch.**
@@ -1184,7 +1184,7 @@ History begins at 1.5.0. For releases before 1.5.0, see the
   nothing. It now searches files only.
 - **Omnisearch failing is no longer shown as "no matches".** If Omnisearch was
   disabled mid-query or its API threw, the dropdown emptied as though the note
-  didn't exist. Hearth now quietly answers with its own engine instead.
+  didn't exist. Flexible Workbench now quietly answers with its own engine instead.
 
 ### Changed
 
@@ -1192,7 +1192,7 @@ History begins at 1.5.0. For releases before 1.5.0, see the
   Dataview, Datacore, Git — used to be *hidden* from the "Add card" menu until
   their plugin happened to be installed, so a third of the catalogue was
   invisible to the people most likely to want to know it existed: you could not
-  find out Hearth had a Git card without already having the Git plugin. They are
+  find out Flexible Workbench had a Git card without already having the Git plugin. They are
   all listed now, marked **Needs Dataview** (or Datacore, or Git) while the
   plugin is missing, with a one-click jump to it in Obsidian's plugin browser
   when you add one. Nothing about the cards themselves changed — each one has
@@ -1212,10 +1212,10 @@ History begins at 1.5.0. For releases before 1.5.0, see the
   as the board is open, and every extra card costs again. With low power mode on
   it adds that this is the card that mode can't help with.
 - **Links inside tasks now open where every other link does.** A `[[wikilink]]`
-  in a task's text took over the current tab, which in a Hearth tab meant
+  in a task's text took over the current tab, which in a Flexible Workbench tab meant
   replacing the home view — while the same link on a card opened a new tab. Both
   now follow **Open notes in** (a new tab by default). To keep tasks behaving as
-  they did, set **Links** under Settings → Hearth → Behaviour → Opening notes to
+  they did, set **Links** under Settings → Flexible Workbench → Behaviour → Opening notes to
   *The current tab* (#106).
 - **Today is marked more quietly in the calendar's agenda.** The current day's
   row no longer takes a heavy accent fill that made its text hard to read.
@@ -1229,17 +1229,17 @@ History begins at 1.5.0. For releases before 1.5.0, see the
 
 ### Added
 
-- **Your Iconic and Iconize icons now show up in Hearth.** A file that has a
-  custom icon set with either plugin keeps that icon everywhere Hearth draws
+- **Your Iconic and Iconize icons now show up in Flexible Workbench.** A file that has a
+  custom icon set with either plugin keeps that icon everywhere Flexible Workbench draws
   one — Recent files, Favorites, Bookmarks, saved-search cards and the search
   bar — instead of the generic file-type icon. Bookmarks pointing at a note or
   folder now also follow the file's *type* icon rather than always showing the
   same page glyph, so a bookmarked PDF or canvas looks like one. Lucide icons and emoji are both shown; a file
-  using an icon from one of Iconize's downloaded icon packs keeps Hearth's own
+  using an icon from one of Iconize's downloaded icon packs keeps Flexible Workbench's own
   icon, since those are SVG files rather than named icons. Neither plugin offers
-  an API, so Hearth reads their settings directly and quietly falls back to the
+  an API, so Flexible Workbench reads their settings directly and quietly falls back to the
   file-type icon if it can't. Turn it off, or point it at a renamed Iconize
-  frontmatter property, under Settings → Hearth → Integrations (#132).
+  frontmatter property, under Settings → Flexible Workbench → Integrations (#132).
 
 ### Fixed
 
@@ -1254,7 +1254,7 @@ History begins at 1.5.0. For releases before 1.5.0, see the
 - **Checkboxes now stay checked.** Ticking a task in an embedded note, a daily
   note or a jot card looked like it worked and was lost on the next render:
   Obsidian only writes a checkbox click back to the file inside a real preview
-  view, and the boxes Hearth renders into a card were live but inert. They now
+  view, and the boxes Flexible Workbench renders into a card were live but inert. They now
   edit their source — the note for embed and daily cards, the card's own text
   for jots — so the state sticks, whether or not the card is set to editable.
   A tick is reverted if the write can't land, and a click on a checkbox no
@@ -1263,7 +1263,7 @@ History begins at 1.5.0. For releases before 1.5.0, see the
   any theme that styles input focus with a body-class-prefixed selector), the
   home-screen search input picked up the theme's own focus ring, so a blue
   outline hugged the text field instead of the search bar lighting up as a
-  whole. Those themes' selectors outrank the plain class selectors Hearth used
+  whole. Those themes' selectors outrank the plain class selectors Flexible Workbench used
   to suppress the ring. The controls that draw their own focus affordance — the
   search input, the jot/embed editors, the calculator, the card-title field and
   the task-detail title editor — now hold that suppression against any theme.
@@ -1316,7 +1316,7 @@ History begins at 1.5.0. For releases before 1.5.0, see the
   desktop's active board along on the next sync (#120).
 - **"Focus search on open" option.** An opt-in Behaviour setting that puts
   keyboard focus in the search field whenever a home view opens, so a fresh
-  Hearth tab can be typed into straight away. Focus is applied on open only, so
+  Flexible Workbench tab can be typed into straight away. Focus is applied on open only, so
   a background refresh never steals it mid-interaction. Desktop only — the
   setting is hidden on mobile, where auto-focus would pop the on-screen keyboard
   on every open (#115).
@@ -1432,15 +1432,15 @@ History begins at 1.5.0. For releases before 1.5.0, see the
 - **Link a dashboard to a core Workspace (auto-switch).** Each dashboard gets an
   optional linked workspace, chosen from the core Workspaces plugin's saved
   workspaces in the dashboard settings (General tab). When that workspace loads,
-  Hearth switches to the linked dashboard automatically. Sync is one-way
+  Flexible Workbench switches to the linked dashboard automatically. Sync is one-way
   (workspace → dashboard) and fires once per workspace change; the link survives
   layout export/import, and duplicating a dashboard deliberately does not copy it
   (#91).
-- **Theme-following crystal icon.** The ribbon, tab and header crystal is now a
+- **Theme-following workbench mark icon.** The ribbon, tab and header workbench mark is now a
   vector drawn with `currentColor`, so an optional **Follow theme icon color**
   Appearance setting (Off / Icon / Title / Icon and title) lets it track the
   theme's icon color in light and dark. The default keeps the familiar purple
-  crystal (#90).
+  workbench mark (#90).
 - **Plugin view card — show a specific file.** The Plugin view card can now open
   a chosen vault file in the hosted view, so file-backed views (Excalidraw,
   canvas, …) render the document instead of an empty "new file" screen. The card
@@ -1497,7 +1497,7 @@ History begins at 1.5.0. For releases before 1.5.0, see the
   TaskNotes task from a Tasks card handed TaskNotes' edit modal the note's
   `TFile` instead of its own task object, leaving the modal with a broken
   change-detection baseline: every button but Delete was trapped and the window
-  couldn't be closed (#72). Hearth now resolves TaskNotes' task info for the
+  couldn't be closed (#72). Flexible Workbench now resolves TaskNotes' task info for the
   note first (via its cache manager or public API) and only opens the modal when
   it can, falling back to opening the note otherwise.
 
@@ -1528,7 +1528,7 @@ History begins at 1.5.0. For releases before 1.5.0, see the
   shared frosted-glass layer follows the same radius so nothing seams.
 - **RSS feed card — add feeds from a GitHub repo.** The RSS card's editor now
   has an **Add from GitHub** shortcut: type a repository as `owner/repo` (or
-  paste its URL), pick **Releases**, **Commits**, or both, and Hearth adds the
+  paste its URL), pick **Releases**, **Commits**, or both, and Flexible Workbench adds the
   matching `releases.atom` / `commits.atom` feeds for you — no need to
   hand-write the feed URLs.
 
@@ -1565,7 +1565,7 @@ History begins at 1.5.0. For releases before 1.5.0, see the
   since the category-ribbon redesign, the settings tab had a private helper
   named `renderTab(body, tab)` — and Obsidian 1.13's reworked settings window
   calls an *internal, undocumented* `SettingTab.renderTab()` method (no
-  arguments) as the entry point for opening a tab. Hearth's same-named helper
+  arguments) as the entry point for opening a tab. Flexible Workbench's same-named helper
   silently shadowed it: Obsidian invoked it with no arguments, the
   `switch (undefined)` inside matched no category, and the pane rendered
   nothing — no error, on every reopen, on macOS and iPad alike (#52). And
@@ -1637,7 +1637,7 @@ History begins at 1.5.0. For releases before 1.5.0, see the
   fallback. On load, such buttons are now migrated in place to the current
   `target` field and the result is written back to storage, so the legacy field
   finally leaves your `settings.json`. **This migration is one-way:** if you
-  upgrade and then downgrade Hearth below this version, any mobile action button
+  upgrade and then downgrade Flexible Workbench below this version, any mobile action button
   whose action was stored *only* as `commandId` loses its action (the button
   appears blank and must be reassigned). Buttons edited or created in a recent
   version are unaffected.
@@ -1711,49 +1711,49 @@ A major Tasks-card release, plus search and release-notes additions
 ### Fixed
 
 - Maintenance and bug-fix release
-  ([1.6.6…1.6.7](https://github.com/ondreu/Hearth/compare/1.6.6...1.6.7)).
+  ([1.6.6…1.6.7](https://github.com/callmejack96/flexible-workbench/compare/1.6.6...1.6.7)).
 
 ## [1.6.6] - 2026-07-08
 
 ### Fixed
 
 - Maintenance and bug-fix release
-  ([1.6.5…1.6.6](https://github.com/ondreu/Hearth/compare/1.6.5...1.6.6)).
+  ([1.6.5…1.6.6](https://github.com/callmejack96/flexible-workbench/compare/1.6.5...1.6.6)).
 
 ## [1.6.5] - 2026-07-07
 
 ### Fixed
 
 - Maintenance and bug-fix release
-  ([1.6.4…1.6.5](https://github.com/ondreu/Hearth/compare/1.6.4...1.6.5)).
+  ([1.6.4…1.6.5](https://github.com/callmejack96/flexible-workbench/compare/1.6.4...1.6.5)).
 
 ## [1.6.4] - 2026-07-07
 
 ### Fixed
 
 - Maintenance and bug-fix release
-  ([1.6.3…1.6.4](https://github.com/ondreu/Hearth/compare/1.6.3...1.6.4)).
+  ([1.6.3…1.6.4](https://github.com/callmejack96/flexible-workbench/compare/1.6.3...1.6.4)).
 
 ## [1.6.3] - 2026-07-07
 
 ### Fixed
 
 - Maintenance and bug-fix release
-  ([1.6.2…1.6.3](https://github.com/ondreu/Hearth/compare/1.6.2...1.6.3)).
+  ([1.6.2…1.6.3](https://github.com/callmejack96/flexible-workbench/compare/1.6.2...1.6.3)).
 
 ## [1.6.2] - 2026-07-07
 
 ### Fixed
 
 - Maintenance and bug-fix release
-  ([1.6.1…1.6.2](https://github.com/ondreu/Hearth/compare/1.6.1...1.6.2)).
+  ([1.6.1…1.6.2](https://github.com/callmejack96/flexible-workbench/compare/1.6.1...1.6.2)).
 
 ## [1.6.1] - 2026-07-07
 
 ### Fixed
 
 - Maintenance and bug-fix release
-  ([1.5.2…1.6.1](https://github.com/ondreu/Hearth/compare/1.5.2...1.6.1)).
+  ([1.5.2…1.6.1](https://github.com/callmejack96/flexible-workbench/compare/1.5.2...1.6.1)).
 
 ## [1.6.0] - 2026-07-06
 
@@ -1797,14 +1797,14 @@ A major Tasks-card release, plus search and release-notes additions
 ### Fixed
 
 - Maintenance and bug-fix release
-  ([1.5.1…1.5.2](https://github.com/ondreu/Hearth/compare/1.5.1...1.5.2)).
+  ([1.5.1…1.5.2](https://github.com/callmejack96/flexible-workbench/compare/1.5.1...1.5.2)).
 
 ## [1.5.1] - 2026-07-05
 
 ### Fixed
 
 - Maintenance and bug-fix release
-  ([1.5.0…1.5.1](https://github.com/ondreu/Hearth/compare/1.5.0...1.5.1)).
+  ([1.5.0…1.5.1](https://github.com/callmejack96/flexible-workbench/compare/1.5.0...1.5.1)).
 
 ## [1.5.0] - 2026-07-05
 
@@ -1842,19 +1842,19 @@ A redesigned dashboard experience, plus recurring tasks and many polish fixes.
 - Default background uses a CDN URL (raw.githubusercontent was blocked by
   Obsidian's CSP).
 
-[1.11.0]: https://github.com/ondreu/Hearth/compare/1.10.0...1.11.0
-[1.10.0]: https://github.com/ondreu/Hearth/compare/1.9.0...1.10.0
-[1.9.0]: https://github.com/ondreu/Hearth/compare/1.8.1...1.9.0
-[1.8.0]: https://github.com/ondreu/Hearth/compare/1.7.0...1.8.0
-[1.7.0]: https://github.com/ondreu/Hearth/compare/1.6.7...1.7.0
-[1.6.7]: https://github.com/ondreu/Hearth/compare/1.6.6...1.6.7
-[1.6.6]: https://github.com/ondreu/Hearth/compare/1.6.5...1.6.6
-[1.6.5]: https://github.com/ondreu/Hearth/compare/1.6.4...1.6.5
-[1.6.4]: https://github.com/ondreu/Hearth/compare/1.6.3...1.6.4
-[1.6.3]: https://github.com/ondreu/Hearth/compare/1.6.2...1.6.3
-[1.6.2]: https://github.com/ondreu/Hearth/compare/1.6.1...1.6.2
-[1.6.1]: https://github.com/ondreu/Hearth/compare/1.5.2...1.6.1
-[1.6.0]: https://github.com/ondreu/Hearth/compare/1.5.2...1.6.0
-[1.5.2]: https://github.com/ondreu/Hearth/compare/1.5.1...1.5.2
-[1.5.1]: https://github.com/ondreu/Hearth/compare/1.5.0...1.5.1
-[1.5.0]: https://github.com/ondreu/Hearth/releases/tag/1.5.0
+[1.11.0]: https://github.com/callmejack96/flexible-workbench/compare/1.10.0...1.11.0
+[1.10.0]: https://github.com/callmejack96/flexible-workbench/compare/1.9.0...1.10.0
+[1.9.0]: https://github.com/callmejack96/flexible-workbench/compare/1.8.1...1.9.0
+[1.8.0]: https://github.com/callmejack96/flexible-workbench/compare/1.7.0...1.8.0
+[1.7.0]: https://github.com/callmejack96/flexible-workbench/compare/1.6.7...1.7.0
+[1.6.7]: https://github.com/callmejack96/flexible-workbench/compare/1.6.6...1.6.7
+[1.6.6]: https://github.com/callmejack96/flexible-workbench/compare/1.6.5...1.6.6
+[1.6.5]: https://github.com/callmejack96/flexible-workbench/compare/1.6.4...1.6.5
+[1.6.4]: https://github.com/callmejack96/flexible-workbench/compare/1.6.3...1.6.4
+[1.6.3]: https://github.com/callmejack96/flexible-workbench/compare/1.6.2...1.6.3
+[1.6.2]: https://github.com/callmejack96/flexible-workbench/compare/1.6.1...1.6.2
+[1.6.1]: https://github.com/callmejack96/flexible-workbench/compare/1.5.2...1.6.1
+[1.6.0]: https://github.com/callmejack96/flexible-workbench/compare/1.5.2...1.6.0
+[1.5.2]: https://github.com/callmejack96/flexible-workbench/compare/1.5.1...1.5.2
+[1.5.1]: https://github.com/callmejack96/flexible-workbench/compare/1.5.0...1.5.1
+[1.5.0]: https://github.com/callmejack96/flexible-workbench/releases/tag/1.5.0

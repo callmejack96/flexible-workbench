@@ -138,7 +138,7 @@ export function resolveConfig(cfg: WeatherConfig, lowPower = false, density = 1)
 		showUpdated: cfg.showUpdated ?? false,
 		hourlyCount: cfg.hourlyCount ?? defaultHourlyCount(style),
 		dailyCount: cfg.dailyCount ?? defaultDailyCount(style),
-		// A still tier stops every animation Hearth runs; the painted sky is no
+		// A still tier stops every animation Flexible Workbench runs; the painted sky is no
 		// exception, and it is the most expensive one on the board.
 		animate: (cfg.animate ?? true) && !lowPower,
 		density,
@@ -260,7 +260,7 @@ function headlineBits(snapshot: WeatherSnapshot, r: Resolved): string[] {
 
 /** A bullet-separated line of small text, or nothing when there is nothing to
  * say. */
-function metaLine(parent: HTMLElement, bits: string[], cls = "hearth-weather-meta"): void {
+function metaLine(parent: HTMLElement, bits: string[], cls = "flexible-workbench-weather-meta"): void {
 	if (!bits.length) return;
 	parent.createDiv({ cls, text: bits.join(" · ") });
 }
@@ -276,23 +276,23 @@ function placeLine(parent: HTMLElement, cfg: WeatherConfig, cls: string): void {
  * temperature and — when precipitation is on — its chance of rain. */
 function hourlyStrip(parent: HTMLElement, hours: WeatherHour[], r: Resolved): void {
 	if (!hours.length) return;
-	const strip = parent.createDiv("hearth-weather-hours");
+	const strip = parent.createDiv("flexible-workbench-weather-hours");
 	hours.forEach((hour, i) => {
-		const col = strip.createDiv("hearth-weather-hour");
+		const col = strip.createDiv("flexible-workbench-weather-hour");
 		col.createDiv({
-			cls: "hearth-weather-hour-label",
+			cls: "flexible-workbench-weather-hour-label",
 			// The first column is "now" rather than a time the reader has to
 			// compare against their own clock.
 			text: i === 0 ? t().cards.weather.now : formatHour(hour.time, r.hour12),
 		});
-		glyph(col, weatherIcon(hour.code, hour.isDay), "hearth-weather-hour-icon");
+		glyph(col, weatherIcon(hour.code, hour.isDay), "flexible-workbench-weather-hour-icon");
 		col.createDiv({
-			cls: "hearth-weather-hour-temp",
+			cls: "flexible-workbench-weather-hour-temp",
 			text: formatTemp(hour.temp, r.tempUnit),
 		});
 		if (r.showPrecip && hour.precipChance !== null) {
 			col.createDiv({
-				cls: "hearth-weather-hour-precip",
+				cls: "flexible-workbench-weather-hour-precip",
 				text: formatPercent(hour.precipChance),
 			});
 		}
@@ -331,7 +331,7 @@ function temperatureCurve(parent: HTMLElement, hours: WeatherHour[]): void {
 	});
 
 	const svg = parent.createSvg("svg", {
-		cls: "hearth-weather-curve",
+		cls: "flexible-workbench-weather-curve",
 		attr: { viewBox: `0 0 ${width} ${height}`, preserveAspectRatio: "none" },
 	});
 	const line = points.map((p) => `${p.x.toFixed(2)},${p.y.toFixed(2)}`).join(" ");
@@ -341,19 +341,19 @@ function temperatureCurve(parent: HTMLElement, hours: WeatherHour[]): void {
 	const first = points[0];
 	const last = points[points.length - 1];
 	svg.createSvg("polygon", {
-		cls: "hearth-weather-curve-fill",
+		cls: "flexible-workbench-weather-curve-fill",
 		attr: {
 			points: `${first.x.toFixed(2)},${height} ${line} ${last.x.toFixed(2)},${height}`,
 		},
 	});
 	svg.createSvg("polyline", {
-		cls: "hearth-weather-curve-line",
+		cls: "flexible-workbench-weather-curve-line",
 		attr: { points: line, "vector-effect": "non-scaling-stroke" },
 	});
 	for (const point of points) {
 		if (point.temp === null) continue;
 		svg.createSvg("circle", {
-			cls: "hearth-weather-curve-dot",
+			cls: "flexible-workbench-weather-curve-dot",
 			attr: {
 				cx: point.x.toFixed(2),
 				cy: point.y.toFixed(2),
@@ -377,33 +377,33 @@ function dailyList(parent: HTMLElement, days: WeatherDay[], r: Resolved): void {
 	const ceiling = highs.length ? Math.max(...highs) : 1;
 	const span = ceiling - floor || 1;
 
-	const list = parent.createDiv("hearth-weather-days");
+	const list = parent.createDiv("flexible-workbench-weather-days");
 	days.forEach((day, i) => {
-		const row = list.createDiv("hearth-weather-day");
+		const row = list.createDiv("flexible-workbench-weather-day");
 		row.createDiv({
-			cls: "hearth-weather-day-label",
+			cls: "flexible-workbench-weather-day-label",
 			text: i === 0 ? t().cards.weather.todayLabel : formatWeekday(day.date),
 		});
-		glyph(row, weatherIcon(day.code, true), "hearth-weather-day-icon");
+		glyph(row, weatherIcon(day.code, true), "flexible-workbench-weather-day-icon");
 		if (r.showPrecip) {
 			row.createDiv({
-				cls: "hearth-weather-day-precip",
+				cls: "flexible-workbench-weather-day-precip",
 				text: day.precipChance === null ? "" : formatPercent(day.precipChance),
 			});
 		}
 		row.createDiv({
-			cls: "hearth-weather-day-low",
+			cls: "flexible-workbench-weather-day-low",
 			text: formatTemp(day.min, r.tempUnit),
 		});
-		const track = row.createDiv("hearth-weather-day-track");
-		const bar = track.createDiv("hearth-weather-day-bar");
+		const track = row.createDiv("flexible-workbench-weather-day-track");
+		const bar = track.createDiv("flexible-workbench-weather-day-bar");
 		const from = day.min === null ? floor : day.min;
 		const to = day.max === null ? ceiling : day.max;
 		bar.style.insetInlineStart = `${((from - floor) / span) * 100}%`;
 		// A degree-wide range would otherwise vanish; keep a sliver visible.
 		bar.style.width = `${Math.max(((to - from) / span) * 100, 6)}%`;
 		row.createDiv({
-			cls: "hearth-weather-day-high",
+			cls: "flexible-workbench-weather-day-high",
 			text: formatTemp(day.max, r.tempUnit),
 		});
 	});
@@ -412,13 +412,13 @@ function dailyList(parent: HTMLElement, days: WeatherDay[], r: Resolved): void {
 /** The metric grid used by the detailed style. */
 function metricGrid(parent: HTMLElement, metrics: Metric[]): void {
 	if (!metrics.length) return;
-	const grid = parent.createDiv("hearth-weather-metrics");
+	const grid = parent.createDiv("flexible-workbench-weather-metrics");
 	for (const metric of metrics) {
-		const tile = grid.createDiv("hearth-weather-metric");
-		glyph(tile, metric.icon, "hearth-weather-metric-icon");
-		const text = tile.createDiv("hearth-weather-metric-text");
-		text.createDiv({ cls: "hearth-weather-metric-label", text: metric.label });
-		text.createDiv({ cls: "hearth-weather-metric-value", text: metric.value });
+		const tile = grid.createDiv("flexible-workbench-weather-metric");
+		glyph(tile, metric.icon, "flexible-workbench-weather-metric-icon");
+		const text = tile.createDiv("flexible-workbench-weather-metric-text");
+		text.createDiv({ cls: "flexible-workbench-weather-metric-label", text: metric.label });
+		text.createDiv({ cls: "flexible-workbench-weather-metric-value", text: metric.value });
 	}
 }
 
@@ -436,7 +436,7 @@ function updatedText(snapshot: WeatherSnapshot, r: Resolved): string {
 /** That line on the card, when the card is set to show it. */
 function updatedLine(parent: HTMLElement, snapshot: WeatherSnapshot, r: Resolved): void {
 	if (!r.showUpdated) return;
-	parent.createDiv({ cls: "hearth-weather-updated", text: updatedText(snapshot, r) });
+	parent.createDiv({ cls: "flexible-workbench-weather-updated", text: updatedText(snapshot, r) });
 }
 
 
@@ -444,10 +444,10 @@ function updatedLine(parent: HTMLElement, snapshot: WeatherSnapshot, r: Resolved
 
 /** Minimal: one glyph, one temperature. Anything else is opt-in. */
 function paintMinimal(wrap: HTMLElement, snapshot: WeatherSnapshot, cfg: WeatherConfig, r: Resolved): void {
-	const hero = wrap.createDiv("hearth-weather-hero");
-	glyph(hero, weatherIcon(snapshot.now.code, snapshot.now.isDay), "hearth-weather-glyph");
+	const hero = wrap.createDiv("flexible-workbench-weather-hero");
+	glyph(hero, weatherIcon(snapshot.now.code, snapshot.now.isDay), "flexible-workbench-weather-glyph");
 	hero.createDiv({
-		cls: "hearth-weather-temp",
+		cls: "flexible-workbench-weather-temp",
 		text: formatTemp(snapshot.now.temp, r.tempUnit),
 	});
 
@@ -460,28 +460,28 @@ function paintMinimal(wrap: HTMLElement, snapshot: WeatherSnapshot, cfg: Weather
 
 /** Compact: a single row — glyph, temperature, and the words beside them. */
 function paintCompact(wrap: HTMLElement, snapshot: WeatherSnapshot, cfg: WeatherConfig, r: Resolved): void {
-	const row = wrap.createDiv("hearth-weather-row");
-	glyph(row, weatherIcon(snapshot.now.code, snapshot.now.isDay), "hearth-weather-glyph");
+	const row = wrap.createDiv("flexible-workbench-weather-row");
+	glyph(row, weatherIcon(snapshot.now.code, snapshot.now.isDay), "flexible-workbench-weather-glyph");
 	row.createDiv({
-		cls: "hearth-weather-temp",
+		cls: "flexible-workbench-weather-temp",
 		text: formatTemp(snapshot.now.temp, r.tempUnit),
 	});
 
-	const text = row.createDiv("hearth-weather-rowtext");
+	const text = row.createDiv("flexible-workbench-weather-rowtext");
 	if (r.showCondition) {
 		text.createDiv({
-			cls: "hearth-weather-condition",
+			cls: "flexible-workbench-weather-condition",
 			text: conditionText(snapshot.now.code),
 		});
 	}
-	if (r.showLocation) placeLine(text, cfg, "hearth-weather-place");
+	if (r.showLocation) placeLine(text, cfg, "flexible-workbench-weather-place");
 	metaLine(text, headlineBits(snapshot, r));
 
 	const metrics = metricsFor(snapshot, r);
 	metaLine(
 		wrap,
 		metrics.map((m) => `${m.label} ${m.value}`),
-		"hearth-weather-meta hearth-weather-meta-wrap",
+		"flexible-workbench-weather-meta flexible-workbench-weather-meta-wrap",
 	);
 	hourlyStrip(wrap, upcomingHours(snapshot, r.hourlyCount), r);
 	dailyList(wrap, upcomingDays(snapshot, r.dailyCount), r);
@@ -491,20 +491,20 @@ function paintCompact(wrap: HTMLElement, snapshot: WeatherSnapshot, cfg: Weather
 /** Detailed: the current conditions, then every metric that is switched on, then
  * the forecast strips. The weather-station layout. */
 function paintDetailed(wrap: HTMLElement, snapshot: WeatherSnapshot, cfg: WeatherConfig, r: Resolved): void {
-	const head = wrap.createDiv("hearth-weather-head");
-	glyph(head, weatherIcon(snapshot.now.code, snapshot.now.isDay), "hearth-weather-glyph");
-	const headText = head.createDiv("hearth-weather-headtext");
+	const head = wrap.createDiv("flexible-workbench-weather-head");
+	glyph(head, weatherIcon(snapshot.now.code, snapshot.now.isDay), "flexible-workbench-weather-glyph");
+	const headText = head.createDiv("flexible-workbench-weather-headtext");
 	headText.createDiv({
-		cls: "hearth-weather-temp",
+		cls: "flexible-workbench-weather-temp",
 		text: formatTemp(snapshot.now.temp, r.tempUnit),
 	});
 	if (r.showCondition) {
 		headText.createDiv({
-			cls: "hearth-weather-condition",
+			cls: "flexible-workbench-weather-condition",
 			text: conditionText(snapshot.now.code),
 		});
 	}
-	if (r.showLocation) placeLine(headText, cfg, "hearth-weather-place");
+	if (r.showLocation) placeLine(headText, cfg, "flexible-workbench-weather-place");
 	metaLine(headText, headlineBits(snapshot, r));
 
 	metricGrid(wrap, metricsFor(snapshot, r));
@@ -516,35 +516,35 @@ function paintDetailed(wrap: HTMLElement, snapshot: WeatherSnapshot, cfg: Weathe
 /** Forecast: the curve is the point. The current conditions shrink to one line
  * above it and the daily strip sits below. */
 function paintForecast(wrap: HTMLElement, snapshot: WeatherSnapshot, cfg: WeatherConfig, r: Resolved): void {
-	const row = wrap.createDiv("hearth-weather-row hearth-weather-row-tight");
-	glyph(row, weatherIcon(snapshot.now.code, snapshot.now.isDay), "hearth-weather-glyph");
+	const row = wrap.createDiv("flexible-workbench-weather-row flexible-workbench-weather-row-tight");
+	glyph(row, weatherIcon(snapshot.now.code, snapshot.now.isDay), "flexible-workbench-weather-glyph");
 	row.createDiv({
-		cls: "hearth-weather-temp",
+		cls: "flexible-workbench-weather-temp",
 		text: formatTemp(snapshot.now.temp, r.tempUnit),
 	});
-	const text = row.createDiv("hearth-weather-rowtext");
+	const text = row.createDiv("flexible-workbench-weather-rowtext");
 	if (r.showCondition) {
 		text.createDiv({
-			cls: "hearth-weather-condition",
+			cls: "flexible-workbench-weather-condition",
 			text: conditionText(snapshot.now.code),
 		});
 	}
-	if (r.showLocation) placeLine(text, cfg, "hearth-weather-place");
+	if (r.showLocation) placeLine(text, cfg, "flexible-workbench-weather-place");
 	metaLine(text, headlineBits(snapshot, r));
 
 	const hours = upcomingHours(snapshot, r.hourlyCount || defaultHourlyCount("forecast"));
 	if (hours.length >= 2) {
-		const chart = wrap.createDiv("hearth-weather-chart");
+		const chart = wrap.createDiv("flexible-workbench-weather-chart");
 		temperatureCurve(chart, hours);
-		const labels = chart.createDiv("hearth-weather-chart-labels");
+		const labels = chart.createDiv("flexible-workbench-weather-chart-labels");
 		hours.forEach((hour, i) => {
-			const col = labels.createDiv("hearth-weather-chart-label");
+			const col = labels.createDiv("flexible-workbench-weather-chart-label");
 			col.createDiv({
-				cls: "hearth-weather-chart-temp",
+				cls: "flexible-workbench-weather-chart-temp",
 				text: formatTemp(hour.temp, r.tempUnit),
 			});
 			col.createDiv({
-				cls: "hearth-weather-chart-hour",
+				cls: "flexible-workbench-weather-chart-hour",
 				text: i === 0 ? t().cards.weather.now : formatHour(hour.time, r.hour12),
 			});
 		});
@@ -565,28 +565,28 @@ function paintArtistic(wrap: HTMLElement, snapshot: WeatherSnapshot, cfg: Weathe
 		animate: r.animate,
 		density: r.density,
 	});
-	const content = sky.createDiv("hearth-weather-art-content");
+	const content = sky.createDiv("flexible-workbench-weather-art-content");
 
-	const top = content.createDiv("hearth-weather-art-top");
-	if (r.showLocation) placeLine(top, cfg, "hearth-weather-art-place");
+	const top = content.createDiv("flexible-workbench-weather-art-top");
+	if (r.showLocation) placeLine(top, cfg, "flexible-workbench-weather-art-place");
 	if (r.showCondition) {
 		top.createDiv({
-			cls: "hearth-weather-art-condition",
+			cls: "flexible-workbench-weather-art-condition",
 			text: conditionText(now.code),
 		});
 	}
 
-	const bottom = content.createDiv("hearth-weather-art-bottom");
+	const bottom = content.createDiv("flexible-workbench-weather-art-bottom");
 	bottom.createDiv({
-		cls: "hearth-weather-art-temp",
+		cls: "flexible-workbench-weather-art-temp",
 		text: formatTemp(now.temp, r.tempUnit),
 	});
-	metaLine(bottom, headlineBits(snapshot, r), "hearth-weather-art-meta");
+	metaLine(bottom, headlineBits(snapshot, r), "flexible-workbench-weather-art-meta");
 	const metrics = metricsFor(snapshot, r);
 	metaLine(
 		bottom,
 		metrics.map((m) => `${m.label} ${m.value}`),
-		"hearth-weather-art-meta hearth-weather-meta-wrap",
+		"flexible-workbench-weather-art-meta flexible-workbench-weather-meta-wrap",
 	);
 	hourlyStrip(bottom, upcomingHours(snapshot, r.hourlyCount), r);
 	dailyList(bottom, upcomingDays(snapshot, r.dailyCount), r);
@@ -644,16 +644,16 @@ export function renderWeather(
 	const disabled = view.plugin.settings.disableExternalCalls;
 	const refreshMin = cfg.refreshMin ?? 30;
 	// A forecast is published hourly at best, so the cache floor is generous
-	// even when the card is set to "manual only" — it stops Hearth's frequent
+	// even when the card is set to "manual only" — it stops Flexible Workbench's frequent
 	// full re-renders from turning into requests.
 	const ttlMs = Math.max(refreshMin, 10) * 60_000;
 
 	// The card body is the size container every style measures itself against,
 	// so a reading scales to the card's height as well as its width instead of
 	// being cut in half on a short card.
-	body.addClass("hearth-weather-host");
+	body.addClass("flexible-workbench-weather-host");
 	// The artistic sky is edge-to-edge; the others keep the card's own padding.
-	if (r.style === "artistic") body.addClass("hearth-weather-flush");
+	if (r.style === "artistic") body.addClass("flexible-workbench-weather-flush");
 
 	// Async loads may resolve after the card is torn down and rebuilt; ignore them.
 	let destroyed = false;
@@ -662,7 +662,7 @@ export function renderWeather(
 	});
 	let loading = false;
 
-	const wrap = body.createDiv(`hearth-weather is-${r.style}`);
+	const wrap = body.createDiv(`flexible-workbench-weather is-${r.style}`);
 
 	/** Paint the snapshot, or the loading / offline / error state standing in
 	 * for it. A stale snapshot always beats a placeholder: yesterday's sky is
@@ -870,13 +870,13 @@ class WeatherDetailModal extends Modal {
 	}
 
 	onOpen(): void {
-		this.modalEl.addClass("hearth-weather-modal");
+		this.modalEl.addClass("flexible-workbench-weather-modal");
 		const place = this.opts.cfg.place;
 		this.titleEl.setText(place?.name?.trim() || t().cards.weather.detail.title);
 		if (place?.region) {
-			this.titleEl.createSpan({ cls: "hearth-weather-detail-region", text: place.region });
+			this.titleEl.createSpan({ cls: "flexible-workbench-weather-detail-region", text: place.region });
 		}
-		this.host = this.contentEl.createDiv("hearth-weather-detail");
+		this.host = this.contentEl.createDiv("flexible-workbench-weather-detail");
 		this.draw();
 	}
 
@@ -912,15 +912,15 @@ class WeatherDetailModal extends Modal {
 		const strings = t().cards.weather;
 		const now = snapshot.now;
 
-		const head = this.host.createDiv("hearth-weather-detail-now");
-		glyph(head, weatherIcon(now.code, now.isDay), "hearth-weather-detail-glyph");
-		const text = head.createDiv("hearth-weather-detail-nowtext");
+		const head = this.host.createDiv("flexible-workbench-weather-detail-now");
+		glyph(head, weatherIcon(now.code, now.isDay), "flexible-workbench-weather-detail-glyph");
+		const text = head.createDiv("flexible-workbench-weather-detail-nowtext");
 		text.createDiv({
-			cls: "hearth-weather-detail-temp",
+			cls: "flexible-workbench-weather-detail-temp",
 			text: formatTemp(now.temp, r.tempUnit, true),
 		});
 		text.createDiv({
-			cls: "hearth-weather-detail-condition",
+			cls: "flexible-workbench-weather-detail-condition",
 			text: conditionText(now.code),
 		});
 		const bits: string[] = [];
@@ -929,7 +929,7 @@ class WeatherDetailModal extends Modal {
 		if (day && (day.max !== null || day.min !== null)) {
 			bits.push(strings.highLow(formatTemp(day.max, r.tempUnit), formatTemp(day.min, r.tempUnit)));
 		}
-		metaLine(text, bits, "hearth-weather-detail-meta");
+		metaLine(text, bits, "flexible-workbench-weather-detail-meta");
 	}
 
 	/** Every current reading, in the grid the card uses for the two or three it
@@ -954,10 +954,10 @@ class WeatherDetailModal extends Modal {
 		const ceiling = highs.length ? Math.max(...highs) : 1;
 		const span = ceiling - floor || 1;
 
-		const list = section.createDiv("hearth-weather-detail-days");
+		const list = section.createDiv("flexible-workbench-weather-detail-days");
 		days.forEach((day, i) => {
 			const label = i === 0 ? strings.todayLabel : formatWeekday(day.date, "long");
-			const row = list.createDiv("hearth-weather-detail-day");
+			const row = list.createDiv("flexible-workbench-weather-detail-day");
 			row.toggleClass("is-selected", day.date === this.day);
 			const pick = (): void => {
 				this.day = day.date;
@@ -966,31 +966,31 @@ class WeatherDetailModal extends Modal {
 			row.addEventListener("click", pick);
 			makeClickable(row, pick, strings.detail.selectDay(label));
 
-			const name = row.createDiv("hearth-weather-detail-day-name");
-			name.createDiv({ cls: "hearth-weather-detail-day-weekday", text: label });
-			name.createDiv({ cls: "hearth-weather-detail-day-date", text: formatDayDate(day.date) });
-			glyph(row, weatherIcon(day.code, true), "hearth-weather-detail-day-icon");
+			const name = row.createDiv("flexible-workbench-weather-detail-day-name");
+			name.createDiv({ cls: "flexible-workbench-weather-detail-day-weekday", text: label });
+			name.createDiv({ cls: "flexible-workbench-weather-detail-day-date", text: formatDayDate(day.date) });
+			glyph(row, weatherIcon(day.code, true), "flexible-workbench-weather-detail-day-icon");
 			row.createDiv({
-				cls: "hearth-weather-detail-day-condition",
+				cls: "flexible-workbench-weather-detail-day-condition",
 				text: conditionText(day.code),
 			});
 			row.createDiv({
-				cls: "hearth-weather-detail-day-precip",
+				cls: "flexible-workbench-weather-detail-day-precip",
 				text: day.precipChance === null ? "" : formatPercent(day.precipChance),
 			});
 			row.createDiv({
-				cls: "hearth-weather-detail-day-low",
+				cls: "flexible-workbench-weather-detail-day-low",
 				text: formatTemp(day.min, r.tempUnit),
 			});
-			const bar = row.createDiv("hearth-weather-detail-day-track").createDiv(
-				"hearth-weather-detail-day-bar",
+			const bar = row.createDiv("flexible-workbench-weather-detail-day-track").createDiv(
+				"flexible-workbench-weather-detail-day-bar",
 			);
 			const from = day.min === null ? floor : day.min;
 			const to = day.max === null ? ceiling : day.max;
 			bar.style.insetInlineStart = `${((from - floor) / span) * 100}%`;
 			bar.style.width = `${Math.max(((to - from) / span) * 100, 6)}%`;
 			row.createDiv({
-				cls: "hearth-weather-detail-day-high",
+				cls: "flexible-workbench-weather-detail-day-high",
 				text: formatTemp(day.max, r.tempUnit),
 			});
 		});
@@ -1005,17 +1005,17 @@ class WeatherDetailModal extends Modal {
 		const detail = strings.detail;
 		const label = isToday ? strings.todayLabel : formatWeekday(day.date, "long");
 		const section = this.section(detail.hoursFor(`${label}, ${formatDayDate(day.date)}`));
-		metaLine(section, daySummary(day, r), "hearth-weather-detail-summary");
+		metaLine(section, daySummary(day, r), "flexible-workbench-weather-detail-summary");
 
 		const hours = hoursOn(snapshot, day.date);
 		if (!hours.length) {
-			section.createDiv({ cls: "hearth-weather-detail-empty", text: detail.noHours });
+			section.createDiv({ cls: "flexible-workbench-weather-detail-empty", text: detail.noHours });
 			return;
 		}
 
 		const table = section
-			.createDiv("hearth-weather-detail-scroll")
-			.createEl("table", { cls: "hearth-weather-detail-table" });
+			.createDiv("flexible-workbench-weather-detail-scroll")
+			.createEl("table", { cls: "flexible-workbench-weather-detail-table" });
 		const headRow = table.createEl("thead").createEl("tr");
 		const columns = [
 			detail.columnTime,
@@ -1037,13 +1037,13 @@ class WeatherDetailModal extends Modal {
 			const row = body.createEl("tr");
 			row.toggleClass("is-now", isNow);
 			row.createEl("td", {
-				cls: "hearth-weather-detail-cell-time",
+				cls: "flexible-workbench-weather-detail-cell-time",
 				text: isNow ? strings.now : formatHour(hour.time, r.hour12),
 			});
 			glyph(
-				row.createEl("td", { cls: "hearth-weather-detail-cell-icon" }),
+				row.createEl("td", { cls: "flexible-workbench-weather-detail-cell-icon" }),
 				weatherIcon(hour.code, hour.isDay),
-				"hearth-weather-detail-cellicon",
+				"flexible-workbench-weather-detail-cellicon",
 			);
 			row.createEl("td", { text: conditionText(hour.code) });
 			row.createEl("td", { text: formatTemp(hour.temp, r.tempUnit) });
@@ -1059,17 +1059,17 @@ class WeatherDetailModal extends Modal {
 	 * a newer one. */
 	private drawFoot(snapshot: WeatherSnapshot): void {
 		const detail = t().cards.weather.detail;
-		const foot = this.host.createDiv("hearth-weather-detail-foot");
+		const foot = this.host.createDiv("flexible-workbench-weather-detail-foot");
 		metaLine(
 			foot,
 			[updatedText(snapshot, this.opts.r), detail.source],
-			"hearth-weather-detail-source",
+			"flexible-workbench-weather-detail-source",
 		);
 
 		const reload = this.opts.reload;
 		if (!reload) return;
-		const button = foot.createEl("button", { cls: "hearth-weather-detail-refresh" });
-		setIcon(button.createSpan("hearth-weather-detail-btnicon"), "refresh-cw");
+		const button = foot.createEl("button", { cls: "flexible-workbench-weather-detail-refresh" });
+		setIcon(button.createSpan("flexible-workbench-weather-detail-btnicon"), "refresh-cw");
 		button.createSpan({ text: detail.refresh });
 		button.disabled = this.refreshing;
 		button.addEventListener("click", () => {
@@ -1086,8 +1086,8 @@ class WeatherDetailModal extends Modal {
 
 	/** A titled block of the body. */
 	private section(title: string): HTMLElement {
-		const section = this.host.createDiv("hearth-weather-detail-section");
-		section.createDiv({ cls: "hearth-weather-detail-heading", text: title });
+		const section = this.host.createDiv("flexible-workbench-weather-detail-section");
+		section.createDiv({ cls: "flexible-workbench-weather-detail-heading", text: title });
 		return section;
 	}
 }

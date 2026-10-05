@@ -9,7 +9,7 @@ import {
 } from "../src/recentfiles";
 
 /**
- * Hearth's own recent-file history and the Recent files card's row maths
+ * Flexible Workbench's own recent-file history and the Recent files card's row maths
  * (#228). Obsidian's getLastOpenFiles() stops at ten entries, so a card asking
  * for more needs a history of its own — these cover the pure parts of it. The
  * reads and writes themselves are Obsidian API (localStorage, workspace) and
@@ -17,7 +17,7 @@ import {
  */
 
 describe("clampRecentCount", () => {
-	it("keeps a count Hearth can honour", () => {
+	it("keeps a count Flexible Workbench can honour", () => {
 		expect(clampRecentCount(1)).toBe(1);
 		expect(clampRecentCount(8)).toBe(8);
 		expect(clampRecentCount(RECENT_HISTORY_MAX)).toBe(RECENT_HISTORY_MAX);

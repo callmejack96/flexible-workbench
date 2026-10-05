@@ -1,7 +1,7 @@
 # macOS power draw and overheating — investigation
 
 **Status:** reproduced, root-caused, mostly fixed.
-**Against:** Hearth 2.0.0 (`main`), beta 2.1.0-beta.1.
+**Against:** Flexible Workbench 2.0.0 (`main`), beta 2.1.0-beta.1.
 **Harness:** [`bench/`](bench/) — re-runnable, uses the plugin's own drawing code.
 
 ## What has been fixed
@@ -27,7 +27,7 @@ still animated SVG children. Removing that means moving them off SVG entirely
 the drawing rather than a tweak to it, and wants its own change and its own
 review. Everything else above is done.
 
-Hearth's painted weather sky and its pet sprite animate CSS `transform` on SVG
+Flexible Workbench's painted weather sky and its pet sprite animate CSS `transform` on SVG
 elements. Chromium cannot composite that. Every frame it runs a full style
 recalculation on the main thread — and for the sky's raindrops and clouds, a full
 layout as well. At 60 Hz that is 60 layouts per second for as long as the board is
@@ -46,7 +46,7 @@ produces **no compositor frames at all** over a six-second window — zero
 `Display::DrawAndSwap` events. With the sky animating it draws and swaps
 continuously for the entire window. That is the difference between costing some
 CPU and overheating a laptop: the GPU and display pipeline never reach an idle
-state while Hearth is visible. macOS amplifies it twice — a 2× Retina backing
+state while Flexible Workbench is visible. macOS amplifies it twice — a 2× Retina backing
 store doubles raster area, and ProMotion doubles the frame rate.
 
 ---
@@ -86,8 +86,8 @@ per frame.
 
 ## P0 — The pet sprite is not the cheap animation it looks like
 
-`styles.css` — `hearth-pet-hop` / `-bob` / `-breathe` / `-slouch` on
-`.hearth-pet-sprite`, which is the `<svg>` root created in
+`styles.css` — `flexible-workbench-pet-hop` / `-bob` / `-breathe` / `-slouch` on
+`.flexible-workbench-pet-sprite`, which is the `<svg>` root created in
 `src/cards/pet.ts:666`.
 
 The frame cycling is genuinely free — discrete `steps()` on `opacity`. The bob is
@@ -110,7 +110,7 @@ No visibility gating exists outside `src/leafview.ts`. There is no
 `visibilitychange` or `document.hidden` handling anywhere in the codebase.
 
 Good news first: when Obsidian hides an inactive leaf it takes it out of layout,
-and Chromium stops everything. A backgrounded Hearth tab costs nothing, which
+and Chromium stops everything. A backgrounded Flexible Workbench tab costs nothing, which
 bounds the damage. Everything else keeps paying full price — an animated card
 scrolled below the fold, or clipped away by a fit-to-page board's
 `overflow: hidden`.
@@ -153,7 +153,7 @@ animates, the blur is recomputed every frame over the whole board at 2× DPR.
 - **Every settings keystroke rebuilds every board.** `HomeSettingTab.save()`
   (`src/settings.ts:149`) → `saveSettings()` writes the whole settings JSON to
   disk *and* calls `refreshViews()`, which tears down and rebuilds the DOM of
-  every open Hearth view. Text fields call it from `onChange`, so a 20-character
+  every open Flexible Workbench view. Text fields call it from `onChange`, so a 20-character
   placeholder is 20 disk writes and 20 full rebuilds.
 - **Live refresh rebuilds invisible views.** `src/main.ts:425` iterates every
   home leaf regardless of visibility. Off by default (`liveRefresh: false`).
@@ -165,7 +165,7 @@ animates, the blur is recomputed every frame over the whole board at 2× DPR.
   extension.
 - **`transition: all 120ms`** in four places (`styles.css:552, 696, 5177, 5287`),
   inviting invalidation on properties nobody meant to animate.
-- **`hearth-tile-obscured-pulse` animates `box-shadow`** — a paint property,
+- **`flexible-workbench-tile-obscured-pulse` animates `box-shadow`** — a paint property,
   never compositable — `infinite`, while arranging.
 - **A stuck loading spinner animates forever**, and low power mode explicitly
   keeps it spinning with `!important` (`styles.css:114`).

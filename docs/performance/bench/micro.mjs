@@ -1,4 +1,4 @@
-/* Prices each animation shape Hearth's sky uses, against the equivalent
+/* Prices each animation shape Flexible Workbench's sky uses, against the equivalent
  * plain-HTML animation. A compositor-driven animation costs the main thread
  * nothing: zero style recalcs, zero layouts, zero paints. Anything above zero
  * means Chromium is re-running style/paint on the main thread every frame. */
@@ -8,21 +8,21 @@ const WINDOW_MS = Number(process.env.WINDOW_MS ?? 5000);
 
 const CASES = [
 	["none                          (control)", "none"],
-	["52 rain drops — SVG <line>    (Hearth)", "svgFall"],
+	["52 rain drops — SVG <line>    (Flexible Workbench)", "svgFall"],
 	["26 rain drops — SVG, density 0.5", "svgFallHalf"],
 	["52 rain drops — HTML <div>", "htmlFall"],
 	["52 rain drops — SVG, play-state paused", "svgFallPaused"],
-	["38 stars       — SVG <circle> (Hearth)", "svgTwinkle"],
+	["38 stars       — SVG <circle> (Flexible Workbench)", "svgTwinkle"],
 	["38 stars       — HTML <div>", "htmlTwinkle"],
-	["9 clouds       — SVG <g>      (Hearth)", "svgDrift"],
-	["3 bolts + drop-shadow filter  (Hearth)", "boltsFiltered"],
+	["9 clouds       — SVG <g>      (Flexible Workbench)", "svgDrift"],
+	["3 bolts + drop-shadow filter  (Flexible Workbench)", "boltsFiltered"],
 	["3 bolts, no filter", "boltsPlain"],
-	["4 pet sprites (svg ROOT xform) (Hearth)", "pets"],
+	["4 pet sprites (svg ROOT xform) (Flexible Workbench)", "pets"],
 	["  pet: svg-root bob only", "petsBobOnly"],
 	["  pet: frame cycling only", "petsFramesOnly"],
 	["  pet: bob with px instead of %", "petsBobPx"],
 	["4 pets — bob on a <div> wrapper (FIXED)", "petsFixed"],
-	["slideshow Ken Burns            (Hearth)", "kenburns"],
+	["slideshow Ken Burns            (Flexible Workbench)", "kenburns"],
 ];
 
 const NAMES = {

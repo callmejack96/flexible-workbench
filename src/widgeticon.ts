@@ -22,7 +22,7 @@ export function resolveIconImage(view: HomeView, icon: string | undefined): TFil
  *
  * - When the icon string is a vault image path, the image covers the whole tile
  *   (object-fit: cover) with the label overlaid on top (#119). The caller adds
- *   the label afterwards; the `hearth-tile-has-image` class makes CSS position
+ *   the label afterwards; the `flexible-workbench-tile-has-image` class makes CSS position
  *   the image behind it and give the label a legibility scrim.
  * - Otherwise the usual centered Lucide icon slot is used (falling back to
  *   `fallback` when the string is empty).
@@ -35,12 +35,12 @@ export function applyTileVisual(
 ): void {
 	const image = resolveIconImage(view, icon);
 	if (image) {
-		tile.addClass("hearth-tile-has-image");
-		const img = tile.createEl("img", { cls: "hearth-tile-image" });
+		tile.addClass("flexible-workbench-tile-has-image");
+		const img = tile.createEl("img", { cls: "flexible-workbench-tile-image" });
 		img.src = view.app.vault.getResourcePath(image);
 		return;
 	}
-	setIcon(tile.createDiv("hearth-link-icon"), icon?.trim() || fallback);
+	setIcon(tile.createDiv("flexible-workbench-link-icon"), icon?.trim() || fallback);
 }
 
 /**
@@ -49,7 +49,7 @@ export function applyTileVisual(
  * a Lucide id or a vault image path without having to hover the input (#119).
  */
 export function addIconHelp(controlEl: HTMLElement): void {
-	const help = controlEl.createSpan({ cls: "hearth-icon-help", text: "?" });
+	const help = controlEl.createSpan({ cls: "flexible-workbench-icon-help", text: "?" });
 	setTooltip(help, t().editors.iconHelp);
 	help.setAttribute("aria-label", t().editors.iconHelp);
 }

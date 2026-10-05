@@ -1,5 +1,5 @@
 import { Component, ItemView, Platform, type WorkspaceLeaf } from "obsidian";
-import type HearthPlugin from "./main";
+import type FlexibleWorkbenchPlugin from "./main";
 import { renderHeader } from "./header";
 import { renderDashboard } from "./dashboard";
 import { renderDashboardSwitcher } from "./dashboards";
@@ -21,13 +21,13 @@ import {
 	renderCards,
 } from "./types";
 import { tabIconIdFor } from "./icon";
-import { hearthLeafIsNavigable } from "./opener";
+import { flexibleWorkbenchLeafIsNavigable } from "./opener";
 import { t } from "./i18n";
 
-export const VIEW_TYPE_HOME = "hearth-home-view";
+export const VIEW_TYPE_HOME = "flexible-workbench-home-view";
 
 export class HomeView extends ItemView {
-	plugin: HearthPlugin;
+	plugin: FlexibleWorkbenchPlugin;
 	/**
 	 * Whether the dashboard is a navigable pane (the base `View` default is
 	 * `false`). A non-navigable leaf is treated like the file explorer or
@@ -38,8 +38,8 @@ export class HomeView extends ItemView {
 	 * dashboard behaves like any editor tab and the selection tracks correctly.
 	 *
 	 * That is still the default, but it is now the user's call: it is also the
-	 * only lever over opens Hearth never sees (#106), so `render()` keeps it in
-	 * step with the "Notes opened from outside Hearth" setting.
+	 * only lever over opens Flexible Workbench never sees (#106), so `render()` keeps it in
+	 * step with the "Notes opened from outside Flexible Workbench" setting.
 	 */
 	navigation = true;
 	/** Whether the dashboard is in layout/arrange mode (drag & resize). */
@@ -65,7 +65,7 @@ export class HomeView extends ItemView {
 	 * listener it registers lives on `contentEl`, which outlives every render). */
 	private heldLiveRender: (() => void) | null = null;
 
-	constructor(leaf: WorkspaceLeaf, plugin: HearthPlugin) {
+	constructor(leaf: WorkspaceLeaf, plugin: FlexibleWorkbenchPlugin) {
 		super(leaf);
 		this.plugin = plugin;
 	}
@@ -120,14 +120,14 @@ export class HomeView extends ItemView {
 
 	/**
 	 * When enabled, move keyboard focus into the search field as the view opens
-	 * so a freshly-opened Hearth tab is ready to type into (#115). Only runs from
+	 * so a freshly-opened Flexible Workbench tab is ready to type into (#115). Only runs from
 	 * onOpen — not on every re-render — so a background refresh never steals focus
 	 * while the user is working. Desktop only: focusing an input on mobile pops
 	 * the on-screen keyboard, which would be jarring on every open.
 	 */
 	private maybeFocusSearch(): void {
 		if (!this.plugin.settings.focusSearchOnOpen || Platform.isMobile) return;
-		const input = this.contentEl.querySelector<HTMLInputElement>(".hearth-search-input");
+		const input = this.contentEl.querySelector<HTMLInputElement>(".flexible-workbench-search-input");
 		if (input) input.focus();
 	}
 
@@ -145,13 +145,13 @@ export class HomeView extends ItemView {
 			const top = this.contentEl.getBoundingClientRect().top;
 			const visibleBottom = vv.offsetTop + vv.height;
 			this.contentEl.style.setProperty(
-				"--hearth-vh",
+				"--flexible-workbench-vh",
 				`${Math.max(0, Math.round(visibleBottom - top))}px`,
 			);
 			// Keyboard up when the visual viewport is meaningfully shorter than
 			// the layout viewport.
 			this.contentEl.toggleClass(
-				"hearth-kbd-open",
+				"flexible-workbench-kbd-open",
 				vv.height < window.innerHeight - 120,
 			);
 		};
@@ -195,7 +195,7 @@ export class HomeView extends ItemView {
 		// choice takes effect without reopening the tab. Obsidian reads this at
 		// the moment it looks for a leaf to open a file in, so the current value
 		// is the one that counts.
-		this.navigation = hearthLeafIsNavigable(this.plugin.settings);
+		this.navigation = flexibleWorkbenchLeafIsNavigable(this.plugin.settings);
 
 		this.cleanupChild();
 		const child = new Component();
@@ -204,28 +204,28 @@ export class HomeView extends ItemView {
 
 		const root = this.contentEl;
 		root.empty();
-		root.addClass("hearth-view");
-		root.toggleClass("hearth-compact", effectiveCompact(this.plugin.settings));
+		root.addClass("flexible-workbench-view");
+		root.toggleClass("flexible-workbench-compact", effectiveCompact(this.plugin.settings));
 		// The two performance-tier flags CSS keys off. They are separate because
 		// the tiers drop motion and frost at the same rung but for different
-		// reasons, and because `hearth-no-motion` is also what the focus/visibility
+		// reasons, and because `flexible-workbench-no-motion` is also what the focus/visibility
 		// gate toggles at runtime (see motion.ts) without touching the tier.
 		// Everything with a setting behind it — the background, card opacity, the
 		// blur radius, the refresh timers — is handled by the effective* resolvers
 		// instead, so these classes only cover what has no setting to override.
-		root.toggleClass("hearth-no-motion", !motionAllowed(this.plugin.settings));
-		root.toggleClass("hearth-no-frost", !frostAllowed(this.plugin.settings));
+		root.toggleClass("flexible-workbench-no-motion", !motionAllowed(this.plugin.settings));
+		root.toggleClass("flexible-workbench-no-frost", !frostAllowed(this.plugin.settings));
 		// In arrange mode the user can hide the per-card headers to see each
 		// card's full body. The class is only applied while arranging so the
 		// headers come back automatically when arranging ends.
 		root.toggleClass(
-			"hearth-hide-header",
+			"flexible-workbench-hide-header",
 			this.arrangeMode && this.hideHeaderInArrange,
 		);
 
 		// Mobile-only mode: on a phone/tablet, collapse to just the search field.
 		const mobileOnly = Platform.isMobile && this.plugin.settings.mobileSearchOnly;
-		root.toggleClass("hearth-mobile-only", mobileOnly);
+		root.toggleClass("flexible-workbench-mobile-only", mobileOnly);
 
 		// The narrow layout, from the measured board width rather than the
 		// platform — see src/narrow.ts for why. Recorded on the view so the width
@@ -233,8 +233,8 @@ export class HomeView extends ItemView {
 		// ordinary resize (which the fractional layout already handles).
 		const narrow = this.isNarrow();
 		this.narrowAtRender = narrow;
-		root.toggleClass("hearth-narrow", narrow);
-		root.toggleClass("hearth-phone-preview", this.phonePreview);
+		root.toggleClass("flexible-workbench-narrow", narrow);
+		root.toggleClass("flexible-workbench-phone-preview", this.phonePreview);
 
 		// With no cards to show (and not arranging), centre the search field
 		// vertically so the page reads as a clean launcher.
@@ -242,7 +242,7 @@ export class HomeView extends ItemView {
 			!mobileOnly &&
 			!this.arrangeMode &&
 			renderCards(this.plugin.settings).length === 0;
-		root.toggleClass("hearth-empty-board", emptyBoard);
+		root.toggleClass("flexible-workbench-empty-board", emptyBoard);
 
 		// The backdrop is painted one of two ways. As a wallpaper it goes behind
 		// everything, so it is laid down before the scroll area; as a banner it is
@@ -254,29 +254,29 @@ export class HomeView extends ItemView {
 		// painted as a wallpaper there rather than as a strip floating above a
 		// launcher.
 		const banner = !mobileOnly && bannerActive(this.plugin.settings);
-		root.toggleClass("hearth-has-banner", banner);
+		root.toggleClass("flexible-workbench-has-banner", banner);
 		if (!banner) applyBackground(this, root, child);
 
-		const scroll = root.createDiv("hearth-scroll");
+		const scroll = root.createDiv("flexible-workbench-scroll");
 		// A stacked board is a list that runs off the bottom of the screen by
 		// design, so fit-to-page — which locks the board to exactly one screen and
 		// clips the rest — is not applied to it. The setting is untouched and
 		// comes back with the free-form layout.
 		const stacked = narrow && this.plugin.settings.stackOnNarrow;
-		scroll.toggleClass("hearth-fit", effectiveFitToPage(this.plugin.settings) && !stacked);
+		scroll.toggleClass("flexible-workbench-fit", effectiveFitToPage(this.plugin.settings) && !stacked);
 
 		if (banner) renderBanner(this, scroll, child);
 
 		// The phone preview draws a device shell around the board. It is a wrapper
-		// rather than styling on `.hearth-inner` itself, because the bezel has to
+		// rather than styling on `.flexible-workbench-inner` itself, because the bezel has to
 		// paint a surface and the screen has to keep showing the board's own
 		// background through it — one element cannot do both. The screen width is
 		// published as a variable so the shell can size itself around it and the
 		// preview's width stays the one number that decides the layout.
-		const frame = this.phonePreview ? scroll.createDiv("hearth-phone-frame") : null;
-		frame?.style.setProperty("--hearth-phone-screen", `${PHONE_PREVIEW_WIDTH}px`);
+		const frame = this.phonePreview ? scroll.createDiv("flexible-workbench-phone-frame") : null;
+		frame?.style.setProperty("--flexible-workbench-phone-screen", `${PHONE_PREVIEW_WIDTH}px`);
 
-		const inner = (frame ?? scroll).createDiv("hearth-inner");
+		const inner = (frame ?? scroll).createDiv("flexible-workbench-inner");
 		// The column is fluid either way — it is `width: 100%` centred in the
 		// scroll area, so it already follows a narrow pane down. The setting only
 		// decides how far it may grow: to a pixel ceiling, or to the pane itself.
@@ -293,7 +293,7 @@ export class HomeView extends ItemView {
 		if (!mobileOnly) renderDashboardSwitcher(this, inner);
 
 		if (effectiveShowTitle(this.plugin.settings) || effectiveShowSearch(this.plugin.settings)) {
-			const header = inner.createDiv("hearth-header");
+			const header = inner.createDiv("flexible-workbench-header");
 			renderHeader(this, header, child);
 		}
 
@@ -303,7 +303,7 @@ export class HomeView extends ItemView {
 		gateMotionOnWindow(this, child);
 
 		if (!mobileOnly) {
-			const dashboard = inner.createDiv("hearth-dashboard");
+			const dashboard = inner.createDiv("flexible-workbench-dashboard");
 			renderDashboard(this, dashboard, child);
 		}
 

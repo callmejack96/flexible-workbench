@@ -19,7 +19,7 @@ import {
  */
 
 /** The registered ids Obsidian would report: the Lucide set is prefixed. */
-const REGISTERED = new Set(["lucide-flame", "lucide-home", "hearth-crystal"]);
+const REGISTERED = new Set(["lucide-flame", "lucide-home", "flexible-workbench-mark"]);
 const isKnown = (id: string) => REGISTERED.has(id);
 const classify = (raw: string | undefined) => classifyTitleIcon(raw, isKnown);
 
@@ -140,7 +140,7 @@ describe("migrateSettings: the logo/logoIcon fold", () => {
 		expect(s.titleIcon).toBe("🔥");
 	});
 
-	it("leaves a vault that never set either on the crystal", () => {
+	it("leaves a vault that never set either on the workbench mark", () => {
 		const { s, raw } = loaded({
 			dashboards: [{ id: "d1", name: "Dashboard 1", cards: [] }],
 			activeDashboardId: "d1",
@@ -227,7 +227,7 @@ describe("effectiveTitleIcon", () => {
 		return s;
 	}
 
-	it("is empty by default, so the Hearth crystal is drawn", () => {
+	it("is empty by default, so the Flexible Workbench workbench mark is drawn", () => {
 		expect(effectiveTitleIcon(settings())).toBe("");
 	});
 
@@ -246,7 +246,7 @@ describe("effectiveTitleIcon", () => {
 		expect(effectiveTitleIcon(s)).toBe("flame");
 	});
 
-	it("treats an empty override as 'the crystal on this board'", () => {
+	it("treats an empty override as 'the workbench mark on this board'", () => {
 		// Distinct from having no override at all: the board opts out of the
 		// vault-wide mark rather than inheriting it.
 		const s = settings();

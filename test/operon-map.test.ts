@@ -19,7 +19,7 @@ import type { OperonTask, OperonTaxonomy } from "../src/operon/types";
  * The pure half of the Operon integration: how Operon's task DTOs get bucketed,
  * ordered and turned into board columns. Everything Operon itself decides —
  * what a task is, when it recurs, which status means done — is out of scope by
- * design; these tests only pin Hearth's own shaping of what it was handed.
+ * design; these tests only pin Flexible Workbench's own shaping of what it was handed.
  */
 
 /** A minimal task DTO. Only the fields the mappers read are filled; the rest
@@ -65,7 +65,7 @@ function task(overrides: {
 		recurrence: { repeating: false },
 		tracker: { active: false, sessionCount: 0 },
 		pinned: false,
-		// Revisions are opaque to Hearth — it never compares or forwards them —
+		// Revisions are opaque to Flexible Workbench — it never compares or forwards them —
 		// so the fixture carries the shape without inventing plausible values.
 		sourceRevision: { algorithm: "sha256", contentDigest: "" },
 		contextRevision: {

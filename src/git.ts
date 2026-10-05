@@ -1,9 +1,9 @@
 /**
- * The Git integration: everything Hearth knows about the
+ * The Git integration: everything Flexible Workbench knows about the
  * [obsidian-git](https://github.com/Vinzent03/obsidian-git) community plugin.
  *
  * The rule here is the same one the Dataview, Datacore and Omnisearch modules
- * follow: **Hearth never does the work itself.** It does not shell out to
+ * follow: **Flexible Workbench never does the work itself.** It does not shell out to
  * `git`, it does not bundle a git implementation, and it does not read
  * `.git/`. Every operation the card offers is a call into the running
  * obsidian-git plugin instance, so whichever backend the user has configured
@@ -15,7 +15,7 @@
  * Two consequences shape this file:
  *
  * 1. **Everything is optional.** obsidian-git exposes no versioned `api`
- *    object the way Omnisearch and Datacore do; what Hearth calls are the
+ *    object the way Omnisearch and Datacore do; what Flexible Workbench calls are the
  *    plugin instance's own public members. They are stable in practice (its
  *    own commands and views call the same ones) but they are not a contract,
  *    so every member is declared optional and every call site checks for the
@@ -23,7 +23,7 @@
  *    disables one button; it never throws inside a dashboard render.
  * 2. **Writes go through obsidian-git's own queue.** The plugin serializes
  *    every repo-touching operation on `promiseQueue` so an automatic backup
- *    can't interleave with a manual commit. Hearth pushes its actions onto the
+ *    can't interleave with a manual commit. Flexible Workbench pushes its actions onto the
  *    same queue rather than calling the methods directly, which is why a card
  *    button behaves identically to the matching command in the palette —
  *    including its error reporting, which `promiseQueue` routes to the
@@ -45,12 +45,12 @@ export const GIT_HISTORY_VIEW = "git-history-view";
 
 /*
  * The workspace events obsidian-git fires (typed for listening in
- * `src/obsidian-ext.d.ts`). Hearth follows them rather than polling: the plugin
+ * `src/obsidian-ext.d.ts`). Flexible Workbench follows them rather than polling: the plugin
  * already watches the vault, runs the automatic-backup timer and refreshes
  * after every operation of its own, so listening keeps a card in step with its
  * source-control view for free.
  *
- * - `obsidian-git:refresh` — *ask* the plugin to refresh (Hearth triggers this
+ * - `obsidian-git:refresh` — *ask* the plugin to refresh (Flexible Workbench triggers this
  *   one when revealing a view, exactly as its own commands do).
  * - `obsidian-git:refreshed` — the plugin finished a refresh cycle.
  * - `obsidian-git:status-changed` — a fresh Status was computed; the status is
@@ -61,7 +61,7 @@ export const GIT_HISTORY_VIEW = "git-history-view";
  */
 
 
-// ---- The slice of obsidian-git Hearth talks to --------------------------
+// ---- The slice of obsidian-git Flexible Workbench talks to --------------------------
 
 /** One entry of obsidian-git's status: a file with its index (staged) and
  * working-directory state as single letters. `path` is relative to the repo
@@ -127,7 +127,7 @@ interface GitManagerLike {
 }
 
 /**
- * The obsidian-git plugin instance, as far as Hearth is concerned. Reachable
+ * The obsidian-git plugin instance, as far as Flexible Workbench is concerned. Reachable
  * at `app.plugins.plugins["obsidian-git"]` once the plugin is enabled.
  *
  * Only `gitReady` and `gitManager` are required to consider the plugin usable
@@ -179,7 +179,7 @@ export interface GitPlugin {
 
 /**
  * Reach the obsidian-git plugin instance, or null when it isn't installed,
- * isn't enabled, or is too old to look like the plugin Hearth knows.
+ * isn't enabled, or is too old to look like the plugin Flexible Workbench knows.
  *
  * Note this returns the plugin even when `gitReady` is false — "the plugin is
  * there but has no repository yet" is a state the card reports rather than one
@@ -519,7 +519,7 @@ export interface GitSnapshotOptions {
  * The status goes through `updateCachedStatus()` rather than
  * `gitManager.status()` so the plugin's own cache — and every other listener,
  * including its source-control view and status bar — is updated by the same
- * read, instead of Hearth running a second `git status` alongside it.
+ * read, instead of Flexible Workbench running a second `git status` alongside it.
  *
  * Every individual read is caught: the result is "what could be read", and the
  * card shows what it got.

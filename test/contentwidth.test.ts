@@ -107,7 +107,7 @@ describe("content width through a layout export", () => {
 		const err = importLayout(
 			into,
 			JSON.stringify({
-				hearthLayout: 2,
+				flexibleWorkbenchLayout: 2,
 				dashboards: [{ id: "d1", name: "Imported", cards: [] }],
 				activeDashboardId: "d1",
 				maxWidth: 99999,
@@ -124,7 +124,7 @@ describe("content width through a layout export", () => {
 		const err = importLayout(
 			into,
 			JSON.stringify({
-				hearthLayout: 2,
+				flexibleWorkbenchLayout: 2,
 				dashboards: [{ id: "d1", name: "Imported", cards: [] }],
 				activeDashboardId: "d1",
 				maxWidth: 1400,

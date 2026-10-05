@@ -23,7 +23,7 @@ import { cachedWeather, loadWeather, type WeatherRequest } from "./weather";
  * attached. Update the file at assets/default-bg.gif to ship a new image.
  */
 const DEFAULT_BG_URL =
-	"https://raw.githubusercontent.com/ondreu/Hearth/refs/heads/main/assets/default-bg.gif";
+	"https://raw.githubusercontent.com/callmejack96/flexible-workbench/refs/heads/main/assets/default-bg.gif";
 
 /**
  * Apply the optional, customizable background as a separate layer behind the
@@ -45,7 +45,7 @@ export function applyBackground(
 	const bg = effectiveBackground(view.plugin.settings);
 	if (!paintable(bg)) return;
 
-	paintBackground(view, root.createDiv("hearth-bg"), bg, component);
+	paintBackground(view, root.createDiv("flexible-workbench-bg"), bg, component);
 }
 
 /**
@@ -70,18 +70,18 @@ export function renderBanner(
 	if (bg.layout !== "banner") return null;
 	if (!paintable(bg)) return null;
 
-	const banner = parent.createDiv("hearth-banner");
+	const banner = parent.createDiv("flexible-workbench-banner");
 	banner.style.height = `${bg.bannerHeight}px`;
 	banner.toggleClass("is-faded", bg.bannerFade);
 	// Full width means "as wide as the pane"; otherwise the banner lines up with
-	// the content column, which is the same max-width `.hearth-inner` uses — and
+	// the content column, which is the same max-width `.flexible-workbench-inner` uses — and
 	// so is uncapped exactly when the column is, keeping the two in line.
 	banner.toggleClass("is-full-width", bg.bannerFullWidth);
 	if (!bg.bannerFullWidth && !effectiveFullWidth(view.plugin.settings)) {
 		banner.style.maxWidth = `${effectiveMaxWidth(view.plugin.settings)}px`;
 	}
 
-	const layer = banner.createDiv("hearth-bg");
+	const layer = banner.createDiv("flexible-workbench-bg");
 	// A blurred layer goes soft at its own edges. Behind a whole view that is
 	// barely visible; cropped into a strip it is a pale halo down all four
 	// sides, so grow the layer past the crop and let the softness fall outside.
@@ -135,7 +135,7 @@ function paintBackground(
 
 	if (url) {
 		// Escape characters that would break out of the CSS url("...") literal.
-		// cover/center sizing lives in styles.css (.hearth-bg).
+		// cover/center sizing lives in styles.css (.flexible-workbench-bg).
 		const safe = url.replace(/["\\]/g, "\\$&");
 		layer.style.backgroundImage = `url("${safe}")`;
 	}

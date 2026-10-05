@@ -86,7 +86,7 @@ export function renderDashboard(
 
 	renderToolbar(view, container);
 
-	const grid = container.createDiv("hearth-grid");
+	const grid = container.createDiv("flexible-workbench-grid");
 	grid.toggleClass("is-arranging", view.arrangeMode);
 	grid.toggleClass("is-stacked", stacked);
 	// Board-level defaults; per-card overrides are set in the render loop below.
@@ -94,7 +94,7 @@ export function renderDashboard(
 	// Board-wide corner radius (px). Every card reads this via CSS; the frost
 	// mask in grid.ts reads the resolved value back off the grid so its rounding
 	// matches. Merged-edge corners still flatten to 0 regardless (see styles.css).
-	grid.style.setProperty("--hearth-card-radius", `${effectiveCardRadius(s)}px`);
+	grid.style.setProperty("--flexible-workbench-card-radius", `${effectiveCardRadius(s)}px`);
 	grid.style.setProperty("--card-border-width", `${effectiveCardBorderWidth(s)}px`);
 	// Fit-to-page locks the board to one screen, which a stacked board — a list
 	// that is meant to run past the bottom — cannot be; the view drops the class
@@ -130,7 +130,7 @@ export function renderDashboard(
 		// vertical space is the scarce thing.
 		const collapsed = stacked && card.mobile?.collapsed === true;
 
-		const el = grid.createDiv("hearth-card");
+		const el = grid.createDiv("flexible-workbench-card");
 		gridLayout.elements.set(card, el);
 		// Stacked cards are in normal flow: full width from CSS, and only as tall
 		// as the stacked layout says — bar a collapsed one, which is as tall as
@@ -158,7 +158,7 @@ export function renderDashboard(
 			);
 		}
 		// Cards whose resolved blur is > 0 feed the shared frost layer (see
-		// updateFrostLayers / the .hearth-frost note in styles.css). The value is
+		// updateFrostLayers / the .flexible-workbench-frost note in styles.css). The value is
 		// stashed on the element so the frost rebuild can group cards by blur
 		// without re-reading settings, and blur-off cards never enter a layer.
 		// A seamless card paints no surface of its own, so frosting the wallpaper
@@ -170,13 +170,13 @@ export function renderDashboard(
 			el.dataset.blur = String(cardBlur);
 		}
 
-		const head = el.createDiv("hearth-card-head");
+		const head = el.createDiv("flexible-workbench-card-head");
 		if (view.arrangeMode) {
 			renderCardControls(view, card, head, commit, stacked ? cards : null);
 		} else {
 			const named = (card.title ?? "").trim();
 			head.toggleClass("is-untitled", !named);
-			const titleEl = head.createDiv({ cls: "hearth-card-title", text: card.title ?? "" });
+			const titleEl = head.createDiv({ cls: "flexible-workbench-card-title", text: card.title ?? "" });
 			// An untitled card is headerless on a normal board, so collapsing one
 			// would leave a blank bar with nothing to tap and nothing to read.
 			// Fall back to the card kind's own name — "Tasks", "Calendar".
@@ -186,7 +186,7 @@ export function renderDashboard(
 			}
 		}
 
-		const body = el.createDiv("hearth-card-body");
+		const body = el.createDiv("flexible-workbench-card-body");
 		if (card.background) body.addClass("has-bg");
 
 		// One mount for both paths, so a card expanded on a phone is built exactly
@@ -224,7 +224,7 @@ export function renderDashboard(
 			// column that has to be scrolled with a finger would make the board
 			// unscrollable. This one lets a vertical scroll through and swallows
 			// everything else.
-			el.createDiv("hearth-card-shield");
+			el.createDiv("flexible-workbench-card-shield");
 			if (!collapsed) enableStackedResize(el, card, component, () => persistAndRender(view));
 		}
 	}
@@ -327,7 +327,7 @@ function mountCardBody(
 			// fallback for an unknown kind, one level down: contain the failure
 			// to the one card and say so on its face, with the real error on the
 			// console for a bug report.
-			console.error(`Hearth: the ${card.kind} card failed to render`, err);
+			console.error(`Flexible Workbench: the ${card.kind} card failed to render`, err);
 			// Clear whatever the half-finished render left behind — its marks on
 			// the body included — so the failure notice draws in a plain card.
 			resetCardBody(body, baseClasses);
@@ -443,7 +443,7 @@ function enableCollapseToggle(
 	mount: () => void,
 ): void {
 	const chevron = head.createEl("button", {
-		cls: "hearth-card-expand",
+		cls: "flexible-workbench-card-expand",
 		attr: {
 			"aria-label": t().dashboard.expandCard,
 			"aria-expanded": "false",
@@ -498,7 +498,7 @@ function renderCardControls(
 	head.addClass("is-editing");
 
 	const title = head.createEl("input", {
-		cls: "hearth-card-title-input",
+		cls: "flexible-workbench-card-title-input",
 		attr: { type: "text", placeholder: "Title", spellcheck: "false" },
 	});
 	title.value = card.title ?? "";
@@ -510,7 +510,7 @@ function renderCardControls(
 	title.addEventListener("change", commit);
 	title.addEventListener("blur", commit);
 
-	const actions = head.createDiv("hearth-card-actions");
+	const actions = head.createDiv("flexible-workbench-card-actions");
 
 	// A stacked board has no free geometry to drag, so its one layout question
 	// — what comes before what — is answered here instead. The buttons write
@@ -525,7 +525,7 @@ function renderCardControls(
 			[1, "arrow-down", t().dashboard.moveCardDown],
 		] as const) {
 			const btn = actions.createEl("button", {
-				cls: "hearth-card-action",
+				cls: "flexible-workbench-card-action",
 				attr: { "aria-label": label, type: "button" },
 			});
 			setIcon(btn, icon);
@@ -535,7 +535,7 @@ function renderCardControls(
 	}
 
 	const settingsBtn = actions.createEl("button", {
-		cls: "hearth-card-action",
+		cls: "flexible-workbench-card-action",
 		attr: { "aria-label": t().dashboard.cardSettings },
 	});
 	setIcon(settingsBtn, "settings-2");
@@ -543,7 +543,7 @@ function renderCardControls(
 	settingsBtn.addEventListener("click", () => openCardSettings(view, card));
 
 	const remove = actions.createEl("button", {
-		cls: "hearth-card-action is-danger",
+		cls: "flexible-workbench-card-action is-danger",
 		attr: { "aria-label": t().dashboard.removeCard },
 	});
 	setIcon(remove, "trash-2");
@@ -565,7 +565,7 @@ function renderCardControls(
 
 /** Open the full settings editor for a single card, driven entirely from the
  * board so nothing has to be configured in the plugin settings tab. */
-function openCardSettings(view: HomeView, card: DashboardCard): void {
+export function openCardSettings(view: HomeView, card: DashboardCard): void {
 	const s = view.plugin.settings;
 	new CardSettingsModal(view.app, card, {
 		settings: s,
@@ -592,18 +592,18 @@ function openCardSettings(view: HomeView, card: DashboardCard): void {
 }
 
 function renderToolbar(view: HomeView, container: HTMLElement): void {
-	const bar = container.createDiv("hearth-toolbar");
+	const bar = container.createDiv("flexible-workbench-toolbar");
 	// Track arrange mode so the toolbar can switch between its compact and full controls.
 	bar.toggleClass("is-arranging", view.arrangeMode);
 
 	if (view.arrangeMode) {
-		const add = bar.createEl("button", { cls: "hearth-tool-btn" });
-		setIcon(add.createSpan("hearth-tool-icon"), "plus");
-		add.createSpan({ cls: "hearth-tool-label", text: t().dashboard.addCard });
+		const add = bar.createEl("button", { cls: "flexible-workbench-tool-btn" });
+		setIcon(add.createSpan("flexible-workbench-tool-icon"), "plus");
+		add.createSpan({ cls: "flexible-workbench-tool-label", text: t().dashboard.addCard });
 		add.setAttribute("aria-label", t().dashboard.addCardAria);
 		add.addEventListener("click", () => {
 			openCardPicker(view.app, {
-				hearthVersion: view.plugin.manifest.version,
+				flexibleWorkbenchVersion: view.plugin.manifest.version,
 				onChoose: (template) => {
 					const s = view.plugin.settings;
 					const card = cardFromTemplate(template);
@@ -625,10 +625,10 @@ function renderToolbar(view: HomeView, container: HTMLElement): void {
 
 		// Same editor the dashboard switcher's right-click menu opens, surfaced
 		// here so arrange mode is a self-contained way to configure the board.
-		const dashSettings = bar.createEl("button", { cls: "hearth-tool-btn" });
-		setIcon(dashSettings.createSpan("hearth-tool-icon"), "settings-2");
+		const dashSettings = bar.createEl("button", { cls: "flexible-workbench-tool-btn" });
+		setIcon(dashSettings.createSpan("flexible-workbench-tool-icon"), "settings-2");
 		dashSettings.createSpan({
-			cls: "hearth-tool-label",
+			cls: "flexible-workbench-tool-label",
 			text: t().dashboard.dashboardSettings,
 		});
 		dashSettings.setAttribute("aria-label", t().dashboard.dashboardSettingsAria);
@@ -639,14 +639,14 @@ function renderToolbar(view: HomeView, container: HTMLElement): void {
 		// Toggle the per-card headers (title input + actions) off so each
 		// card's full body is visible while arranging. Only available while
 		// arranging; the headers come back automatically when arranging ends.
-		const hideHdr = bar.createEl("button", { cls: "hearth-tool-btn" });
+		const hideHdr = bar.createEl("button", { cls: "flexible-workbench-tool-btn" });
 		hideHdr.toggleClass("is-active", view.hideHeaderInArrange);
 		setIcon(
-			hideHdr.createSpan("hearth-tool-icon"),
+			hideHdr.createSpan("flexible-workbench-tool-icon"),
 			view.hideHeaderInArrange ? "eye-off" : "eye",
 		);
 		hideHdr.createSpan({
-			cls: "hearth-tool-label",
+			cls: "flexible-workbench-tool-label",
 			text: view.hideHeaderInArrange
 				? t().dashboard.showTitles
 				: t().dashboard.hideTitles,
@@ -663,7 +663,7 @@ function renderToolbar(view: HomeView, container: HTMLElement): void {
 		});
 
 		// Constrain the board to phone width so the narrow layout can be built
-		// and checked from the desk it is being built at. Hearth's narrow layout
+		// and checked from the desk it is being built at. Flexible Workbench's narrow layout
 		// is chosen by measured width rather than by platform precisely so this
 		// is possible: the preview is not a simulation of the phone layout, it is
 		// the phone layout, at the width that triggers it.
@@ -671,11 +671,11 @@ function renderToolbar(view: HomeView, container: HTMLElement): void {
 		// Not offered on a board already narrow enough to be stacked, where
 		// clamping the width further would preview nothing new.
 		if (!view.isNarrow() || view.phonePreview) {
-			const phone = bar.createEl("button", { cls: "hearth-tool-btn" });
+			const phone = bar.createEl("button", { cls: "flexible-workbench-tool-btn" });
 			phone.toggleClass("is-active", view.phonePreview);
-			setIcon(phone.createSpan("hearth-tool-icon"), "smartphone");
+			setIcon(phone.createSpan("flexible-workbench-tool-icon"), "smartphone");
 			phone.createSpan({
-				cls: "hearth-tool-label",
+				cls: "flexible-workbench-tool-label",
 				text: view.phonePreview
 					? t().dashboard.phonePreviewOff
 					: t().dashboard.phonePreview,
@@ -694,24 +694,24 @@ function renderToolbar(view: HomeView, container: HTMLElement): void {
 		}
 	}
 
-	const arrangeZone = bar.createDiv("hearth-arrange-zone");
+	const arrangeZone = bar.createDiv("flexible-workbench-arrange-zone");
 	arrangeZone.toggleClass(
 		"is-auto-hide",
 		!view.arrangeMode &&
 			view.plugin.settings.arrangeButtonVisibility === "hover",
 	);
-	const arrange = arrangeZone.createEl("button", { cls: "hearth-tool-btn" });
+	const arrange = arrangeZone.createEl("button", { cls: "flexible-workbench-tool-btn" });
 	arrange.toggleClass("is-active", view.arrangeMode);
 	// Outside arrange mode keep it as a small, unobtrusive icon button; while
 	// arranging, show the labelled "Done arranging" action.
 	arrange.toggleClass("is-icon", !view.arrangeMode);
 	setIcon(
-		arrange.createSpan("hearth-tool-icon"),
+		arrange.createSpan("flexible-workbench-tool-icon"),
 		view.arrangeMode ? "check" : "move",
 	);
 	if (view.arrangeMode) {
 		arrange.createSpan({
-			cls: "hearth-tool-label",
+			cls: "flexible-workbench-tool-label",
 			text: t().dashboard.doneArranging,
 		});
 	}

@@ -13,6 +13,7 @@ import {
 	type App,
 } from "obsidian";
 import { emptyState, moment } from "../cardbodies";
+import { createTaskNotesTask } from "../tasknotes";
 import { formatRelativeDate, parseNaturalDate } from "../dates";
 import { addResetButton } from "../editors";
 import { t } from "../i18n";
@@ -188,21 +189,9 @@ function checkboxStatuses(cfg: TasksConfig): { symbol: string; label: string; do
 
 export function renderTasks(view: HomeView, card: DashboardCard, body: HTMLElement): void {
 	const cfg = card.tasks ?? {};
-	const container = body.createDiv("hearth-tasks-wrap");
+	const container = body.createDiv("flexible-workbench-tasks-wrap");
 	const refresh = () => void loadAndRenderTasks(view, cfg, container, refresh);
 	refresh();
-}
-
-
-/** Resolve TaskNotes' "create new task" command id. Prefer a live lookup (the
- * plugin's command ids have shifted between versions) and fall back to the
- * conventional id. */
-function taskNotesCreateCommandId(view: HomeView): string {
-	const commands = view.app.commands.listCommands();
-	const match =
-		commands.find((c) => /^tasknotes[:.]/i.test(c.id) && /create.*task/i.test(c.name)) ??
-		commands.find((c) => /tasknotes/i.test(c.id) && /create.*task/i.test(c.name));
-	return match?.id ?? "tasknotes:create-new-task";
 }
 
 
@@ -210,14 +199,13 @@ function taskNotesCreateCommandId(view: HomeView): string {
  * `parent`. */
 function taskNotesAddButton(view: HomeView, parent: HTMLElement): void {
 	const btn = parent.createEl("button", {
-		cls: "hearth-task-add",
+		cls: "flexible-workbench-task-add",
 		attr: { "aria-label": t().cards.tasks.createNewTask, title: t().cards.tasks.createNewTask },
 	});
 	setIcon(btn, "plus");
 	btn.addEventListener("click", (e) => {
 		e.stopPropagation();
-		const id = taskNotesCreateCommandId(view);
-		if (!view.app.commands.executeCommandById(id)) {
+		if (!createTaskNotesTask(view.app)) {
 			new Notice(t().notices.taskNotesCreateFailed);
 		}
 	});
@@ -257,7 +245,7 @@ function renderTasksListHeader(
 		// Kanban add expands into a form, so give it a full-width row below the
 		// header; new cards go into the board's first column.
 		const target = boardColumns[0];
-		const addHost = container.createDiv("hearth-tasks-listadd");
+		const addHost = container.createDiv("flexible-workbench-tasks-listadd");
 		renderKanbanAddCard(view, cfg, target, addHost, refresh, {
 			extended: cfg.kanbanExtended ?? false,
 			markDone: (cfg.kanbanDoneColumns ?? []).includes(target.toLowerCase()),
@@ -276,19 +264,19 @@ function renderTasksListHeader(
 function resolveTaskActionsHost(view: HomeView, container: HTMLElement): HTMLElement {
 	const head = view.arrangeMode
 		? null
-		: container.closest(".hearth-card")?.querySelector<HTMLElement>(".hearth-card-head");
+		: container.closest(".flexible-workbench-card")?.querySelector<HTMLElement>(".flexible-workbench-card-head");
 	if (head && !head.classList.contains("is-untitled")) {
-		const existing = head.querySelector<HTMLElement>(":scope > .hearth-tasks-headactions");
+		const existing = head.querySelector<HTMLElement>(":scope > .flexible-workbench-tasks-headactions");
 		if (existing) {
 			existing.empty();
 			return existing;
 		}
-		return head.createDiv("hearth-tasks-headactions hearth-tasks-listhead-actions");
+		return head.createDiv("flexible-workbench-tasks-headactions flexible-workbench-tasks-listhead-actions");
 	}
 	// Untitled (or arranging): float the controls over the card's top-right
 	// corner, revealed on hover — matching the add button and embed switcher on
 	// headerless cards, and never reserving a row of its own.
-	return container.createDiv("hearth-tasks-head hearth-tasks-listhead-actions");
+	return container.createDiv("flexible-workbench-tasks-head flexible-workbench-tasks-listhead-actions");
 }
 
 
@@ -359,13 +347,13 @@ function renderValueChip(
 		extraCls?: string;
 	},
 ): HTMLElement {
-	const cls = `hearth-task-chip is-${opts.style}${opts.extraCls ? ` ${opts.extraCls}` : ""}`;
+	const cls = `flexible-workbench-task-chip is-${opts.style}${opts.extraCls ? ` ${opts.extraCls}` : ""}`;
 	const el = parent.createDiv(cls);
 	if (opts.style === "dot") {
-		el.createDiv("hearth-task-chip-dot");
+		el.createDiv("flexible-workbench-task-chip-dot");
 	} else {
-		if (opts.prefix) el.createSpan({ cls: "hearth-task-chip-label", text: opts.prefix });
-		el.createSpan({ cls: "hearth-task-chip-value", text: opts.text });
+		if (opts.prefix) el.createSpan({ cls: "flexible-workbench-task-chip-label", text: opts.prefix });
+		el.createSpan({ cls: "flexible-workbench-task-chip-value", text: opts.text });
 	}
 	applyChipColor(el, opts.color ?? null);
 	el.setAttribute("title", opts.title ?? opts.text);
@@ -391,13 +379,13 @@ function renderPriorityChip(
 	color: string | null = null,
 	label = priorityDisplayLabel(priority),
 ): HTMLElement {
-	const chip = parent.createDiv(`hearth-task-priority is-${priorityClass(priority)} is-${style}`);
+	const chip = parent.createDiv(`flexible-workbench-task-priority is-${priorityClass(priority)} is-${style}`);
 	// The historical class for the compact board form, kept so the existing
 	// stylesheet rule (and any theme overriding it) still matches.
 	if (style === "dot") chip.addClass("is-dot-only");
 	// The dot belongs to the two forms built around it and to nothing else.
-	if (style === "dot" || style === "dotlabel") chip.createDiv("hearth-task-priority-dot");
-	if (style !== "dot") chip.createSpan({ cls: "hearth-task-priority-label", text: label });
+	if (style === "dot" || style === "dotlabel") chip.createDiv("flexible-workbench-task-priority-dot");
+	if (style !== "dot") chip.createSpan({ cls: "flexible-workbench-task-priority-label", text: label });
 	applyChipColor(chip, color);
 	chip.setAttribute("title", `Priority: ${label}`);
 	return chip;
@@ -418,8 +406,8 @@ function renderStatusChip(
 	color: string | null,
 	label = status.trim(),
 ): HTMLElement {
-	const chip = parent.createDiv(`hearth-task-status hearth-task-statuschip is-${style}`);
-	if (style === "dot") chip.createDiv("hearth-task-chip-dot");
+	const chip = parent.createDiv(`flexible-workbench-task-status flexible-workbench-task-statuschip is-${style}`);
+	if (style === "dot") chip.createDiv("flexible-workbench-task-chip-dot");
 	else chip.setText(label);
 	applyChipColor(chip, color);
 	chip.setAttribute("title", `Status: ${label}`);
@@ -465,11 +453,11 @@ function renderTaskDateChip(
 		// A relation label ("Overdue") replaces the date's own wording; the ↻ that
 		// marks a recurring task's next occurrence stays either way.
 		const text = shown.label ? `${shown.label}${hit.recurrence ? " ↻" : ""}` : dueLabel;
-		const due = parent.createDiv({ cls: `hearth-task-due is-${style}` });
+		const due = parent.createDiv({ cls: `flexible-workbench-task-due is-${style}` });
 		// The dot form drops the wording and keeps only the colour — the relation
 		// colour, or the overdue red when none was set — with the label moved into
 		// the tooltip so nothing is lost.
-		if (style === "dot") due.createDiv("hearth-task-chip-dot");
+		if (style === "dot") due.createDiv("flexible-workbench-task-chip-dot");
 		else due.setText(text);
 		// An explicit colour for the relation supersedes the built-in overdue red,
 		// which is the point of being able to set one.
@@ -502,13 +490,13 @@ function renderTaskDateChip(
 				: t().cards.tasks.doneDate;
 	// "done" rather than "doneDate" keeps the long-standing class name.
 	const kind = id === "doneDate" ? "done" : id;
-	const el = parent.createDiv({ cls: `hearth-task-meta hearth-task-meta-${kind} is-${style}` });
+	const el = parent.createDiv({ cls: `flexible-workbench-task-meta flexible-workbench-task-meta-${kind} is-${style}` });
 	// A dot stands for the whole thing: no emoji marker, no words. Which date it
 	// is, and what it says, are in the tooltip every form carries anyway.
 	if (style === "dot") {
-		el.createDiv("hearth-task-chip-dot");
+		el.createDiv("flexible-workbench-task-chip-dot");
 	} else {
-		el.createSpan({ cls: "hearth-task-meta-emoji", text: emoji });
+		el.createSpan({ cls: "flexible-workbench-task-meta-emoji", text: emoji });
 		el.appendText(shown.label || formatRelativeDate(date));
 	}
 	el.setAttribute("title", `${title}: ${date}`);
@@ -541,7 +529,7 @@ function renderCustomDateChip(
 		color: shown.color,
 		prefix,
 		title: style === "dot" ? dotTitle : date,
-		extraCls: "hearth-task-datechip",
+		extraCls: "flexible-workbench-task-datechip",
 	});
 	if (!shown.color && !done && date.slice(0, 10) < today) el.addClass("is-overdue");
 	return el;
@@ -666,7 +654,7 @@ class TaskDatePickerModal extends Modal {
 
 	onOpen(): void {
 		const { contentEl } = this;
-		contentEl.addClass("hearth-taskdate-modal");
+		contentEl.addClass("flexible-workbench-taskdate-modal");
 		contentEl.createEl("h3", { text: t().cards.tasks.dateTitle });
 
 		const commit = (value: string | null) => {
@@ -687,9 +675,9 @@ class TaskDatePickerModal extends Modal {
 			window.setTimeout(() => txt.inputEl.focus(), 0);
 		});
 
-		const shortcuts = contentEl.createDiv("hearth-taskdate-shortcuts");
+		const shortcuts = contentEl.createDiv("flexible-workbench-taskdate-shortcuts");
 		const shortcut = (label: string, days: number) => {
-			const btn = shortcuts.createEl("button", { cls: "hearth-taskfilter-chip", text: label });
+			const btn = shortcuts.createEl("button", { cls: "flexible-workbench-taskfilter-chip", text: label });
 			btn.addEventListener("click", () => {
 				const date = moment().add(days, "days").format("YYYY-MM-DD");
 				this.value = date;
@@ -947,7 +935,7 @@ function renderLegacyTaskFields(
 		// Kanban cards show the board column they belong to as a small badge.
 		if (hit.boardColumn) {
 			hosts.inline.createDiv({
-				cls: "hearth-task-status hearth-task-column",
+				cls: "flexible-workbench-task-status flexible-workbench-task-column",
 				text: hit.boardColumn,
 			});
 		}
@@ -982,7 +970,7 @@ function fieldSourceFile(hit: TaskHit): TFile {
 }
 
 
-/** The raw values one of Hearth's own parsed sources holds for a task. Dates
+/** The raw values one of Flexible Workbench's own parsed sources holds for a task. Dates
  * and the description are drawn by their own renderers and never come through
  * here. */
 function builtinSourceValues(hit: TaskHit, id: TaskBuiltinSource): string[] {
@@ -1118,7 +1106,7 @@ function renderCustomTaskFields(
 						color: shown.color,
 						prefix,
 						title: prefix ? `${prefix} ${shown.label}` : shown.label,
-						extraCls: builtin === "column" ? "hearth-task-status hearth-task-column" : undefined,
+						extraCls: builtin === "column" ? "flexible-workbench-task-status flexible-workbench-task-column" : undefined,
 					});
 				}
 				// Click the chip to change the value in place, rather than opening
@@ -1136,11 +1124,11 @@ function renderCustomTaskFields(
 function renderTaskDescription(parent: HTMLElement, description: string): void {
 	const lines = description.split("\n").map((l) => l.trim()).filter(Boolean);
 	if (!lines.length) return;
-	const wrap = parent.createDiv("hearth-task-desc");
+	const wrap = parent.createDiv("flexible-workbench-task-desc");
 	for (const line of lines) {
-		const item = wrap.createDiv("hearth-task-desc-line");
-		item.createSpan({ cls: "hearth-task-desc-bullet", text: "•" });
-		item.createSpan({ cls: "hearth-task-desc-text", text: line });
+		const item = wrap.createDiv("flexible-workbench-task-desc-line");
+		item.createSpan({ cls: "flexible-workbench-task-desc-bullet", text: "•" });
+		item.createSpan({ cls: "flexible-workbench-task-desc-text", text: line });
 	}
 }
 
@@ -1293,11 +1281,11 @@ function renderTaskSortControl(
 	const active = current.key ?? "smart";
 	const labels = t().cards.tasks.sortLabels;
 	const btn = parent.createEl("button", {
-		cls: compact ? "hearth-kanban-col-sort" : "hearth-tasks-sort",
+		cls: compact ? "flexible-workbench-kanban-col-sort" : "flexible-workbench-tasks-sort",
 		attr: { "aria-label": t().cards.tasks.sort, title: t().cards.tasks.sort },
 	});
 	setIcon(btn, "arrow-up-down");
-	if (!compact) btn.createSpan({ cls: "hearth-tasks-sort-label", text: labels[active] });
+	if (!compact) btn.createSpan({ cls: "flexible-workbench-tasks-sort-label", text: labels[active] });
 	if (current.reverse) btn.addClass("is-reversed");
 	if (active !== "smart" || current.reverse) btn.addClass("is-active");
 	btn.addEventListener("click", (e) => {
@@ -1351,12 +1339,12 @@ function renderTaskListSortControl(
 	};
 
 	const btn = parent.createEl("button", {
-		cls: "hearth-tasks-sort",
+		cls: "flexible-workbench-tasks-sort",
 		attr: { "aria-label": t().cards.tasks.sort, title: t().cards.tasks.sort },
 	});
 	setIcon(btn, "arrow-up-down");
 	btn.createSpan({
-		cls: "hearth-tasks-sort-label",
+		cls: "flexible-workbench-tasks-sort-label",
 		text: custom ? t().cards.tasks.sortCustom : labels[active],
 	});
 	if (!custom && cfg.sortReverse) btn.addClass("is-reversed");
@@ -1438,10 +1426,10 @@ class TaskSortModal extends Modal {
 
 	onOpen(): void {
 		const { contentEl } = this;
-		contentEl.addClass("hearth-tasksort-modal");
+		contentEl.addClass("flexible-workbench-tasksort-modal");
 		contentEl.createEl("h3", { text: t().cards.tasks.sortTitle });
-		contentEl.createEl("p", { cls: "hearth-tasksort-hint", text: t().cards.tasks.sortHint });
-		this.body = contentEl.createDiv("hearth-tasksort-body");
+		contentEl.createEl("p", { cls: "flexible-workbench-tasksort-hint", text: t().cards.tasks.sortHint });
+		this.body = contentEl.createDiv("flexible-workbench-tasksort-body");
 		this.renderBody();
 		this.renderFooter(contentEl);
 	}
@@ -1455,7 +1443,7 @@ class TaskSortModal extends Modal {
 		const available = this.fields();
 
 		this.rules.forEach((rule, index) => {
-			const row = new Setting(body).setClass("hearth-tasksort-rule");
+			const row = new Setting(body).setClass("flexible-workbench-tasksort-rule");
 			row.setName(index === 0 ? labels.sortLevelFirst : labels.sortLevelNext);
 			row.addDropdown((d) => {
 				for (const f of available) d.addOption(f, fieldLabels[f]);
@@ -1500,7 +1488,7 @@ class TaskSortModal extends Modal {
 		});
 
 		if (!this.rules.length) {
-			body.createDiv({ cls: "hearth-tasksort-empty", text: labels.sortEmpty });
+			body.createDiv({ cls: "flexible-workbench-tasksort-empty", text: labels.sortEmpty });
 		}
 
 		new Setting(body).addButton((b) =>
@@ -1598,11 +1586,11 @@ function renderTaskFilterControl(
 	refresh: () => void,
 ): void {
 	const btn = parent.createEl("button", {
-		cls: "hearth-tasks-filter",
+		cls: "flexible-workbench-tasks-filter",
 		attr: { "aria-label": t().cards.tasks.filter, title: t().cards.tasks.filter },
 	});
 	setIcon(btn, "list-filter");
-	btn.createSpan({ cls: "hearth-tasks-filter-label", text: t().cards.tasks.filter });
+	btn.createSpan({ cls: "flexible-workbench-tasks-filter-label", text: t().cards.tasks.filter });
 	if (isTaskFilterActive(cfg.taskFilter)) btn.addClass("is-active");
 	btn.addEventListener("click", (e) => {
 		e.stopPropagation();
@@ -1657,10 +1645,10 @@ class TaskFilterModal extends Modal {
 
 	onOpen(): void {
 		const { contentEl } = this;
-		contentEl.addClass("hearth-taskfilter-modal");
+		contentEl.addClass("flexible-workbench-taskfilter-modal");
 		contentEl.createEl("h3", { text: t().cards.tasks.filterTitle });
 		this.renderPresets(contentEl);
-		this.body = contentEl.createDiv("hearth-taskfilter-body");
+		this.body = contentEl.createDiv("flexible-workbench-taskfilter-body");
 		this.renderBody();
 		this.renderFooter(contentEl);
 	}
@@ -1671,11 +1659,11 @@ class TaskFilterModal extends Modal {
 	 * undo, reads as broken. */
 	private renderPresets(parent: HTMLElement): void {
 		const labels = t().cards.tasks.filterPresets;
-		const row = parent.createDiv("hearth-taskfilter-presets");
+		const row = parent.createDiv("flexible-workbench-taskfilter-presets");
 		this.presetSyncs = [];
 		const preset = (label: string, isOn: () => boolean, apply: (on: boolean) => void) => {
 			const chip = row.createDiv({
-				cls: "hearth-taskfilter-chip",
+				cls: "flexible-workbench-taskfilter-chip",
 				attr: { role: "button", tabindex: "0" },
 				text: label,
 			});
@@ -1741,8 +1729,8 @@ class TaskFilterModal extends Modal {
 		});
 
 		// Priority buckets (multi-select chips).
-		const prioRow = new Setting(body).setName(labels.filterPriority).setClass("hearth-taskfilter-row");
-		const prioHost = prioRow.controlEl.createDiv("hearth-taskfilter-chips");
+		const prioRow = new Setting(body).setName(labels.filterPriority).setClass("flexible-workbench-taskfilter-row");
+		const prioHost = prioRow.controlEl.createDiv("flexible-workbench-taskfilter-chips");
 		for (const level of TASK_PRIORITY_LEVELS) {
 			this.toggleChip(prioHost, labels.filterPriorityLevels[level], () => (this.working.priorities ?? []).includes(level), () => {
 				const set = new Set(this.working.priorities ?? []);
@@ -1755,8 +1743,8 @@ class TaskFilterModal extends Modal {
 		// Status/column chips (only when the source exposes statuses).
 		const statuses = this.chipOptions(this.filterChoices.statuses, this.working.statuses);
 		if (statuses.length) {
-			const statusRow = new Setting(body).setName(labels.filterStatus).setClass("hearth-taskfilter-row");
-			const statusHost = statusRow.controlEl.createDiv("hearth-taskfilter-chips");
+			const statusRow = new Setting(body).setName(labels.filterStatus).setClass("flexible-workbench-taskfilter-row");
+			const statusHost = statusRow.controlEl.createDiv("flexible-workbench-taskfilter-chips");
 			for (const status of statuses) {
 				this.toggleChip(statusHost, status, () => (this.working.statuses ?? []).some((s) => s.toLowerCase() === status.toLowerCase()), () => {
 					const cur = this.working.statuses ?? [];
@@ -1770,8 +1758,8 @@ class TaskFilterModal extends Modal {
 		if (this.filterChoices.source === "tasknotes") {
 			const contexts = this.chipOptions(this.filterChoices.contexts, this.working.contexts);
 			if (contexts.length) {
-				const contextRow = new Setting(body).setName(labels.filterContexts).setClass("hearth-taskfilter-row");
-				const contextHost = contextRow.controlEl.createDiv("hearth-taskfilter-chips");
+				const contextRow = new Setting(body).setName(labels.filterContexts).setClass("flexible-workbench-taskfilter-row");
+				const contextHost = contextRow.controlEl.createDiv("flexible-workbench-taskfilter-chips");
 				for (const context of contexts) {
 					this.toggleTagChip(contextHost, context, () => this.working.contexts, (next) => {
 						this.working.contexts = next;
@@ -1781,8 +1769,8 @@ class TaskFilterModal extends Modal {
 
 			const projects = this.chipOptions(this.filterChoices.projects, this.working.projects);
 			if (projects.length) {
-				const projectRow = new Setting(body).setName(labels.filterProjects).setClass("hearth-taskfilter-row");
-				const projectHost = projectRow.controlEl.createDiv("hearth-taskfilter-chips");
+				const projectRow = new Setting(body).setName(labels.filterProjects).setClass("flexible-workbench-taskfilter-row");
+				const projectHost = projectRow.controlEl.createDiv("flexible-workbench-taskfilter-chips");
 				for (const project of projects) {
 					this.toggleTagChip(projectHost, project, () => this.working.projects, (next) => {
 						this.working.projects = next;
@@ -1851,7 +1839,7 @@ class TaskFilterModal extends Modal {
 		title?: string,
 	): void {
 		const chip = host.createDiv({
-			cls: "hearth-taskfilter-chip",
+			cls: "flexible-workbench-taskfilter-chip",
 			attr: {
 				role: "button",
 				tabindex: "0",
@@ -1934,7 +1922,7 @@ async function loadAndRenderTasks(
 	if (cfg.layout === "kanban") {
 		// TaskNotes' quick-add sits top-right over the board; sorting is per
 		// column, handled inside renderTaskKanban.
-		if (source === "tasknotes") taskNotesAddButton(view, container.createDiv("hearth-tasks-head"));
+		if (source === "tasknotes") taskNotesAddButton(view, container.createDiv("flexible-workbench-tasks-head"));
 		renderTaskKanban(view, cfg, hits, container, refresh, boardColumns);
 		return;
 	}
@@ -1971,7 +1959,7 @@ async function loadAndRenderTasks(
 	// Falls back to empty (no status = open) when the card has none to offer.
 	const openStatus = hits.find((h) => !h.done && h.status)?.status ?? "";
 
-	const listEl = container.createDiv("hearth-list hearth-tasks");
+	const listEl = container.createDiv("flexible-workbench-list flexible-workbench-tasks");
 	for (const hit of list) renderTaskRow(view, cfg, listEl, hit, today, refresh, openStatus);
 }
 
@@ -1985,7 +1973,7 @@ function renderTaskRow(
 	refresh: () => void,
 	openStatus: string,
 ): void {
-	const row = listEl.createDiv("hearth-list-item hearth-task");
+	const row = listEl.createDiv("flexible-workbench-list-item flexible-workbench-task");
 	row.toggleClass("is-done", hit.done);
 
 	if (hit.linkedFile && hit.recurrence && taskMetaEnabled(cfg, hit)) {
@@ -1999,7 +1987,7 @@ function renderTaskRow(
 		renderLineRecurringCheckbox(view, hit, today, row, refresh);
 	} else if (hit.line >= 0) {
 		const check = row.createEl("input", {
-			cls: "hearth-task-check",
+			cls: "flexible-workbench-task-check",
 			attr: { type: "checkbox" },
 		});
 		check.checked = hit.done;
@@ -2035,9 +2023,9 @@ function renderTaskRow(
 	// line — a long title ellipsizes instead of pushing the chips onto a line of
 	// their own (#156). The card's configured field order still reads
 	// left-to-right, since a list draws all its chips into the one meta group.
-	const main = row.createDiv("hearth-task-main");
-	const meta = row.createDiv("hearth-task-metas");
-	const label = main.createDiv({ cls: "hearth-list-label hearth-task-text" });
+	const main = row.createDiv("flexible-workbench-task-main");
+	const meta = row.createDiv("flexible-workbench-task-metas");
+	const label = main.createDiv({ cls: "flexible-workbench-list-label flexible-workbench-task-text" });
 	fillTaskText(view, label, hit.text || hit.file.basename, hit.file.path);
 	// The description is the one field that gets its own line, so it goes to the
 	// row itself rather than into either group.
@@ -2180,7 +2168,7 @@ function renderTaskKanban(
 		} else refresh();
 	};
 
-	const board = container.createDiv("hearth-kanban");
+	const board = container.createDiv("flexible-workbench-kanban");
 	const today: string = moment().format("YYYY-MM-DD");
 
 	// Move a dragged task into a target column and persist the change.
@@ -2235,10 +2223,10 @@ function renderTaskKanban(
 			sortTasks(col.hits, cfg);
 		}
 
-		const colEl = board.createDiv("hearth-kanban-col");
+		const colEl = board.createDiv("flexible-workbench-kanban-col");
 		colEl.toggleClass("is-done-col", doneColumns.has(col.key) || !!col.statusDone);
-		const head = colEl.createDiv("hearth-kanban-col-head");
-		const titleEl = head.createSpan({ cls: "hearth-kanban-col-title", text: col.label });
+		const head = colEl.createDiv("flexible-workbench-kanban-col-head");
+		const titleEl = head.createSpan({ cls: "flexible-workbench-kanban-col-title", text: col.label });
 		// Kanban source: double-click the title to rename the board column.
 		if (source === "kanban") {
 			titleEl.setAttribute("title", t().cards.tasks.renameColumnHint);
@@ -2248,7 +2236,7 @@ function renderTaskKanban(
 				startColumnRename(view, cfg, head, titleEl, col.label, refresh);
 			});
 		}
-		head.createSpan({ cls: "hearth-kanban-col-count", text: String(col.hits.length) });
+		head.createSpan({ cls: "flexible-workbench-kanban-col-count", text: String(col.hits.length) });
 		// Per-column sort control (icon-only). Writes into kanbanColumnSort under
 		// this column's key; clearing back to Smart/forward removes the override.
 		renderTaskSortControl(head, colSort, true, (next) => {
@@ -2263,7 +2251,7 @@ function renderTaskKanban(
 		if (source === "kanban") {
 			const isDoneCol = doneColumns.has(col.key);
 			const doneBtn = head.createEl("button", {
-				cls: "hearth-kanban-col-done",
+				cls: "flexible-workbench-kanban-col-done",
 				attr: {
 					"aria-label": isDoneCol
 						? t().cards.tasks.unsetDoneColumn(col.label)
@@ -2278,7 +2266,7 @@ function renderTaskKanban(
 			});
 		}
 		const hideBtn = head.createEl("button", {
-			cls: "hearth-kanban-col-hide",
+			cls: "flexible-workbench-kanban-col-hide",
 			attr: { "aria-label": t().cards.tasks.hideColumn(col.label) },
 		});
 		setIcon(hideBtn, "eye-off");
@@ -2290,19 +2278,19 @@ function renderTaskKanban(
 		// Drag the header to reorder columns (distinct from dragging task cards).
 		head.setAttribute("draggable", "true");
 		head.addEventListener("dragstart", (e) => {
-			e.dataTransfer?.setData("application/hearth-col", col.key);
+			e.dataTransfer?.setData("application/flexible-workbench-col", col.key);
 			colEl.addClass("is-dragging");
 		});
 		head.addEventListener("dragend", () => colEl.removeClass("is-dragging"));
 		head.addEventListener("dragover", (e) => {
-			if (e.dataTransfer?.types.includes("application/hearth-col")) {
+			if (e.dataTransfer?.types.includes("application/flexible-workbench-col")) {
 				e.preventDefault();
 				colEl.addClass("is-col-drop-target");
 			}
 		});
 		head.addEventListener("dragleave", () => colEl.removeClass("is-col-drop-target"));
 		head.addEventListener("drop", (e) => {
-			const fromKey = e.dataTransfer?.getData("application/hearth-col");
+			const fromKey = e.dataTransfer?.getData("application/flexible-workbench-col");
 			colEl.removeClass("is-col-drop-target");
 			if (fromKey) {
 				e.preventDefault();
@@ -2311,10 +2299,10 @@ function renderTaskKanban(
 			}
 		});
 
-		const colBody = colEl.createDiv("hearth-kanban-col-body");
+		const colBody = colEl.createDiv("flexible-workbench-kanban-col-body");
 		colBody.addEventListener("dragover", (e) => {
 			// Only task-card drags target the column body (not header reorders).
-			if (e.dataTransfer?.types.includes("application/hearth-col")) return;
+			if (e.dataTransfer?.types.includes("application/flexible-workbench-col")) return;
 			e.preventDefault();
 			colBody.addClass("is-drop-target");
 		});
@@ -2331,7 +2319,7 @@ function renderTaskKanban(
 
 		for (const hit of col.hits) {
 			const idx = hits.indexOf(hit);
-			const cardEl = colBody.createDiv("hearth-kanban-card");
+			const cardEl = colBody.createDiv("flexible-workbench-kanban-card");
 			cardEl.toggleClass("is-done", hit.done);
 			cardEl.setAttribute("draggable", "true");
 			cardEl.addEventListener("dragstart", (e) => {
@@ -2342,7 +2330,7 @@ function renderTaskKanban(
 			// Highlight the task card a dragged task would land on (the card
 			// being hovered), with the same dashed outline as column drop.
 			cardEl.addEventListener("dragover", (e) => {
-				if (e.dataTransfer?.types.includes("application/hearth-col")) return;
+				if (e.dataTransfer?.types.includes("application/flexible-workbench-col")) return;
 				e.preventDefault();
 				e.stopPropagation();
 				cardEl.addClass("is-drop-target");
@@ -2350,7 +2338,7 @@ function renderTaskKanban(
 			cardEl.addEventListener("dragleave", () => cardEl.removeClass("is-drop-target"));
 			cardEl.addEventListener("drop", (e) => {
 				cardEl.removeClass("is-drop-target");
-				if (e.dataTransfer?.types.includes("application/hearth-col")) return;
+				if (e.dataTransfer?.types.includes("application/flexible-workbench-col")) return;
 				const raw = e.dataTransfer?.getData("text/plain") ?? "";
 				if (!raw) return;
 				e.preventDefault();
@@ -2370,7 +2358,7 @@ function renderTaskKanban(
 		// inline with the task text (in a row), in addition to drag: checking
 		// it completes today's instance and advances scheduled without
 		// retiring the task.
-		const textRow = cardEl.createDiv("hearth-kanban-card-row");
+		const textRow = cardEl.createDiv("flexible-workbench-kanban-card-row");
 		if (source === "tasknotes" && hit.recurrence) {
 			renderRecurringCheckbox(view, hit, today, textRow, refresh);
 		} else if (source === "kanban" && hit.linkedFile && hit.recurrence && taskMetaEnabled(cfg, hit)) {
@@ -2385,7 +2373,7 @@ function renderTaskKanban(
 			// Kanban cards are Markdown checkboxes: a checkbox toggles the card's
 			// done state in place, independent of which column it's in.
 			const check = textRow.createEl("input", {
-				cls: "hearth-task-check",
+				cls: "flexible-workbench-task-check",
 				attr: { type: "checkbox" },
 			});
 			check.checked = hit.done;
@@ -2406,7 +2394,7 @@ function renderTaskKanban(
 				// first column on untick, mirroring how a task progresses its status
 				// (#111). moveTo writes the target column's status to the note.
 				const check = textRow.createEl("input", {
-					cls: "hearth-task-check",
+					cls: "flexible-workbench-task-check",
 					attr: { type: "checkbox" },
 				});
 				check.checked = hit.done;
@@ -2421,14 +2409,14 @@ function renderTaskKanban(
 					else refresh();
 				});
 		}
-		const cardText = textRow.createDiv({ cls: "hearth-kanban-card-text" });
+		const cardText = textRow.createDiv({ cls: "flexible-workbench-kanban-card-text" });
 		fillTaskText(view, cardText, hit.text || hit.file.basename, hit.file.path);
 			// A board card is three stacked areas, so the hosts are created up front
 			// and each field lands in the one its style suits: a bare dot fits beside
 			// the title, the description is its own block, everything else is a chip
 			// in the meta row (where the configured order applies).
-			const block = cardEl.createDiv("hearth-kanban-card-block");
-			const meta = cardEl.createDiv("hearth-kanban-card-meta");
+			const block = cardEl.createDiv("flexible-workbench-kanban-card-block");
+			const meta = cardEl.createDiv("flexible-workbench-kanban-card-meta");
 			renderTaskFields(view, cfg, hit, { inline: textRow, meta, block, root: cardEl }, today, "kanban", refresh);
 			const open = () => void openTask(view, cfg, hit, refresh);
 			// A real board/checkbox line (not a note-linked card) can have its title
@@ -2488,15 +2476,15 @@ function renderKanbanAddCard(
 	refresh: () => void,
 	opts: { extended: boolean; markDone: boolean },
 ): void {
-	const addBtn = colBody.createDiv({ cls: "hearth-kanban-add" });
-	setIcon(addBtn.createSpan("hearth-kanban-add-icon"), "plus");
-	addBtn.createSpan({ cls: "hearth-kanban-add-label", text: t().cards.tasks.addCard });
+	const addBtn = colBody.createDiv({ cls: "flexible-workbench-kanban-add" });
+	setIcon(addBtn.createSpan("flexible-workbench-kanban-add-icon"), "plus");
+	addBtn.createSpan({ cls: "flexible-workbench-kanban-add-label", text: t().cards.tasks.addCard });
 	addBtn.addEventListener("click", (e) => {
 		e.stopPropagation();
 		addBtn.hide();
-		const form = colBody.createDiv({ cls: "hearth-kanban-add-form" });
+		const form = colBody.createDiv({ cls: "flexible-workbench-kanban-add-form" });
 		const input = form.createEl("textarea", {
-			cls: "hearth-kanban-add-input",
+			cls: "flexible-workbench-kanban-add-input",
 			attr: { rows: "1", placeholder: t().cards.tasks.addCardPlaceholder },
 		});
 
@@ -2507,7 +2495,7 @@ function renderKanbanAddCard(
 			: () => ({ meta: emptyMeta(), description: "" });
 
 		// "Create as note" toggle (per-add; defaults to the card's setting).
-		const noteLabel = form.createEl("label", { cls: "hearth-kanban-add-note" });
+		const noteLabel = form.createEl("label", { cls: "flexible-workbench-kanban-add-note" });
 		const noteToggle = noteLabel.createEl("input", { attr: { type: "checkbox" } });
 		noteToggle.checked = !!cfg.newTaskAsNote;
 		noteLabel.createSpan({ text: t().cards.tasks.createAsNote });
@@ -2515,11 +2503,11 @@ function renderKanbanAddCard(
 		// Body / description field. When creating as a note it's the note body,
 		// prefilled from the configured template so it's visible and editable
 		// before the note is created; otherwise it's the card's inline description.
-		const bodyWrap = form.createDiv({ cls: "hearth-taskdetail" });
-		const bodyRow = bodyWrap.createDiv({ cls: "hearth-taskdetail-row is-description" });
-		const bodyLabel = bodyRow.createSpan({ cls: "hearth-taskdetail-label" });
+		const bodyWrap = form.createDiv({ cls: "flexible-workbench-taskdetail" });
+		const bodyRow = bodyWrap.createDiv({ cls: "flexible-workbench-taskdetail-row is-description" });
+		const bodyLabel = bodyRow.createSpan({ cls: "flexible-workbench-taskdetail-label" });
 		const bodyArea = bodyRow.createEl("textarea", {
-			cls: "hearth-taskdetail-desc",
+			cls: "flexible-workbench-taskdetail-desc",
 			attr: { rows: "3", placeholder: t().cards.tasks.descriptionPlaceholder },
 		});
 
@@ -2656,16 +2644,16 @@ function buildTaskDetailFields(
 	description: string,
 	allowDescription = true,
 ): () => { meta: TaskMeta; description: string } {
-	const grid = parent.createDiv({ cls: "hearth-taskdetail" });
+	const grid = parent.createDiv({ cls: "flexible-workbench-taskdetail" });
 
 	const row = (labelText: string) => {
-		const r = grid.createDiv({ cls: "hearth-taskdetail-row" });
-		r.createSpan({ cls: "hearth-taskdetail-label", text: labelText });
+		const r = grid.createDiv({ cls: "flexible-workbench-taskdetail-row" });
+		r.createSpan({ cls: "flexible-workbench-taskdetail-label", text: labelText });
 		return r;
 	};
 
 	const prioRow = row(t().cards.tasks.priority);
-	const prio = prioRow.createEl("select", { cls: "hearth-taskdetail-input", attr: { "aria-label": t().cards.tasks.priority } });
+	const prio = prioRow.createEl("select", { cls: "flexible-workbench-taskdetail-input", attr: { "aria-label": t().cards.tasks.priority } });
 	for (const [value, label] of [
 		["", t().cards.tasks.priorityNone],
 		["highest", t().cards.tasks.priorityHighest],
@@ -2680,22 +2668,22 @@ function buildTaskDetailFields(
 	// Repeat: unit dropdown + interval number (deterministic, no free text).
 	const parsed = parseRecurrence(meta.recurrence);
 	const repeatRow = row(t().cards.tasks.recurrenceLabel);
-	const repeatUnit = repeatRow.createEl("select", { cls: "hearth-taskdetail-input", attr: { "aria-label": t().cards.tasks.recurrenceLabel } });
+	const repeatUnit = repeatRow.createEl("select", { cls: "flexible-workbench-taskdetail-input", attr: { "aria-label": t().cards.tasks.recurrenceLabel } });
 	repeatUnit.createEl("option", { value: "", text: t().cards.tasks.recurrenceNever });
 	for (const u of RECURRENCE_UNITS)
 		repeatUnit.createEl("option", { value: u, text: t().cards.tasks.recurrenceUnits[u] });
 	repeatUnit.value = parsed.unit;
-	const repeatEvery = repeatRow.createSpan({ cls: "hearth-taskdetail-every", text: t().cards.tasks.recurrenceEvery });
+	const repeatEvery = repeatRow.createSpan({ cls: "flexible-workbench-taskdetail-every", text: t().cards.tasks.recurrenceEvery });
 	const repeatInterval = repeatRow.createEl("input", {
-		cls: "hearth-taskdetail-interval",
+		cls: "flexible-workbench-taskdetail-interval",
 		attr: { type: "number", min: "1", "aria-label": t().cards.tasks.recurrenceInterval },
 	});
 	repeatInterval.value = String(parsed.interval);
 
 	const dateField = (emoji: string, label: string, value: string) => {
-		const r = grid.createDiv({ cls: "hearth-taskdetail-row" });
-		r.createSpan({ cls: "hearth-taskdetail-label", text: `${emoji} ${label}` });
-		const inp = r.createEl("input", { cls: "hearth-taskdetail-input", attr: { type: "date", "aria-label": label } });
+		const r = grid.createDiv({ cls: "flexible-workbench-taskdetail-row" });
+		r.createSpan({ cls: "flexible-workbench-taskdetail-label", text: `${emoji} ${label}` });
+		const inp = r.createEl("input", { cls: "flexible-workbench-taskdetail-input", attr: { type: "date", "aria-label": label } });
 		inp.value = value;
 		return inp;
 	};
@@ -2742,10 +2730,10 @@ function buildTaskDetailFields(
 	// plain checkboxes whose nested lines may be sub-tasks.
 	let descArea: HTMLTextAreaElement | null = null;
 	if (allowDescription) {
-		const descRow = grid.createDiv({ cls: "hearth-taskdetail-row is-description" });
-		descRow.createSpan({ cls: "hearth-taskdetail-label", text: t().cards.tasks.description });
+		const descRow = grid.createDiv({ cls: "flexible-workbench-taskdetail-row is-description" });
+		descRow.createSpan({ cls: "flexible-workbench-taskdetail-label", text: t().cards.tasks.description });
 		descArea = descRow.createEl("textarea", {
-			cls: "hearth-taskdetail-desc",
+			cls: "flexible-workbench-taskdetail-desc",
 			attr: { rows: "3", placeholder: t().cards.tasks.descriptionPlaceholder },
 		});
 		descArea.value = description;
@@ -2782,7 +2770,7 @@ class TaskMetadataModal extends Modal {
 	}
 	onOpen(): void {
 		const { contentEl } = this;
-		contentEl.addClass("hearth-taskdetail-modal");
+		contentEl.addClass("flexible-workbench-taskdetail-modal");
 		contentEl.createEl("h3", { text: t().cards.tasks.editMetadata });
 		this.read = buildTaskDetailFields(contentEl, this.initial, this.initialDescription, this.allowDescription);
 		new Setting(contentEl)
@@ -2834,7 +2822,7 @@ class TaskDetailModal extends Modal {
 	onOpen(): void {
 		const { contentEl } = this;
 		const { view, cfg, hit } = this;
-		contentEl.addClass("hearth-taskdetail-modal");
+		contentEl.addClass("flexible-workbench-taskdetail-modal");
 		const isKanban = !!hit.boardColumn;
 		const editable = taskMetaEnabled(cfg, hit);
 		// A card linked to a note stores its metadata in that note's frontmatter
@@ -2847,13 +2835,13 @@ class TaskDetailModal extends Modal {
 
 		if (canEditTitle) {
 			const titleInput = contentEl.createEl("textarea", {
-				cls: "hearth-taskdetail-title-edit",
+				cls: "flexible-workbench-taskdetail-title-edit",
 				attr: { rows: "1", "aria-label": t().cards.tasks.editTitle, placeholder: t().cards.tasks.titlePlaceholder },
 			});
 			titleInput.value = hit.text || "";
 			this.titleInput = titleInput;
 		} else {
-			const title = contentEl.createEl("h3", { cls: "hearth-taskdetail-title" });
+			const title = contentEl.createEl("h3", { cls: "flexible-workbench-taskdetail-title" });
 			fillTaskText(view, title, hit.text || hit.file.basename, hit.file.path);
 		}
 
@@ -2869,11 +2857,11 @@ class TaskDetailModal extends Modal {
 			if (linked && hit.linkedFile) {
 				// Description lives inside the linked note — edit it in its own
 				// textarea, prefilled from the note body once it loads.
-				const descWrap = contentEl.createDiv({ cls: "hearth-taskdetail" });
-				const descRow = descWrap.createDiv({ cls: "hearth-taskdetail-row is-description" });
-				descRow.createSpan({ cls: "hearth-taskdetail-label", text: t().cards.tasks.description });
+				const descWrap = contentEl.createDiv({ cls: "flexible-workbench-taskdetail" });
+				const descRow = descWrap.createDiv({ cls: "flexible-workbench-taskdetail-row is-description" });
+				descRow.createSpan({ cls: "flexible-workbench-taskdetail-label", text: t().cards.tasks.description });
 				const area = descRow.createEl("textarea", {
-					cls: "hearth-taskdetail-desc",
+					cls: "flexible-workbench-taskdetail-desc",
 					attr: { rows: "3", placeholder: t().cards.tasks.descriptionPlaceholder },
 				});
 				this.linkedDescArea = area;
@@ -2888,7 +2876,7 @@ class TaskDetailModal extends Modal {
 			// behind the "Dates & priorities" toggle. The description, however, is
 			// editable here for Kanban cards even with that toggle off.
 			const today: string = moment().format("YYYY-MM-DD");
-			const chips = contentEl.createDiv("hearth-taskdetail-readonly");
+			const chips = contentEl.createDiv("flexible-workbench-taskdetail-readonly");
 			// The quick view is the task's detail sheet, so it shows every piece of
 			// metadata in its default style — independent of which fields the card
 			// it was opened from happens to display.
@@ -2897,15 +2885,15 @@ class TaskDetailModal extends Modal {
 				renderTaskDateChip(chips, hit, id, today, "text");
 			}
 			if (!chips.childNodes.length)
-				chips.createSpan({ cls: "hearth-taskdetail-empty", text: t().cards.tasks.noMetadata });
+				chips.createSpan({ cls: "flexible-workbench-taskdetail-empty", text: t().cards.tasks.noMetadata });
 			if (isKanban) {
 				// Kanban card: an editable description (sub-bullets under the card, or
 				// the note body for a linked card).
-				const descWrap = contentEl.createDiv({ cls: "hearth-taskdetail" });
-				const descRow = descWrap.createDiv({ cls: "hearth-taskdetail-row is-description" });
-				descRow.createSpan({ cls: "hearth-taskdetail-label", text: t().cards.tasks.description });
+				const descWrap = contentEl.createDiv({ cls: "flexible-workbench-taskdetail" });
+				const descRow = descWrap.createDiv({ cls: "flexible-workbench-taskdetail-row is-description" });
+				descRow.createSpan({ cls: "flexible-workbench-taskdetail-label", text: t().cards.tasks.description });
 				const area = descRow.createEl("textarea", {
-					cls: "hearth-taskdetail-desc",
+					cls: "flexible-workbench-taskdetail-desc",
 					attr: { rows: "3", placeholder: t().cards.tasks.descriptionPlaceholder },
 				});
 				this.descArea = area;
@@ -3093,7 +3081,7 @@ async function collectCheckboxTasks(view: HomeView, cfg: TasksConfig): Promise<T
  * A card may carry its own mapping (the setup wizard writes one, read from
  * TaskNotes itself, so a vault that renamed its fields gets a working card
  * without a global setting being changed for every other board too); otherwise
- * the global mapping from Settings → Hearth applies, and an empty global falls
+ * the global mapping from Settings → Flexible Workbench applies, and an empty global falls
  * back to whatever the caller knows — TaskNotes' own live setting where it has
  * been read, or the stock field name.
  */
@@ -3131,7 +3119,7 @@ function taskNotesDoneValue(settings: HomeSettings, cfg: TasksConfig | null): st
 /** Build a predicate deciding whether a TaskNotes status value counts as
  * complete. If the card lists its own complete statuses (`taskNotesDoneStatuses`,
  * e.g. "done" + "canceled") those win; otherwise the single global done value
- * (Settings → Hearth) is used. Comparison is case-insensitive. */
+ * (Settings → Flexible Workbench) is used. Comparison is case-insensitive. */
 function doneStatusMatcher(cfg: TasksConfig, globalDoneValue: string): (status: string) => boolean {
 	const custom = (cfg.taskNotesDoneStatuses ?? [])
 		.map((v) => v.trim().toLowerCase())
@@ -3533,7 +3521,7 @@ async function collectKanbanTasks(
 const TASK_EMOJI_CLASS = "📅⏳🛫🔁✅❌➕⏫🔼🔽🔺⏬";
 
 
-/** The subset of metadata emoji Hearth's editor manages (due/scheduled/start/
+/** The subset of metadata emoji Flexible Workbench's editor manages (due/scheduled/start/
  * recurrence/priority). Completion (✅), created (➕) and cancelled (❌) markers
  * are left untouched when rewriting a card's metadata. */
 const MANAGED_EMOJI_CLASS = "📅⏳🛫🔁⏫🔼🔽🔺⏬";
@@ -3919,14 +3907,14 @@ function fillTaskText(view: HomeView, el: HTMLElement, text: string, sourcePath:
 		if (m.index > last) el.appendText(text.slice(last, m.index));
 		if (m[1] != null) {
 			const [target, alias] = m[1].split("|");
-			const link = el.createSpan({ cls: "hearth-task-link", text: (alias ?? target).trim() });
+			const link = el.createSpan({ cls: "flexible-workbench-task-link", text: (alias ?? target).trim() });
 			link.addEventListener("click", (ev) => {
 				ev.stopPropagation();
 				ev.preventDefault();
 				void openLink(view, target.trim(), sourcePath, "link", ev);
 			});
 		} else {
-			const link = el.createSpan({ cls: "hearth-task-link", text: m[2] });
+			const link = el.createSpan({ cls: "flexible-workbench-task-link", text: m[2] });
 			const url = m[3];
 			link.addEventListener("click", (ev) => {
 				ev.stopPropagation();
@@ -4096,7 +4084,7 @@ function startCardTitleEdit(
 	card.setAttribute("draggable", "false");
 	textEl.hide();
 	const input = row.createEl("textarea", {
-		cls: "hearth-kanban-card-edit",
+		cls: "flexible-workbench-kanban-card-edit",
 		attr: { rows: "1", "aria-label": t().cards.tasks.editTitleHint },
 	});
 	row.insertBefore(input, textEl);
@@ -4159,7 +4147,7 @@ function startColumnRename(
 	head.setAttribute("draggable", "false");
 	titleEl.hide();
 	const input = head.createEl("input", {
-		cls: "hearth-kanban-col-rename",
+		cls: "flexible-workbench-kanban-col-rename",
 		attr: { type: "text", "aria-label": t().cards.tasks.renameColumnHint },
 	});
 	head.insertBefore(input, titleEl);
@@ -4476,7 +4464,7 @@ function renderTaskNotesCheckbox(
 	openStatus: string,
 ): void {
 	const check = row.createEl("input", {
-		cls: "hearth-task-check",
+		cls: "flexible-workbench-task-check",
 		attr: { type: "checkbox" },
 	});
 	check.checked = hit.done;
@@ -4661,7 +4649,7 @@ function renderRecurringCheckbox(
 	targetFile?: TFile,
 ): void {
 	const check = parent.createEl("input", {
-		cls: "hearth-task-check hearth-task-check-recurring",
+		cls: "flexible-workbench-task-check flexible-workbench-task-check-recurring",
 		attr: { type: "checkbox", "aria-label": t().cards.tasks.markOccurrence },
 	});
 	// Move it to the very front so it leads the task text regardless of what
@@ -4699,7 +4687,7 @@ function renderLineRecurringCheckbox(
 	refresh: () => void,
 ): void {
 	const check = parent.createEl("input", {
-		cls: "hearth-task-check hearth-task-check-recurring",
+		cls: "flexible-workbench-task-check flexible-workbench-task-check-recurring",
 		attr: { type: "checkbox", "aria-label": t().cards.tasks.markOccurrence },
 	});
 	parent.insertBefore(check, parent.firstChild);
@@ -4867,9 +4855,9 @@ function sourceLabel(source: string): string {
 /**
  * The fields editor.
  *
- * Nothing here is a fixed list of Hearth's metadata: a field is built by the
+ * Nothing here is a fixed list of Flexible Workbench's metadata: a field is built by the
  * user — a name, a display style, and the keys that feed it. Each key reads one
- * frontmatter property or one of Hearth's own parsed values, and can map each
+ * frontmatter property or one of Flexible Workbench's own parsed values, and can map each
  * raw value to a nicer label and a colour. Values with no mapping still show,
  * as themselves.
  *
@@ -4892,7 +4880,7 @@ export class TaskFieldsModal extends Modal {
 
 	/**
 	 * @param cfg  The card being edited, or null when editing the global list in
-	 *             Settings → Hearth. A card scopes the vault scan to its folders;
+	 *             Settings → Flexible Workbench. A card scopes the vault scan to its folders;
 	 *             the global list belongs to no card and scans everything.
 	 */
 	constructor(
@@ -4913,11 +4901,11 @@ export class TaskFieldsModal extends Modal {
 		// The width goes on the modal frame rather than its content: a field, its
 		// keys and their value tables are three levels deep, which Obsidian's
 		// default modal width cannot hold without crowding every row.
-		modalEl.addClass("hearth-taskfields-modal");
-		contentEl.addClass("hearth-taskfields");
+		modalEl.addClass("flexible-workbench-taskfields-modal");
+		contentEl.addClass("flexible-workbench-taskfields");
 		contentEl.createEl("h3", { text: t().editors.tasks.fieldsTitle });
-		contentEl.createDiv({ cls: "hearth-taskfields-hint", text: t().editors.tasks.fieldsHint });
-		this.body = contentEl.createDiv("hearth-taskfields-body");
+		contentEl.createDiv({ cls: "flexible-workbench-taskfields-hint", text: t().editors.tasks.fieldsHint });
+		this.body = contentEl.createDiv("flexible-workbench-taskfields-body");
 		this.renderBody();
 		this.renderFooter(contentEl);
 		// Values arrive from a vault scan; redraw once they do so the mappings
@@ -4954,13 +4942,13 @@ export class TaskFieldsModal extends Modal {
 	): HTMLElement {
 		const labels = t().editors.tasks;
 		const open = this.isOpen(openKey);
-		const head = panel.createDiv("hearth-taskfields-head");
-		const chevron = head.createDiv("hearth-taskfields-chevron");
+		const head = panel.createDiv("flexible-workbench-taskfields-head");
+		const chevron = head.createDiv("flexible-workbench-taskfields-chevron");
 		if (expandable) setIcon(chevron, open ? "chevron-down" : "chevron-right");
-		const text = head.createDiv("hearth-taskfields-headtext");
-		text.createDiv({ cls: "hearth-taskfields-title", text: title });
-		text.createDiv({ cls: "hearth-taskfields-summary", text: summary });
-		const actions = head.createDiv("hearth-taskfields-actions");
+		const text = head.createDiv("flexible-workbench-taskfields-headtext");
+		text.createDiv({ cls: "flexible-workbench-taskfields-title", text: title });
+		text.createDiv({ cls: "flexible-workbench-taskfields-summary", text: summary });
+		const actions = head.createDiv("flexible-workbench-taskfields-actions");
 		// The buttons sit inside the strip that toggles, so their clicks must not
 		// reach it — moving a field would otherwise collapse it.
 		actions.addEventListener("click", (e) => e.stopPropagation());
@@ -5002,10 +4990,10 @@ export class TaskFieldsModal extends Modal {
 		this.fields.forEach((field, index) => this.renderField(body, field, index));
 
 		if (!this.fields.length) {
-			body.createDiv({ cls: "hearth-taskfields-empty", text: labels.fieldsEmpty });
+			body.createDiv({ cls: "flexible-workbench-taskfields-empty", text: labels.fieldsEmpty });
 		}
 
-		const foot = body.createDiv("hearth-taskfields-foot is-add");
+		const foot = body.createDiv("flexible-workbench-taskfields-foot is-add");
 		new ButtonComponent(foot)
 			.setIcon("plus")
 			.setButtonText(labels.fieldAdd)
@@ -5028,7 +5016,7 @@ export class TaskFieldsModal extends Modal {
 
 		// A card per field, so where one ends and the next begins is obvious
 		// without counting indentation.
-		const panel = body.createDiv("hearth-taskfields-field");
+		const panel = body.createDiv("flexible-workbench-taskfields-field");
 		panel.toggleClass("is-open", open);
 		const actions = this.panelHead(
 			panel,
@@ -5056,7 +5044,7 @@ export class TaskFieldsModal extends Modal {
 		});
 
 		if (!open) return;
-		const detail = panel.createDiv("hearth-taskfields-panelbody");
+		const detail = panel.createDiv("flexible-workbench-taskfields-panelbody");
 
 		new Setting(detail)
 			.setName(labels.fieldName)
@@ -5105,7 +5093,7 @@ export class TaskFieldsModal extends Modal {
 		if (ambientTaken) {
 			const ignored = isAmbientStyle(fieldStyle(field));
 			detail.createDiv({
-				cls: `hearth-taskfields-hint${ignored ? " is-warning" : ""}`,
+				cls: `flexible-workbench-taskfields-hint${ignored ? " is-warning" : ""}`,
 				text: ignored
 					? labels.fieldAmbientIgnored(ownerName)
 					: labels.fieldAmbientTaken(ownerName),
@@ -5138,13 +5126,13 @@ export class TaskFieldsModal extends Modal {
 
 		// The keys are the substance of a field, so they get a section of their own
 		// rather than another settings row that happens to have rows under it.
-		const section = detail.createDiv("hearth-taskfields-section");
-		const sectionHead = section.createDiv("hearth-taskfields-sectionhead");
-		sectionHead.createDiv({ cls: "hearth-taskfields-sectiontitle", text: labels.fieldKeys });
-		sectionHead.createDiv({ cls: "hearth-taskfields-sectiondesc", text: labels.fieldKeysDesc });
+		const section = detail.createDiv("flexible-workbench-taskfields-section");
+		const sectionHead = section.createDiv("flexible-workbench-taskfields-sectionhead");
+		sectionHead.createDiv({ cls: "flexible-workbench-taskfields-sectiontitle", text: labels.fieldKeys });
+		sectionHead.createDiv({ cls: "flexible-workbench-taskfields-sectiondesc", text: labels.fieldKeysDesc });
 		field.keys.forEach((key, keyIndex) => this.renderKey(section, field, key, keyIndex));
 		if (!field.keys.length) {
-			section.createDiv({ cls: "hearth-taskfields-empty", text: labels.fieldKeysEmpty });
+			section.createDiv({ cls: "flexible-workbench-taskfields-empty", text: labels.fieldKeysEmpty });
 		}
 		this.renderAddKey(section, field);
 	}
@@ -5166,7 +5154,7 @@ export class TaskFieldsModal extends Modal {
 		const mapped = (key.values ?? []).length;
 		const open = mappable && this.isOpen(openKey);
 
-		const panel = section.createDiv("hearth-taskfields-key");
+		const panel = section.createDiv("flexible-workbench-taskfields-key");
 		panel.toggleClass("is-open", open);
 		const actions = this.panelHead(
 			panel,
@@ -5200,7 +5188,7 @@ export class TaskFieldsModal extends Modal {
 		});
 
 		if (!open) return;
-		const host = panel.createDiv("hearth-taskfields-panelbody");
+		const host = panel.createDiv("flexible-workbench-taskfields-panelbody");
 		// A frontmatter property could hold anything; only the user knows whether
 		// this one is a date. The built-in date sources are not up for debate.
 		if (!isDateSource(key.source)) {
@@ -5232,7 +5220,7 @@ export class TaskFieldsModal extends Modal {
 	 */
 	private renderDateRelations(host: HTMLElement, key: TaskFieldKey): void {
 		const labels = t().editors.tasks;
-		host.createDiv({ cls: "hearth-taskfields-hint", text: labels.fieldDateHint });
+		host.createDiv({ cls: "flexible-workbench-taskfields-hint", text: labels.fieldDateHint });
 
 		const values = (key.values ??= []);
 		const table = this.valueTable(host, labels.fieldWhenColumn);
@@ -5245,9 +5233,9 @@ export class TaskFieldsModal extends Modal {
 				values.push(mapping);
 			}
 			const entry = mapping;
-			const row = table.createDiv("hearth-taskfields-trow");
+			const row = table.createDiv("flexible-workbench-taskfields-trow");
 			row.createDiv({
-				cls: "hearth-taskfields-cell is-fixed",
+				cls: "flexible-workbench-taskfields-cell is-fixed",
 				text: labels.dateRelations[relation],
 			});
 			this.textCell(row, labels.fieldDateLabelPlaceholder, entry.label ?? "", (v) => {
@@ -5256,7 +5244,7 @@ export class TaskFieldsModal extends Modal {
 			this.colorCell(row, entry);
 			// The three relations are the whole set: nothing to add, nothing to
 			// remove. The empty cell keeps the columns lined up with the value table.
-			row.createDiv("hearth-taskfields-cell is-actions");
+			row.createDiv("flexible-workbench-taskfields-cell is-actions");
 		}
 	}
 
@@ -5267,12 +5255,12 @@ export class TaskFieldsModal extends Modal {
 	 * item with an empty name and its controls crowded to the right. */
 	private valueTable(host: HTMLElement, firstColumn: string): HTMLElement {
 		const labels = t().editors.tasks;
-		const table = host.createDiv("hearth-taskfields-table");
-		const head = table.createDiv("hearth-taskfields-trow hearth-taskfields-thead");
-		head.createDiv({ cls: "hearth-taskfields-cell", text: firstColumn });
-		head.createDiv({ cls: "hearth-taskfields-cell", text: labels.fieldShownColumn });
-		head.createDiv({ cls: "hearth-taskfields-cell", text: labels.fieldColorColumn });
-		head.createDiv("hearth-taskfields-cell");
+		const table = host.createDiv("flexible-workbench-taskfields-table");
+		const head = table.createDiv("flexible-workbench-taskfields-trow flexible-workbench-taskfields-thead");
+		head.createDiv({ cls: "flexible-workbench-taskfields-cell", text: firstColumn });
+		head.createDiv({ cls: "flexible-workbench-taskfields-cell", text: labels.fieldShownColumn });
+		head.createDiv({ cls: "flexible-workbench-taskfields-cell", text: labels.fieldColorColumn });
+		head.createDiv("flexible-workbench-taskfields-cell");
 		return table;
 	}
 
@@ -5283,7 +5271,7 @@ export class TaskFieldsModal extends Modal {
 		value: string,
 		onChange: (value: string) => void,
 	): HTMLInputElement {
-		const cell = row.createDiv("hearth-taskfields-cell");
+		const cell = row.createDiv("flexible-workbench-taskfields-cell");
 		const text = new TextComponent(cell);
 		text.setPlaceholder(placeholder).setValue(value).onChange(onChange);
 		return text.inputEl;
@@ -5297,13 +5285,13 @@ export class TaskFieldsModal extends Modal {
 	 */
 	private colorCell(row: HTMLElement, mapping: TaskValueMap): void {
 		const labels = t().editors.tasks;
-		const cell = row.createDiv("hearth-taskfields-cell is-color");
+		const cell = row.createDiv("flexible-workbench-taskfields-cell is-color");
 		// Deliberately not a <button>: Obsidian's and a theme's button rules set a
 		// background at a specificity a plugin class can't reliably beat, which
 		// left every swatch grey however it was coloured. A div with the button
 		// role has nothing to fight and the same keyboard behaviour.
 		const swatch = cell.createDiv({
-			cls: "hearth-taskfields-swatch",
+			cls: "flexible-workbench-taskfields-swatch",
 			attr: {
 				role: "button",
 				tabindex: "0",
@@ -5312,7 +5300,7 @@ export class TaskFieldsModal extends Modal {
 			},
 		});
 		const picker = cell.createEl("input", {
-			cls: "hearth-taskfields-picker",
+			cls: "flexible-workbench-taskfields-picker",
 			attr: {
 				type: "color",
 				"aria-label": labels.fieldColorCustom,
@@ -5374,12 +5362,12 @@ export class TaskFieldsModal extends Modal {
 
 	private renderMappings(host: HTMLElement, key: TaskFieldKey): void {
 		const labels = t().editors.tasks;
-		host.createDiv({ cls: "hearth-taskfields-hint", text: labels.fieldMapHint });
+		host.createDiv({ cls: "flexible-workbench-taskfields-hint", text: labels.fieldMapHint });
 
 		const values = (key.values ??= []);
 		const table = this.valueTable(host, labels.fieldValueColumn);
 		values.forEach((mapping, index) => {
-			const row = table.createDiv("hearth-taskfields-trow");
+			const row = table.createDiv("flexible-workbench-taskfields-trow");
 			const match = this.textCell(row, labels.fieldMatchPlaceholder, mapping.match, (v) => {
 				mapping.match = v;
 			});
@@ -5387,7 +5375,7 @@ export class TaskFieldsModal extends Modal {
 				mapping.label = v.trim() || undefined;
 			});
 			this.colorCell(row, mapping);
-			const actions = row.createDiv("hearth-taskfields-cell is-actions");
+			const actions = row.createDiv("flexible-workbench-taskfields-cell is-actions");
 			this.iconButton(actions, "trash-2", labels.fieldRemoveMapping, false, () => {
 				values.splice(index, 1);
 				this.renderBody();
@@ -5400,7 +5388,7 @@ export class TaskFieldsModal extends Modal {
 			}
 		});
 		if (!values.length) {
-			table.createDiv({ cls: "hearth-taskfields-empty", text: labels.fieldMapEmpty });
+			table.createDiv({ cls: "flexible-workbench-taskfields-empty", text: labels.fieldMapEmpty });
 		}
 
 		// Values this key actually takes in the vault, minus the ones already
@@ -5409,7 +5397,7 @@ export class TaskFieldsModal extends Modal {
 		const suggestions = (this.discovery.values.get(key.source) ?? []).filter(
 			(v) => !mapped.has(v.trim().toLowerCase()),
 		);
-		const foot = host.createDiv("hearth-taskfields-foot");
+		const foot = host.createDiv("flexible-workbench-taskfields-foot");
 		new ButtonComponent(foot)
 			.setIcon("plus")
 			.setButtonText(labels.fieldAddMapping)
@@ -5439,7 +5427,7 @@ export class TaskFieldsModal extends Modal {
 
 	/**
 	 * Add a key to a field. Two buttons, each opening the list it belongs to:
-	 * what Hearth reads itself, and the frontmatter properties your notes
+	 * what Flexible Workbench reads itself, and the frontmatter properties your notes
 	 * actually use (with typing a name by hand at the end of that list, for a
 	 * property no task carries yet). One button per source of truth beats a text
 	 * box flanked by icons that have to be hovered to find out what they do.
@@ -5460,7 +5448,7 @@ export class TaskFieldsModal extends Modal {
 		};
 		const used = new Set(field.keys.map((k) => k.source));
 
-		const foot = section.createDiv("hearth-taskfields-foot");
+		const foot = section.createDiv("flexible-workbench-taskfields-foot");
 		new ButtonComponent(foot)
 			.setIcon("sparkles")
 			.setButtonText(labels.fieldAddBuiltin)
@@ -5502,7 +5490,7 @@ export class TaskFieldsModal extends Modal {
 				menu.showAtMouseEvent(e);
 			});
 
-		foot.createDiv({ cls: "hearth-taskfields-footnote", text: labels.fieldAddKeyDesc });
+		foot.createDiv({ cls: "flexible-workbench-taskfields-footnote", text: labels.fieldAddKeyDesc });
 	}
 
 	private move(from: number, to: number): void {
@@ -5533,7 +5521,7 @@ export class TaskFieldsModal extends Modal {
 
 	private renderFooter(parent: HTMLElement): void {
 		new Setting(parent)
-			.setClass("hearth-taskfields-footer")
+			.setClass("flexible-workbench-taskfields-footer")
 			.addButton((b) =>
 				b
 					.setButtonText(t().editors.tasks.fieldsApplyClose)
@@ -5754,12 +5742,12 @@ export function tasksEditor(ctx: CardEditorContext, containerEl: HTMLElement): v
 						ctx.opts.save();
 					});
 				ta.inputEl.rows = 4;
-				ta.inputEl.addClass("hearth-tasks-statuses-input");
+				ta.inputEl.addClass("flexible-workbench-tasks-statuses-input");
 			});
 	}
 
 	// TaskNotes source: which status values count as complete. Empty uses the
-	// single global done value (Settings → Hearth); listing values here (e.g.
+	// single global done value (Settings → Flexible Workbench); listing values here (e.g.
 	// "done" and "canceled") treats each as complete.
 	if (cfg.source === "tasknotes") {
 		new Setting(containerEl)
@@ -5777,7 +5765,7 @@ export function tasksEditor(ctx: CardEditorContext, containerEl: HTMLElement): v
 						ctx.opts.save();
 					});
 				ta.inputEl.rows = 3;
-				ta.inputEl.addClass("hearth-tasks-statuses-input");
+				ta.inputEl.addClass("flexible-workbench-tasks-statuses-input");
 			});
 	}
 
@@ -5850,7 +5838,7 @@ export function tasksEditor(ctx: CardEditorContext, containerEl: HTMLElement): v
 	}
 
 	// Which metadata each task shows, in what order and how. Only offered once
-	// the feature is switched on globally (Settings → Hearth → Integrations),
+	// the feature is switched on globally (Settings → Flexible Workbench → Integrations),
 	// so a card nobody has customized shows no controls for it at all. This is
 	// the card's *display*, unrelated to the field-name mapping in those same
 	// settings — that says where to read a value from, not whether to show it.
@@ -5919,7 +5907,7 @@ export function tasksEditor(ctx: CardEditorContext, containerEl: HTMLElement): v
 			ctx.opts.save();
 		});
 		t.inputEl.type = "number";
-		t.inputEl.addClass("hearth-count-input");
+		t.inputEl.addClass("flexible-workbench-count-input");
 	});
 	addResetButton(ctx, maxTasks, t().settings.resetField, () => {
 		cfg.count = undefined;

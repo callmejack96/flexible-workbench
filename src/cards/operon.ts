@@ -15,7 +15,6 @@ import {
 	findPriority,
 	findStatus,
 	findTasks,
-	formatElapsed,
 	groupByDay,
 	isClosed,
 	isMutable,
@@ -26,7 +25,6 @@ import {
 	loadTaxonomy,
 	openOperonTask,
 	queryTasks,
-	readTimer,
 	retryDelayMs,
 	sortTasks,
 	taskDay,
@@ -45,7 +43,7 @@ import {
 	type OperonWriteResult,
 } from "../operon";
 import { type DashboardCard, type OperonConfig } from "../types";
-import { confirmAction, makeClickable } from "../ui";
+import { confirmAction, makeClickable, promptForText } from "../ui";
 import { type HomeView } from "../view";
 import { type CardDefinition, type CardEditorContext } from "./definition";
 
@@ -56,15 +54,14 @@ import { type CardDefinition, type CardEditorContext } from "./definition";
  * Cards backed by the Operon plugin's in-process Developer API.
  *
  * Everything shown here is a typed snapshot Operon handed over: its tasks, its
- * pipelines and statuses, its priority scale, its timer. Hearth never reads
+ * pipelines and statuses, its priority scale. Flexible Workbench never reads
  * Operon's notes or reimplements its rules — it asks, orders, and draws. That
  * keeps the integration honest against a plugin that ships often, and it is why
  * a missing grant or an older Obsidian shows an explanation rather than a
  * half-correct list assembled from frontmatter.
  *
- * One card kind covers four views (list, board, agenda, timer) because they
- * share the session, the taxonomy and the row markup; the "Add card" menu still
- * offers them as four separate entries.
+ * One card kind covers Operon's three task views (list, board, agenda) because
+ * they share a session, taxonomy and row markup.
  */
 
 const DEFAULT_COUNT = 10;
@@ -92,7 +89,7 @@ function sortKeyOf(cfg: OperonConfig): OperonSortKey {
 // ---- Access gating -------------------------------------------------------
 
 /** The empty state for every reason an Operon card can't show data. Each state
- * names its own next step: "install Operon" and "approve Hearth in Operon's
+ * names its own next step: "install Operon" and "approve Flexible Workbench in Operon's
  * settings" are very different problems and a shared message helps neither. */
 function renderAccessNotice(
 	body: HTMLElement,
@@ -116,12 +113,12 @@ function renderAccessNotice(
 	emptyState(body, icon, text);
 
 	// Operon's own code and sentence, verbatim, under *every* state it explained
-	// — not just the ones Hearth failed to categorise. Hearth's summary is an
+	// — not just the ones Flexible Workbench failed to categorise. Flexible Workbench's summary is an
 	// interpretation of that error, and when the interpretation is wrong this
 	// line is the only thing that says so.
 	if (error) {
 		body.createDiv({
-			cls: "hearth-operon-errordetail",
+			cls: "flexible-workbench-operon-errordetail",
 			text: t().cards.operon.errorDetail(error.reasonCode ?? error.code, error.reason),
 		});
 	}
@@ -150,7 +147,7 @@ function mountAsync<T>(
 	load: () => Promise<T>,
 	draw: (value: T, host: HTMLElement, reload: () => void) => void,
 ): void {
-	const host = body.createDiv("hearth-operon");
+	const host = body.createDiv("flexible-workbench-operon");
 	let alive = true;
 	component.register(() => {
 		alive = false;
@@ -167,7 +164,7 @@ function mountAsync<T>(
 	const run = () => {
 		const mine = ++generation;
 		host.empty();
-		host.createDiv({ cls: "hearth-operon-loading", text: t().cards.operon.loading });
+		host.createDiv({ cls: "flexible-workbench-operon-loading", text: t().cards.operon.loading });
 		void load()
 			.then((value) => {
 				if (!alive || mine !== generation) return;
@@ -251,7 +248,7 @@ type OperonChipKey =
 	| "showFile";
 
 /** Metadata chips are opt-out: a card that has never been configured shows the
- * lot, which is what a fresh task card looks like elsewhere in Hearth. */
+ * lot, which is what a fresh task card looks like elsewhere in Flexible Workbench. */
 function chipEnabled(value: boolean | undefined): boolean {
 	return value !== false;
 }
@@ -262,11 +259,11 @@ function renderStatusChip(row: HTMLElement, status: OperonStatus | null, fallbac
 	// cluster; renderTaskStatus in the tasks card sets it the same way.
 	row.addClass("has-statuschip");
 	const chip = row.createDiv({
-		cls: "hearth-task-status hearth-task-statuschip",
+		cls: "flexible-workbench-task-status flexible-workbench-task-statuschip",
 		text: status?.label ?? fallback,
 	});
 	// Operon owns the palette; a status the user recoloured there recolours here.
-	if (status?.color) chip.style.setProperty("--hearth-operon-color", status.color);
+	if (status?.color) chip.style.setProperty("--flexible-workbench-operon-color", status.color);
 }
 
 function renderPriorityChip(
@@ -277,16 +274,16 @@ function renderPriorityChip(
 	const priority = findPriority(taxonomy, task.priority?.id);
 	const label = priority?.label ?? task.priority?.label;
 	if (!label) return;
-	const chip = row.createDiv("hearth-task-priority hearth-operon-priority");
-	const dot = chip.createDiv("hearth-task-priority-dot");
-	if (priority?.color) dot.style.setProperty("--hearth-operon-color", priority.color);
-	chip.createSpan({ cls: "hearth-task-priority-label", text: label });
+	const chip = row.createDiv("flexible-workbench-task-priority flexible-workbench-operon-priority");
+	const dot = chip.createDiv("flexible-workbench-task-priority-dot");
+	if (priority?.color) dot.style.setProperty("--flexible-workbench-operon-color", priority.color);
+	chip.createSpan({ cls: "flexible-workbench-task-priority-label", text: label });
 }
 
 function renderDueChip(row: HTMLElement, task: OperonTask, today: string): void {
 	const day = taskDay(task);
 	if (!day) return;
-	const chip = row.createDiv({ cls: "hearth-task-due", text: formatRelativeDate(day) });
+	const chip = row.createDiv({ cls: "flexible-workbench-task-due", text: formatRelativeDate(day) });
 	// Only the two states the stylesheet distinguishes, matching the tasks
 	// card's vocabulary — a class per bucket would put four inert names in the
 	// DOM for one that does anything.
@@ -317,7 +314,7 @@ function renderTaskRow(
 	today: string,
 	move?: OperonMove,
 ): void {
-	const row = parent.createDiv("hearth-list-item hearth-task hearth-operon-task");
+	const row = parent.createDiv("flexible-workbench-list-item flexible-workbench-task flexible-workbench-operon-task");
 	row.toggleClass("is-done", isClosed(task));
 
 	// A task Operon flags as unsafe to target (a duplicated or legacy id) stays
@@ -355,7 +352,7 @@ function renderTaskRow(
 	}
 
 	const title = task.description || t().cards.operon.untitled;
-	row.createDiv({ cls: "hearth-list-label hearth-task-text", text: title });
+	row.createDiv({ cls: "flexible-workbench-list-label flexible-workbench-task-text", text: title });
 
 	if (chipEnabled(cfg.showStatus) && task.workflow) {
 		renderStatusChip(row, findStatus(taxonomy, task.workflow.status.id), task.workflow.status.label);
@@ -363,24 +360,24 @@ function renderTaskRow(
 	if (chipEnabled(cfg.showPriority)) renderPriorityChip(row, taxonomy, task);
 	if (chipEnabled(cfg.showDue)) renderDueChip(row, task, today);
 
-	const meta = row.createDiv("hearth-operon-meta");
+	const meta = row.createDiv("flexible-workbench-operon-meta");
 	if (chipEnabled(cfg.showPinned) && task.pinned) {
-		setIcon(meta.createSpan("hearth-operon-flag"), "pin");
+		setIcon(meta.createSpan("flexible-workbench-operon-flag"), "pin");
 	}
 	if (chipEnabled(cfg.showRecurrence) && task.recurrence.repeating) {
-		setIcon(meta.createSpan("hearth-operon-flag"), "repeat");
+		setIcon(meta.createSpan("flexible-workbench-operon-flag"), "repeat");
 	}
 	if (chipEnabled(cfg.showTracker) && task.tracker.active) {
-		setIcon(meta.createSpan("hearth-operon-flag is-active"), "timer");
+		setIcon(meta.createSpan("flexible-workbench-operon-flag is-active"), "timer");
 	}
 	if (task.relationships.blockedByOperonIds.length > 0) {
-		setIcon(meta.createSpan("hearth-operon-flag is-blocked"), "octagon-alert");
+		setIcon(meta.createSpan("flexible-workbench-operon-flag is-blocked"), "octagon-alert");
 	}
 	if (!meta.hasChildNodes()) meta.remove();
 
 	if (chipEnabled(cfg.showFile)) {
 		const name = task.locator.filePath.split("/").pop() ?? task.locator.filePath;
-		row.createDiv({ cls: "hearth-operon-file", text: name.replace(/\.md$/i, "") });
+		row.createDiv({ cls: "flexible-workbench-operon-file", text: name.replace(/\.md$/i, "") });
 	}
 
 	const open = () => void openOperonTask(view.app, task);
@@ -405,7 +402,7 @@ function writesEnabled(view: HomeView): boolean {
 }
 
 /** Ask before applying a plan Operon flagged as needing consent or as more than
- * routine. Operon owns the risk assessment; Hearth just relays it. */
+ * routine. Operon owns the risk assessment; Flexible Workbench just relays it. */
 function confirmPlan(view: HomeView): OperonConfirm {
 	return (plan) =>
 		new Promise<boolean>((resolve) => {
@@ -428,7 +425,7 @@ function confirmPlan(view: HomeView): OperonConfirm {
  * Report a finished write and refresh the card.
  *
  * The `unknown` outcome gets its own message on purpose. Operon uses it to say
- * the mutation may have landed, and Hearth has already spent its one legal
+ * the mutation may have landed, and Flexible Workbench has already spent its one legal
  * recovery attempt by this point — so the honest thing is to say the state is
  * uncertain and let the reload show whatever Operon now reports, rather than
  * claiming success or offering a retry that could write twice.
@@ -499,7 +496,7 @@ function noticeCreateFailure(cfg: OperonConfig, reason: string): void {
 /** The MIME-ish key a dragged Operon task travels under. Distinct from the
  * tasks card's `text/plain` index so the two boards can never accept each
  * other's drags — the payload is an Operon id, meaningless anywhere else. */
-const DRAG_TYPE = "application/hearth-operon-task";
+const DRAG_TYPE = "application/flexible-workbench-operon-task";
 
 /**
  * A one-line "+ Add task" control, mirroring the Kanban quick-add in the tasks
@@ -516,19 +513,19 @@ function renderQuickAdd(
 	statusId: string | undefined,
 	reload: () => void,
 ): void {
-	const addBtn = parent.createDiv({ cls: "hearth-kanban-add hearth-operon-add" });
-	setIcon(addBtn.createSpan("hearth-kanban-add-icon"), "plus");
-	addBtn.createSpan({ cls: "hearth-kanban-add-label", text: t().cards.operon.addTask });
+	const addBtn = parent.createDiv({ cls: "flexible-workbench-kanban-add flexible-workbench-operon-add" });
+	setIcon(addBtn.createSpan("flexible-workbench-kanban-add-icon"), "plus");
+	addBtn.createSpan({ cls: "flexible-workbench-kanban-add-label", text: t().cards.operon.addTask });
 	addBtn.addEventListener("click", (e) => {
 		e.stopPropagation();
 		addBtn.hide();
-		const form = parent.createDiv({ cls: "hearth-kanban-add-form hearth-operon-add-form" });
+		const form = parent.createDiv({ cls: "flexible-workbench-kanban-add-form flexible-workbench-operon-add-form" });
 		const input = form.createEl("input", {
-			cls: "hearth-kanban-add-input",
+			cls: "flexible-workbench-kanban-add-input",
 			attr: { type: "text", placeholder: t().cards.operon.addTaskPlaceholder },
 		});
 		const due = form.createEl("input", {
-			cls: "hearth-operon-add-due",
+			cls: "flexible-workbench-operon-add-due",
 			attr: { type: "date", "aria-label": t().cards.operon.addTaskDue },
 		});
 
@@ -589,7 +586,7 @@ function renderQuickAdd(
 function renderTruncation(host: HTMLElement, page: OperonTaskPage["page"]): void {
 	if (!page.truncated) return;
 	host.createDiv({
-		cls: "hearth-operon-truncated",
+		cls: "flexible-workbench-operon-truncated",
 		text: t().cards.operon.truncated(page.returnedCount, page.actualCount),
 	});
 }
@@ -598,8 +595,8 @@ function renderTruncation(host: HTMLElement, page: OperonTaskPage["page"]): void
  * out of date says so instead of appearing simply wrong. */
 function renderStaleness(host: HTMLElement, verified: boolean): void {
 	if (verified) return;
-	const el = host.createDiv({ cls: "hearth-operon-stale" });
-	setIcon(el.createSpan("hearth-operon-stale-icon"), "refresh-cw");
+	const el = host.createDiv({ cls: "flexible-workbench-operon-stale" });
+	setIcon(el.createSpan("flexible-workbench-operon-stale-icon"), "refresh-cw");
 	el.createSpan({ text: t().cards.operon.settling });
 }
 
@@ -634,7 +631,7 @@ function renderList(
 				return;
 			}
 			renderStaleness(host, result.freshness.verified);
-			const listEl = host.createDiv("hearth-list hearth-tasks");
+			const listEl = host.createDiv("flexible-workbench-list flexible-workbench-tasks");
 			for (const task of tasks) renderTaskRow(view, cfg, listEl, task, taxonomy, today);
 			renderTruncation(host, result.value.page);
 			// No status: a list spans every column, so the new task takes
@@ -673,11 +670,11 @@ function renderAgenda(
 			}
 			renderStaleness(host, result.freshness.verified);
 			for (const group of groups) {
-				const section = host.createDiv("hearth-operon-day");
-				const head = section.createDiv("hearth-operon-day-head");
-				head.createSpan({ cls: "hearth-operon-day-label", text: formatRelativeDate(group.day) });
-				head.createSpan({ cls: "hearth-operon-day-count", text: String(group.tasks.length) });
-				const listEl = section.createDiv("hearth-list hearth-tasks");
+				const section = host.createDiv("flexible-workbench-operon-day");
+				const head = section.createDiv("flexible-workbench-operon-day-head");
+				head.createSpan({ cls: "flexible-workbench-operon-day-label", text: formatRelativeDate(group.day) });
+				head.createSpan({ cls: "flexible-workbench-operon-day-count", text: String(group.tasks.length) });
+				const listEl = section.createDiv("flexible-workbench-list flexible-workbench-tasks");
 				const tasks = sortTasks(group.tasks, sortKeyOf(cfg), !!cfg.sortReverse, taxonomy);
 				for (const task of tasks) renderTaskRow(view, cfg, listEl, task, taxonomy, today);
 			}
@@ -750,20 +747,20 @@ function renderBoard(
 			const dragged = new Map<string, OperonTask>();
 			for (const task of result.value.tasks) dragged.set(task.identity.operonId, task);
 
-			board = host.createDiv("hearth-kanban hearth-operon-board");
+			board = host.createDiv("flexible-workbench-kanban flexible-workbench-operon-board");
 			for (const status of columns) {
-				const colEl = board.createDiv("hearth-kanban-col");
-				const head = colEl.createDiv("hearth-kanban-col-head");
-				const title = head.createSpan({ cls: "hearth-kanban-col-title", text: status.label });
-				if (status.color) title.style.setProperty("--hearth-operon-color", status.color);
+				const colEl = board.createDiv("flexible-workbench-kanban-col");
+				const head = colEl.createDiv("flexible-workbench-kanban-col-head");
+				const title = head.createSpan({ cls: "flexible-workbench-kanban-col-title", text: status.label });
+				if (status.color) title.style.setProperty("--flexible-workbench-operon-color", status.color);
 				const tasks = sortTasks(
 					byStatus.get(status.id) ?? [],
 					sortKeyOf(cfg),
 					!!cfg.sortReverse,
 					taxonomy,
 				);
-				head.createSpan({ cls: "hearth-kanban-col-count", text: String(tasks.length) });
-				const colBody = colEl.createDiv("hearth-kanban-col-body");
+				head.createSpan({ cls: "flexible-workbench-kanban-col-count", text: String(tasks.length) });
+				const colBody = colEl.createDiv("flexible-workbench-kanban-col-body");
 
 				if (writes) {
 					colBody.addEventListener("dragover", (e) => {
@@ -804,68 +801,6 @@ function renderBoard(
 				if (writes) renderQuickAdd(view, cfg, colBody, status.id, reload);
 			}
 			renderTruncation(host, result.value.page);
-		},
-	);
-}
-
-
-/**
- * The running timer. Operon reports the elapsed seconds as of the read, so the
- * card counts forward from that reading locally rather than re-reading once a
- * second — one API call per redraw, a clock that still ticks.
- */
-function renderTimer(
-	view: HomeView,
-	body: HTMLElement,
-	component: Component,
-): void {
-	mountAsync(
-		body,
-		component,
-		() => readTimer(view.plugin.operon),
-		(result, host) => {
-			if (!result.ok) {
-				renderReadFailure(host, result.error.reason);
-				return;
-			}
-			const state = result.value;
-			const wrap = host.createDiv("hearth-operon-timer");
-			if (!state.active) {
-				const idle = wrap.createDiv("hearth-operon-timer-idle");
-				setIcon(idle.createDiv("hearth-operon-timer-icon"), "timer-off");
-				idle.createDiv({ cls: "hearth-operon-timer-label", text: t().cards.operon.timerIdle });
-				if (state.transition) {
-					idle.createDiv({
-						cls: "hearth-operon-timer-note",
-						text:
-							state.transition.kind === "starting"
-								? t().cards.operon.timerStarting
-								: t().cards.operon.timerStopping,
-					});
-				}
-				return;
-			}
-
-			setIcon(wrap.createDiv("hearth-operon-timer-icon is-running"), "timer");
-			const clock = wrap.createDiv({
-				cls: "hearth-operon-timer-clock",
-				text: formatElapsed(state.active.elapsedSeconds),
-			});
-			wrap.createDiv({
-				cls: "hearth-operon-timer-label",
-				text: state.active.isUnassigned ? t().cards.operon.timerUnassigned : state.active.source,
-			});
-
-			// Count on from Operon's reading rather than trusting the wall clock
-			// against its start time — the two agree, and this needs no timezone
-			// or clock-skew reasoning.
-			const base = state.active.elapsedSeconds;
-			const since = Date.now();
-			component.registerInterval(
-				window.setInterval(() => {
-					clock.setText(formatElapsed(base + (Date.now() - since) / 1000));
-				}, 1000),
-			);
 		},
 	);
 }
@@ -930,9 +865,6 @@ function drawReadyView(
 ): void {
 	const today = localDayKey(Date.now());
 	switch (operonView(cfg)) {
-		case "timer":
-			renderTimer(view, body, component);
-			return;
 		case "board":
 			renderBoard(view, cfg, body, component, today);
 			return;
@@ -975,13 +907,13 @@ function chipPicker(
 	onChange: (next: string[]) => void,
 ): void {
 	const setting = new Setting(container).setName(name).setDesc(desc);
-	const host = setting.controlEl.createDiv("hearth-taskfilter-chips");
+	const host = setting.controlEl.createDiv("flexible-workbench-taskfilter-chips");
 	if (options.length === 0) {
-		host.createSpan({ cls: "hearth-operon-hint", text: t().editors.operon.noOptions });
+		host.createSpan({ cls: "flexible-workbench-operon-hint", text: t().editors.operon.noOptions });
 		return;
 	}
 	for (const option of options) {
-		const chip = host.createEl("button", { cls: "hearth-taskfilter-chip", text: option.label });
+		const chip = host.createEl("button", { cls: "flexible-workbench-taskfilter-chip", text: option.label });
 		chip.toggleClass("is-on", selected.includes(option.id));
 		chip.addEventListener("click", () => {
 			const next = selected.includes(option.id)
@@ -1023,7 +955,6 @@ export function operonEditor(ctx: CardEditorContext, containerEl: HTMLElement): 
 			d.addOption("list", strings.viewList);
 			d.addOption("board", strings.viewBoard);
 			d.addOption("agenda", strings.viewAgenda);
-			d.addOption("timer", strings.viewTimer);
 			d.setValue(operonView(cfg)).onChange((v) => {
 				cfg.view = v as OperonView;
 				ctx.opts.save();
@@ -1031,9 +962,6 @@ export function operonEditor(ctx: CardEditorContext, containerEl: HTMLElement): 
 				ctx.requestRender();
 			});
 		});
-
-	// The timer view reads one value and has nothing to filter or sort.
-	if (operonView(cfg) === "timer") return;
 
 	// Only meaningful where there is a "+" to configure: the agenda has none.
 	if (operonView(cfg) !== "agenda") {
@@ -1056,7 +984,7 @@ export function operonEditor(ctx: CardEditorContext, containerEl: HTMLElement): 
 		// invalid" into something actionable — it names the target the setting
 		// above is choosing between.
 		const where = describeCreateTarget(createTarget(cachedPolicies(), cfg.createAs));
-		if (where) target.descEl.createDiv({ cls: "hearth-operon-target", text: where });
+		if (where) target.descEl.createDiv({ cls: "flexible-workbench-operon-target", text: where });
 	}
 
 	if (operonView(cfg) === "list") {
@@ -1255,16 +1183,13 @@ function template(id: string, name: string, icon: string, cfg: OperonConfig, w: 
 	};
 }
 
-/** Tasks, boards, agendas and the timer from the Operon plugin, read through
- * its Developer API. Every template declares that plugin as its requirement,
- * so the picker badges it while Operon isn't there. */
+/** Operon supplies tasks, boards and agendas. */
 export const operonCard: CardDefinition<"operon"> = {
 	kind: "operon",
 	templates: [
 		template("operon-tasks", "Operon tasks", "list-checks", { view: "list" }, 4, 4),
 		template("operon-board", "Operon board", "columns-3", { view: "board" }, 8, 5),
 		template("operon-agenda", "Operon agenda", "calendar-clock", { view: "agenda" }, 4, 5),
-		template("operon-timer", "Operon timer", "timer", { view: "timer" }, 3, 2),
 	],
 	render: (view, card, body, component) => renderOperon(view, card, body, component),
 	renderEditor: (container, ctx) => operonEditor(ctx, container),

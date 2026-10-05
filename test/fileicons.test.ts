@@ -9,7 +9,7 @@ import {
 
 /**
  * Per-file icons from Iconic and Iconize (#132). Neither plugin has an API, so
- * Hearth reads their stored state — these cover the parsing of that state and
+ * Flexible Workbench reads their stored state — these cover the parsing of that state and
  * the name translation between their formats and Obsidian's icon ids. The
  * reads themselves (plugin instances, metadata cache) are Obsidian API and stay
  * untested, per the no-mocks rule.
@@ -60,7 +60,7 @@ describe("iconizeNameToLucide", () => {
 		expect(iconizeNameToLucide("LiGlobe2")).toBe("globe-2");
 	});
 
-	it("ignores icons from other packs, which are SVG blobs Hearth can't draw", () => {
+	it("ignores icons from other packs, which are SVG blobs Flexible Workbench can't draw", () => {
 		expect(iconizeNameToLucide("FaBook")).toBeNull();
 		expect(iconizeNameToLucide("RiHome")).toBeNull();
 	});

@@ -18,7 +18,7 @@ import {
  * The rules every Operon card and the settings readout branch on.
  *
  * Getting these wrong is not a cosmetic problem: "Operon isn't installed" and
- * "you haven't approved Hearth yet" send the user to completely different
+ * "you haven't approved Flexible Workbench yet" send the user to completely different
  * places, and an `ok` session that Operon has not actually admitted for reads
  * would have each card fail on its first call instead of explaining itself.
  */
@@ -46,7 +46,7 @@ function grant(
 		revision: 1,
 		requestedCapabilities: OPERON_READ_CAPABILITIES,
 		grantedCapabilities: granted,
-		// Operon reports the intersection separately; Hearth reads requested vs
+		// Operon reports the intersection separately; Flexible Workbench reads requested vs
 		// granted, so the fixture mirrors granted here rather than diverging.
 		effectiveCapabilities: granted,
 	};

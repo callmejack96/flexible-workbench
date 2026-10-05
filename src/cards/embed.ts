@@ -101,7 +101,7 @@ export function renderEmbed(
 	const excalidraw = isExcalidraw(file);
 
 	// Editable Markdown notes are edited in place rather than rendered read-only —
-	// either in Obsidian's own Live Preview editor, or in Hearth's plain
+	// either in Obsidian's own Live Preview editor, or in Flexible Workbench's plain
 	// raw-Markdown box (the fallback when hosting the real editor isn't possible).
 	if (active.editable && isMarkdown && !excalidraw) {
 		if (active.livePreview && renderLivePreviewEmbed(view, file, body, component)) return;
@@ -109,17 +109,17 @@ export function renderEmbed(
 		return;
 	}
 
-	const host = body.createDiv("hearth-embed markdown-rendered");
+	const host = body.createDiv("flexible-workbench-embed markdown-rendered");
 	body.addClass("is-embed-host");
 	// A Bases view paints its own surfaces (the table view most of all), which
 	// hides the card's translucent background. This class scopes the CSS that
 	// makes those surfaces defer to the card's --card-opacity.
-	if (ext === "base") host.addClass("hearth-embed-base");
+	if (ext === "base") host.addClass("flexible-workbench-embed-base");
 	// Optionally hide the embedded Bases view's own toolbar/header (view switcher
 	// + filter/property controls) so only the results show. Scoped via a class on
 	// the host so it only affects this card's base embed.
-	if (ext === "base" && card.hideBaseHeader) host.addClass("hearth-embed-hide-base-header");
-	// A picture with a fit mode set is drawn by Hearth rather than transcluded,
+	if (ext === "base" && card.hideBaseHeader) host.addClass("flexible-workbench-embed-hide-base-header");
+	// A picture with a fit mode set is drawn by Flexible Workbench rather than transcluded,
 	// so it can be sized against the card (see renderFormattedImage). Zoom is
 	// part of that sizing there, which is why the host zoom below skips it.
 	const fit = isImageFile(file) ? embedImageFit(active) : "natural";
@@ -130,7 +130,7 @@ export function renderEmbed(
 	const scale = embedImageScale(active.scale);
 	if (scale !== 1 && !framed) {
 		host.addClass("is-scaled");
-		host.style.setProperty("--hearth-embed-scale", String(scale));
+		host.style.setProperty("--flexible-workbench-embed-scale", String(scale));
 	}
 
 	if (framed) {
@@ -151,7 +151,7 @@ export function renderEmbed(
 		// A transclusion renders content that resolves its own links — a Bases
 		// table's note column, most of all. Left alone, those clicks go to
 		// Obsidian's default handler, which opens into the tab the click came
-		// from, i.e. this Hearth tab, whatever the open-behaviour setting says
+		// from, i.e. this Flexible Workbench tab, whatever the open-behaviour setting says
 		// (#106). Delegated from the host, so it survives the async render above.
 		wireMarkdownLinks(view, host, target);
 
@@ -160,8 +160,8 @@ export function renderEmbed(
 		// instead of sitting in a small box inside a scrolling body, so their
 		// own pan gestures don't fight the card's scrollbar.
 		if (ext === "canvas" || excalidraw) {
-			host.addClass("hearth-embed-live");
-			body.addClass("hearth-card-body-live");
+			host.addClass("flexible-workbench-embed-live");
+			body.addClass("flexible-workbench-card-body-live");
 		}
 	}
 }
@@ -174,7 +174,7 @@ export function renderEmbed(
  * These are the modes where the picture is sized against the card rather than
  * against itself, and Obsidian's transclusion can't express them: it renders
  * into wrappers of its own with their own margins, so there is no element to
- * hang an `object-fit` on that reliably spans the card. Hearth therefore draws
+ * hang an `object-fit` on that reliably spans the card. Flexible Workbench therefore draws
  * the `<img>` itself here — the picture gets the whole body, edge to edge, and
  * the CSS does the rest from the custom properties set below.
  *
@@ -194,12 +194,12 @@ function renderFormattedImage(
 	// The body stops scrolling and drops its padding, exactly as it does for a
 	// canvas embed: the picture is the card's whole surface now, and a gutter
 	// around a "fill the card" picture would be a visible lie.
-	body.addClass("hearth-card-body-image");
-	host.addClass("hearth-embed-image", `is-fit-${fit}`);
+	body.addClass("flexible-workbench-card-body-image");
+	host.addClass("flexible-workbench-embed-image", `is-fit-${fit}`);
 	for (const [prop, value] of Object.entries(embedImageStyle(fit, position, scale)))
 		host.style.setProperty(prop, value);
 
-	const img = host.createEl("img", { cls: "hearth-embed-img" });
+	const img = host.createEl("img", { cls: "flexible-workbench-embed-img" });
 	img.src = view.app.vault.getResourcePath(file);
 	img.alt = file.basename;
 	// The picture is the card's surface here, not something to drag out of it —
@@ -241,15 +241,15 @@ export function mountEmbedViewSwitcher(
 
 	const titled = !!(card.title ?? "").trim();
 	const host = titled
-		? head.createDiv("hearth-embed-switch is-inline")
-		: cardEl.createDiv("hearth-embed-switch is-floating");
+		? head.createDiv("flexible-workbench-embed-switch is-inline")
+		: cardEl.createDiv("flexible-workbench-embed-switch is-floating");
 
 	const build = () => {
 		host.empty();
 		const activeIdx = activeEmbedIndex(card);
 		views.forEach((ev, index) => {
 			const label = embedViewLabel(view, ev, index);
-			const btn = host.createEl("button", { cls: "hearth-embed-switch-btn", text: label });
+			const btn = host.createEl("button", { cls: "flexible-workbench-embed-switch-btn", text: label });
 			btn.toggleClass("is-active", index === activeIdx);
 			btn.setAttribute("title", label);
 			btn.setAttribute("aria-label", t().cards.embed.switchTo(label));

@@ -1,11 +1,11 @@
 import { type App, TFile } from "obsidian";
 
 /**
- * Hearth's own recent-file history (#228).
+ * Flexible Workbench's own recent-file history (#228).
  *
  * Obsidian's `workspace.getLastOpenFiles()` is documented as returning only the
  * ten most recently opened files, so a Recent files card asking for fifteen
- * could never get more than ten no matter what it did with the answer. Hearth
+ * could never get more than ten no matter what it did with the answer. Flexible Workbench
  * therefore keeps its own history alongside it: every file open appends a path,
  * deduplicated, most-recent-first and capped at {@link RECENT_HISTORY_MAX}.
  *
@@ -16,13 +16,13 @@ import { type App, TFile } from "obsidian";
  * `data.json` for something no other device wants.
  *
  * The stored history is a supplement, never the authority. Reads start from
- * Obsidian's list — it also covers opens from before Hearth was installed, and
+ * Obsidian's list — it also covers opens from before Flexible Workbench was installed, and
  * from other plugins' vault windows — and only then append the older tail this
  * module remembers.
  */
 
 /** localStorage key for the path history, per vault. */
-const HISTORY_KEY = "hearth:recent-files";
+const HISTORY_KEY = "flexible-workbench:recent-files";
 
 /** How many paths the history keeps, and so the most a Recent files card can
  * ever show. A ceiling, not a target: it bounds both the stored value and the
@@ -36,7 +36,7 @@ export const RECENT_COUNT_MIN = 1;
 export const RECENT_COUNT_DEFAULT = 8;
 
 /**
- * Clamp a configured file count into the range Hearth can actually honour.
+ * Clamp a configured file count into the range Flexible Workbench can actually honour.
  * `undefined` (the field was cleared) falls back to the default rather than to
  * zero, which would render an empty card that looks broken.
  */
@@ -46,7 +46,7 @@ export function clampRecentCount(count: number | undefined): number {
 }
 
 /**
- * Merge Obsidian's recent-files list with Hearth's stored history, most recent
+ * Merge Obsidian's recent-files list with Flexible Workbench's stored history, most recent
  * first and with no path twice. Obsidian's list wins on order: it is the live
  * truth for the last ten opens, and the history's own first entries mirror it.
  */

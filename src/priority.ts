@@ -1,5 +1,5 @@
 /**
- * Task priority values, in every shape Hearth reads them: the Tasks plugin's
+ * Task priority values, in every shape Flexible Workbench reads them: the Tasks plugin's
  * emoji (🔺⏫🔼🔽⏬), TaskNotes' words ("high", "normal"), and the loose
  * synonyms people put in frontmatter ("urgent", "p1", "minor"). Everything
  * here is pure string logic, kept out of the tasks card so it can be tested

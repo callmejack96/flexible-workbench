@@ -20,7 +20,7 @@ export function renderHighlighted(
 	for (const [start, end] of matches) {
 		if (start >= text.length) break;
 		if (start > cursor) el.appendText(text.slice(cursor, start));
-		el.createEl("mark", { cls: "hearth-result-mark", text: text.slice(start, end) });
+		el.createEl("mark", { cls: "flexible-workbench-result-mark", text: text.slice(start, end) });
 		cursor = Math.min(end, text.length);
 	}
 	if (cursor < text.length) el.appendText(text.slice(cursor));
@@ -115,6 +115,7 @@ export class PromptModal extends Modal {
 	private label: string;
 	private initial: string;
 	private placeholder: string;
+	private multiline: boolean;
 	private onDone: (value: string | null) => void;
 	/** Set once the user commits, so onClose knows not to report a cancel. */
 	private settled = false;
@@ -126,6 +127,7 @@ export class PromptModal extends Modal {
 			label: string;
 			initial?: string;
 			placeholder?: string;
+			multiline?: boolean;
 			onDone: (value: string | null) => void;
 		},
 	) {
@@ -134,6 +136,7 @@ export class PromptModal extends Modal {
 		this.label = opts.label;
 		this.initial = opts.initial ?? "";
 		this.placeholder = opts.placeholder ?? "";
+		this.multiline = opts.multiline ?? false;
 		this.onDone = opts.onDone;
 	}
 
@@ -144,26 +147,48 @@ export class PromptModal extends Modal {
 			this.close();
 			this.onDone(value);
 		};
-		const field = new Setting(this.contentEl).setName(this.label).addText((txt) => {
-			txt
-				.setPlaceholder(this.placeholder)
-				.setValue(value)
-				.onChange((v) => {
-					value = v;
-				});
-			// Enter is how anyone types a name into a one-field dialog; without
-			// this it would submit nothing and close.
-			txt.inputEl.addEventListener("keydown", (e: KeyboardEvent) => {
-				if (e.key !== "Enter") return;
-				e.preventDefault();
-				submit();
-			});
+		const field = new Setting(this.contentEl).setName(this.label);
+		const focus = (input: HTMLInputElement | HTMLTextAreaElement): void => {
 			window.setTimeout(() => {
-				txt.inputEl.focus();
-				txt.inputEl.select();
+				input.focus();
+				input.select();
 			}, 0);
-		});
-		field.settingEl.addClass("hearth-prompt-field");
+		};
+		if (this.multiline) {
+			field.addTextArea((txt) => {
+				txt
+					.setPlaceholder(this.placeholder)
+					.setValue(value)
+					.onChange((v) => {
+						value = v;
+					});
+				txt.inputEl.rows = 5;
+				txt.inputEl.addEventListener("keydown", (e: KeyboardEvent) => {
+					if (e.key !== "Enter" || (!e.metaKey && !e.ctrlKey)) return;
+					e.preventDefault();
+					submit();
+				});
+				focus(txt.inputEl);
+			});
+		} else {
+			field.addText((txt) => {
+				txt
+					.setPlaceholder(this.placeholder)
+					.setValue(value)
+					.onChange((v) => {
+						value = v;
+					});
+				// Enter is how anyone types a name into a one-field dialog; without
+				// this it would submit nothing and close.
+				txt.inputEl.addEventListener("keydown", (e: KeyboardEvent) => {
+					if (e.key !== "Enter") return;
+					e.preventDefault();
+					submit();
+				});
+				focus(txt.inputEl);
+			});
+		}
+		field.settingEl.addClass("flexible-workbench-prompt-field");
 
 		new Setting(this.contentEl)
 			.addButton((b) => b.setButtonText(t().confirm.cancel).onClick(() => this.close()))
@@ -184,7 +209,7 @@ export class PromptModal extends Modal {
 /** Convenience: open a one-field prompt and await the answer (null = cancelled). */
 export function promptForText(
 	app: App,
-	opts: { title: string; label: string; initial?: string; placeholder?: string },
+	opts: { title: string; label: string; initial?: string; placeholder?: string; multiline?: boolean },
 ): Promise<string | null> {
 	return new Promise((resolve) => {
 		new PromptModal(app, { ...opts, onDone: resolve }).open();

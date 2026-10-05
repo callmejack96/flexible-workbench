@@ -1,6 +1,6 @@
 # Translations (i18n)
 
-Hearth's user-facing strings live in this folder so the plugin can be
+Flexible Workbench's user-facing strings live in this folder so the plugin can be
 translated without touching feature code. English (`en.ts`) is the source of
 truth; every other locale is type-checked against it.
 
@@ -23,7 +23,7 @@ truth; every other locale is type-checked against it.
   so each language controls word order and pluralization itself, e.g.
 
   ```ts
-  commandNotFound: (id: string) => `Hearth: command not found: ${id}`,
+  commandNotFound: (id: string) => `Flexible Workbench: command not found: ${id}`,
   ```
 
 - Call sites read strings as `t().section.key` (or `t().section.key(arg)` for

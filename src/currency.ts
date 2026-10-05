@@ -60,7 +60,7 @@ export function cachedRates(): CurrencyRates | null {
  *
  * When `disabled` is true (the "disable external calls" setting), no network
  * request is made — only already-cached rates, if any, are returned. This is
- * the one outbound request Hearth makes, so the flag lives right at its source.
+ * the one outbound request Flexible Workbench makes, so the flag lives right at its source.
  */
 export async function loadRates(disabled = false): Promise<CurrencyRates | null> {
 	if (disabled) return cache;

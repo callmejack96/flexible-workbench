@@ -11,6 +11,7 @@ import {
 	type MobileCardOptions,
 	type DatacoreConfig,
 	type DataviewConfig,
+	type DouyinConfig,
 	type EmbedImageFit,
 	type EmbedImagePosition,
 	type GitConfig,
@@ -32,6 +33,8 @@ import {
 	type OpenOutsideRule,
 	type RssConfig,
 	type RssSource,
+	type SocialConfig,
+	type SocialSource,
 	type SavedSearchConfig,
 	type SlideshowAdvance,
 	type SlideshowConfig,
@@ -83,12 +86,12 @@ export const LAYOUT_SCHEMA = 2;
 
 /** Current full-settings export schema version. A settings export is a superset
  * of a layout export: it embeds the whole layout (so it imports cleanly through
- * `importLayout` too) plus every other configurable Hearth setting. */
+ * `importLayout` too) plus every other configurable Flexible Workbench setting. */
 export const SETTINGS_SCHEMA = 1;
 
 /** The portable subset of settings that describes the whole dashboard setup. */
 export interface LayoutExport {
-	hearthLayout: number;
+	flexibleWorkbenchLayout: number;
 	dashboards: Dashboard[];
 	activeDashboardId: string;
 	pinnedCards: DashboardCard[];
@@ -118,19 +121,34 @@ const RANGE = {
 
 /** Build the portable layout payload (the dashboard setup and its globals). */
 function layoutPayload(s: HomeSettings): LayoutExport {
-	// SECURITY-REVIEW: Jira PATs authenticate outbound requests and must never be
-	// copied into portable layout/settings artifacts. Clone only the affected
-	// card/config objects so live settings retain their credentials unchanged.
-	const scrubCard = (card: DashboardCard): DashboardCard =>
-		card.jira?.pat === undefined
-			? card
-			: { ...card, jira: { ...card.jira, pat: undefined } };
+	// SECURITY-REVIEW: Jira PATs and social Cookies authenticate outbound requests
+	// and must never be copied into portable layout/settings artifacts. Clone only
+	// the affected card/config objects so live settings retain their credentials.
+	const scrubCard = (card: DashboardCard): DashboardCard => {
+		const scrubbedJira =
+			card.jira?.pat === undefined
+				? card.jira
+				: { ...card.jira, pat: undefined };
+		const scrubbedDouyin =
+			card.douyin?.cookie === undefined
+				? card.douyin
+				: { ...card.douyin, cookie: undefined };
+		const scrubbedSocial = card.social?.credentials === undefined
+			? card.social
+			: { ...card.social, credentials: undefined };
+		if (
+			scrubbedJira === card.jira &&
+			scrubbedDouyin === card.douyin &&
+			scrubbedSocial === card.social
+		) return card;
+		return { ...card, jira: scrubbedJira, douyin: scrubbedDouyin, social: scrubbedSocial };
+	};
 	const dashboards = s.dashboards.map((dashboard) => ({
 		...dashboard,
 		cards: dashboard.cards.map(scrubCard),
 	}));
 	return {
-		hearthLayout: LAYOUT_SCHEMA,
+		flexibleWorkbenchLayout: LAYOUT_SCHEMA,
 		dashboards,
 		activeDashboardId: s.activeDashboardId,
 		pinnedCards: s.pinnedCards.map(scrubCard),
@@ -148,13 +166,13 @@ export function exportLayout(s: HomeSettings): string {
 	return JSON.stringify(layoutPayload(s), null, 2);
 }
 
-/** Serialize every configurable Hearth setting — the full layout plus header,
+/** Serialize every configurable Flexible Workbench setting — the full layout plus header,
  * background, behaviour, appearance, filters and TaskNotes field mappings — to a
  * pretty JSON string. Internal bookkeeping (e.g. `lastSeenVersion`) is omitted
  * so a shared backup can't rewind another vault's "What's new" state. */
 export function exportSettings(s: HomeSettings): string {
 	const data = {
-		hearthSettings: SETTINGS_SCHEMA,
+		flexibleWorkbenchSettings: SETTINGS_SCHEMA,
 		...layoutPayload(s),
 
 		// Header
@@ -165,6 +183,7 @@ export function exportSettings(s: HomeSettings): string {
 		showSearch: s.showSearch,
 		searchPlaceholder: s.searchPlaceholder,
 		showNewNoteButton: s.showNewNoteButton,
+		showNewTaskButton: s.showNewTaskButton,
 		newNoteButtonMode: s.newNoteButtonMode,
 		newNoteButtonLabel: s.newNoteButtonLabel,
 		newNoteTemplate: s.newNoteTemplate,
@@ -256,7 +275,7 @@ function sanitizeBaseViewName(raw: unknown): string | undefined {
 	return isEmbeddableBaseViewName(name) ? name : undefined;
 }
 
-/** An embed's picture-fit mode, or undefined when the import names one Hearth
+/** An embed's picture-fit mode, or undefined when the import names one Flexible Workbench
  * doesn't have (a newer file, or a hand-edited one). */
 function sanitizeImageFit(raw: unknown): EmbedImageFit | undefined {
 	return EMBED_IMAGE_FITS.includes(raw as EmbedImageFit)
@@ -479,6 +498,12 @@ function sanitizeCard(raw: unknown, index: number): DashboardCard | null {
 	}
 	if (r.rss && typeof r.rss === "object") {
 		card.rss = sanitizeRss(r.rss as Record<string, unknown>);
+	}
+	if (r.douyin && typeof r.douyin === "object") {
+		card.douyin = sanitizeDouyin(r.douyin as Record<string, unknown>);
+	}
+	if (r.social && typeof r.social === "object") {
+		card.social = sanitizeSocial(r.social as Record<string, unknown>);
 	}
 	if (r.slideshow && typeof r.slideshow === "object") {
 		card.slideshow = sanitizeSlideshow(r.slideshow as Record<string, unknown>);
@@ -934,6 +959,46 @@ function sanitizeRss(r: Record<string, unknown>): RssConfig {
 	return cfg;
 }
 
+/** Allowlist and clamp an imported Douyin favorites card configuration. */
+export function sanitizeDouyin(r: Record<string, unknown>): DouyinConfig {
+	const cfg: DouyinConfig = {};
+	const cookie = str(r.cookie);
+	if (cookie !== undefined) cfg.cookie = cookie;
+	const storagePath = str(r.storagePath);
+	if (storagePath !== undefined) cfg.storagePath = storagePath;
+	if (typeof r.itemLimit === "number" && Number.isFinite(r.itemLimit)) {
+		cfg.itemLimit = Math.max(1, Math.min(100, Math.round(r.itemLimit)));
+	}
+	return cfg;
+}
+
+const SOCIAL_SOURCES: SocialSource[] = ["rednote", "wechat", "douyin", "zhihu", "bilibili"];
+
+/** Allowlist and clamp an imported social favorites configuration. */
+export function sanitizeSocial(r: Record<string, unknown>): SocialConfig {
+	const cfg: SocialConfig = {};
+	if (SOCIAL_SOURCES.includes(r.initialSource as SocialSource)) {
+		cfg.initialSource = r.initialSource as SocialSource;
+	}
+	for (const key of ["rednoteFolder", "wechatFolder", "douyinFolder", "zhihuFolder", "bilibiliFolder"] as const) {
+		const value = str(r[key]);
+		if (value !== undefined) cfg[key] = value;
+	}
+	if (typeof r.itemLimit === "number" && Number.isFinite(r.itemLimit)) {
+		cfg.itemLimit = Math.max(1, Math.min(100, Math.round(r.itemLimit)));
+	}
+	if (r.credentials && typeof r.credentials === "object") {
+		const raw = r.credentials as Record<string, unknown>;
+		const credentials: Partial<Record<SocialSource, string>> = {};
+		for (const source of SOCIAL_SOURCES) {
+			const value = str(raw[source]);
+			if (value !== undefined) credentials[source] = value;
+		}
+		if (Object.keys(credentials).length) cfg.credentials = credentials;
+	}
+	return cfg;
+}
+
 function sanitizeSlide(raw: unknown): SlideshowSlide | null {
 	if (!raw || typeof raw !== "object") return null;
 	const r = raw as Record<string, unknown>;
@@ -991,9 +1056,10 @@ function sanitizeSlideshow(r: Record<string, unknown>): SlideshowConfig {
 const JIRA_CONTROLS: JiraControl[] = [
 	"status",
 	"assignee",
+	"startDate",
+	"dueDate",
 	"priority",
 	"issueType",
-	"sprint",
 	"fixVersion",
 ];
 
@@ -1012,12 +1078,20 @@ export function sanitizeJira(raw: unknown): JiraConfig {
 	if (filterId !== undefined) cfg.filterId = filterId;
 	const filterName = str(r.filterName);
 	if (filterName !== undefined) cfg.filterName = filterName;
+	const jql = str(r.jql);
+	if (jql !== undefined) cfg.jql = jql;
+	if (typeof r.showStartDate === "boolean") cfg.showStartDate = r.showStartDate;
+	if (typeof r.showEndDate === "boolean") cfg.showEndDate = r.showEndDate;
+	if (typeof r.sortDueDateDesc === "boolean") cfg.sortDueDateDesc = r.sortDueDateDesc;
 	if (Array.isArray(r.controls)) {
 		cfg.controls = r.controls.filter(
 			(control): control is JiraControl =>
 				typeof control === "string" &&
 				JIRA_CONTROLS.includes(control as JiraControl),
 		);
+	}
+	if (typeof r.dateControlsConfigured === "boolean") {
+		cfg.dateControlsConfigured = r.dateControlsConfigured;
 	}
 	if (r.selections && typeof r.selections === "object" && !Array.isArray(r.selections)) {
 		const rawSelections = r.selections as Record<string, unknown>;
@@ -1069,7 +1143,7 @@ function sanitizeDatacore(r: Record<string, unknown>): DatacoreConfig {
 }
 
 /** An imported Git card. The section and action lists are run through the same
- * normalizers the card uses, so an unknown id from a newer Hearth (or a hand
+ * normalizers the card uses, so an unknown id from a newer Flexible Workbench (or a hand
  * edit) is dropped rather than rendered as a dead button. */
 function sanitizeGit(r: Record<string, unknown>): GitConfig {
 	const cfg: GitConfig = {};
@@ -1198,7 +1272,7 @@ function sanitizeDashboard(
 		const title = str(h.title);
 		if (title !== undefined) header.title = title;
 		// Kept even when empty: an empty override is a board that deliberately
-		// wears the Hearth crystal, which is not the same as no override. An
+		// wears the Flexible Workbench workbench mark, which is not the same as no override. An
 		// export taken before 2.2.0 carries the old `logo`/`logoIcon` pair
 		// instead, folded here the same way the settings migration folds it.
 		const hadLegacy = typeof h.logo === "string" || typeof h.logoIcon === "string";
@@ -1349,7 +1423,7 @@ function applyLayout(
 		return null;
 	}
 
-	return t().layout.notAHearthLayout;
+	return t().layout.notAFlexibleWorkbenchLayout;
 }
 
 /**
@@ -1372,8 +1446,8 @@ export function importSettings(s: HomeSettings, json: string): string | null {
 	const data = parsed as Record<string, unknown>;
 
 	const hasLayout = Array.isArray(data.dashboards) || Array.isArray(data.cards);
-	if (!hasLayout && typeof data.hearthSettings !== "number") {
-		return t().layout.notHearthSettings;
+	if (!hasLayout && typeof data.flexibleWorkbenchSettings !== "number") {
+		return t().layout.notFlexibleWorkbenchSettings;
 	}
 
 	// Apply the embedded layout first so any malformed dashboards abort before we
@@ -1490,6 +1564,8 @@ function applySettings(s: HomeSettings, data: Record<string, unknown>): void {
 	if (searchPlaceholder !== undefined) s.searchPlaceholder = searchPlaceholder;
 	if (typeof data.showNewNoteButton === "boolean")
 		s.showNewNoteButton = data.showNewNoteButton;
+	if (typeof data.showNewTaskButton === "boolean")
+		s.showNewTaskButton = data.showNewTaskButton;
 	if (
 		data.newNoteButtonMode === "newNote" ||
 		data.newNoteButtonMode === "searchOnline"

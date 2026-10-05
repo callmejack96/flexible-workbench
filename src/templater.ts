@@ -1,8 +1,8 @@
 /**
- * The Templater integration: everything Hearth knows about the
+ * The Templater integration: everything Flexible Workbench knows about the
  * [Templater](https://github.com/SilentVoid13/Templater) community plugin.
  *
- * Same rule as Dataview, Datacore and obsidian-git: **Hearth never does the
+ * Same rule as Dataview, Datacore and obsidian-git: **Flexible Workbench never does the
  * work itself.** It does not parse `<% tp.* %>` syntax, it does not run user
  * scripts, and it does not write the note. A tile calls
  * `create_new_note_from_template` on the running Templater instance, so the
@@ -14,17 +14,17 @@
  * Two consequences shape this file:
  *
  * 1. **Everything is optional.** Templater exposes no versioned `api` object;
- *    what Hearth calls are the plugin instance's own public members
+ *    what Flexible Workbench calls are the plugin instance's own public members
  *    (`templater`, `editor_handler`, `settings`). They are stable in practice —
  *    its own commands call the same ones — but they are not a contract, so
  *    every member is declared optional and every call site checks for the
  *    function before using it. A build of Templater that renamed something
  *    disables the card; it never throws inside a dashboard render.
- * 2. **Hearth decides where the note opens, Templater decides what's in it.**
+ * 2. **Flexible Workbench decides where the note opens, Templater decides what's in it.**
  *    `create_new_note_from_template(…, open_new_note = true)` opens the note in
  *    `getLeaf(false)` — the *active* leaf, which on a dashboard click is the
- *    Hearth tab itself, so the board would replace itself with the new note
- *    regardless of the user's "Open notes in" setting. Hearth therefore always
+ *    Flexible Workbench tab itself, so the board would replace itself with the new note
+ *    regardless of the user's "Open notes in" setting. Flexible Workbench therefore always
  *    passes `false` and opens the result through its own opener (#106), then
  *    asks Templater to run its cursor jump so `<% tp.file.cursor() %>` still
  *    works.
@@ -39,7 +39,7 @@ import { sanitizeFilename } from "./eventnote";
 /** The community-plugin id Templater registers itself under. */
 export const TEMPLATER_PLUGIN_ID = "templater-obsidian";
 
-/** The slice of `Templater` (the plugin's core object) Hearth calls. */
+/** The slice of `Templater` (the plugin's core object) Flexible Workbench calls. */
 interface TemplaterCore {
 	/**
 	 * Create a note from `template` and run it through Templater's parser.
@@ -59,16 +59,16 @@ interface TemplaterCore {
 	): Promise<TFile | undefined>;
 }
 
-/** The slice of Templater's editor handler Hearth calls. */
+/** The slice of Templater's editor handler Flexible Workbench calls. */
 interface TemplaterEditorHandler {
 	/** Move the cursor to the next `<% tp.file.cursor() %>` marker in `file`.
 	 * With `auto_jump` set, Templater skips it unless the user has its
 	 * "Automatic jump to cursor" setting on — which is the behaviour its own
-	 * create-from-template command has, so Hearth passes the same. */
+	 * create-from-template command has, so Flexible Workbench passes the same. */
 	jump_to_next_cursor_location?(file?: TFile | null, auto_jump?: boolean): Promise<void>;
 }
 
-/** The Templater plugin instance, as far as Hearth is concerned. */
+/** The Templater plugin instance, as far as Flexible Workbench is concerned. */
 export interface TemplaterPlugin {
 	templater?: TemplaterCore;
 	editor_handler?: TemplaterEditorHandler;
@@ -90,7 +90,7 @@ export function getTemplaterPlugin(app: App): TemplaterPlugin | null {
 	}
 }
 
-/** Whether Templater is enabled and the one method Hearth needs is reachable
+/** Whether Templater is enabled and the one method Flexible Workbench needs is reachable
  * right now. */
 export function isTemplaterAvailable(app: App): boolean {
 	return typeof getTemplaterPlugin(app)?.templater?.create_new_note_from_template === "function";
@@ -201,7 +201,7 @@ const TOKEN_FORMATS = { date: "YYYY-MM-DD", time: "HH-mm" } as const;
  * instead of silently vanishing. */
 const TOKEN_RE = /\{\{\s*(date|time|prompt)\s*(?::\s*([^}]+?)\s*)?\}\}/gi;
 
-/** Whether a filename pattern asks Hearth for a value before the note is made.
+/** Whether a filename pattern asks Flexible Workbench for a value before the note is made.
  * Drives the one-line prompt the tile shows on click. */
 export function filenameNeedsPrompt(pattern: string): boolean {
 	return /\{\{\s*prompt\s*\}\}/i.test(pattern || "");

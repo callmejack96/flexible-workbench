@@ -7,7 +7,7 @@ import {
 } from "./types";
 
 /**
- * One place that decides *where* a note Hearth opens ends up (#106).
+ * One place that decides *where* a note Flexible Workbench opens ends up (#106).
  *
  * Every "open this note" path in the plugin used to hard-code
  * `workspace.getLeaf(true)` — always a new tab. They all route through here
@@ -16,7 +16,7 @@ import {
  * does everywhere else in Obsidian.
  */
 
-/** What Hearth needs to know to open something: the app, the settings, and the
+/** What Flexible Workbench needs to know to open something: the app, the settings, and the
  * leaf the click came from (so "same tab" replaces *that* view rather than
  * whichever tab happens to be focused). */
 export interface OpenHost {
@@ -26,17 +26,17 @@ export interface OpenHost {
 	leaf?: WorkspaceLeaf | null;
 }
 
-/** Structural shape of a Hearth view — matched by `HomeView` without importing
+/** Structural shape of a Flexible Workbench view — matched by `HomeView` without importing
  * it, which would make this module part of the view's import cycle. */
-interface HearthViewLike {
+interface FlexibleWorkbenchViewLike {
 	app: App;
 	leaf: WorkspaceLeaf;
 	plugin: { settings: HomeSettings };
 }
 
-/** Anything the open helpers accept: a Hearth view, or a hand-built host for
+/** Anything the open helpers accept: a Flexible Workbench view, or a hand-built host for
  * the few callers (modals, the plugin itself) that have no view. */
-export type OpenFrom = OpenHost | HearthViewLike;
+export type OpenFrom = OpenHost | FlexibleWorkbenchViewLike;
 
 function host(from: OpenFrom): OpenHost {
 	return "plugin" in from
@@ -45,7 +45,7 @@ function host(from: OpenFrom): OpenHost {
 }
 
 /**
- * The destination for one open: either reuse the leaf Hearth is in, or hand a
+ * The destination for one open: either reuse the leaf Flexible Workbench is in, or hand a
  * pane type to `getLeaf`/`openLinkText`. Kept separate from the workspace calls
  * so the decision itself is pure and testable.
  */
@@ -57,7 +57,7 @@ export type OpenTarget = { kind: "reuse" } | { kind: "pane"; pane: PaneType };
  * `mod` is whatever {@link Keymap.isModEvent} reported: `false` for a plain
  * click, a {@link PaneType} when the modifier combination names one, or `true`
  * for a bare Mod-click. A modifier always overrides the setting — Mod-click
- * means "new tab" throughout Obsidian, and Hearth must not be the exception.
+ * means "new tab" throughout Obsidian, and Flexible Workbench must not be the exception.
  */
 export function openTarget(mode: OpenIn, mod: PaneType | boolean = false): OpenTarget {
 	if (mod) return { kind: "pane", pane: mod === true ? "tab" : mod };
@@ -68,7 +68,7 @@ export function openTarget(mode: OpenIn, mod: PaneType | boolean = false): OpenT
 
 /**
  * The mode that applies to one kind of click: the source's own rule when it has
- * one, otherwise the global choice. Falls back to `"tab"` — Hearth's historical
+ * one, otherwise the global choice. Falls back to `"tab"` — Flexible Workbench's historical
  * behaviour — for any value a hand-edited or future settings file might hold.
  */
 export function resolveOpenIn(settings: HomeSettings, source: OpenSource): OpenIn {
@@ -78,25 +78,25 @@ export function resolveOpenIn(settings: HomeSettings, source: OpenSource): OpenI
 }
 
 /**
- * Whether the Hearth view should report itself as navigable.
+ * Whether the Flexible Workbench view should report itself as navigable.
  *
  * Obsidian reuses the focused leaf for a file opened from the file explorer,
  * the quick switcher or the graph — but only when the view in it says it is
- * navigable. That is the only lever Hearth has over those opens, since the
- * click never reaches Hearth's own code (the same goes for a view embedded in a
+ * navigable. That is the only lever Flexible Workbench has over those opens, since the
+ * click never reaches Flexible Workbench's own code (the same goes for a view embedded in a
  * card that resolves links itself, such as an embedded Bases table).
  *
  * Defaults to navigable, which is the behaviour since #84: the dashboard acts
  * like an ordinary tab, so the explorer's selection follows what you open
  * instead of getting stuck on a note in a tab you can't see.
  */
-export function hearthLeafIsNavigable(settings: HomeSettings): boolean {
+export function flexibleWorkbenchLeafIsNavigable(settings: HomeSettings): boolean {
 	const rule = settings.openFromOutside;
 	if (rule === "same") return true;
 	if (rule === "tab") return false;
 	// "default" (and any unknown value) follows the global choice — not a
-	// per-source rule, since Hearth never sees which kind of click this was.
-	// Only "the current tab" means Hearth is there to be taken over.
+	// per-source rule, since Flexible Workbench never sees which kind of click this was.
+	// Only "the current tab" means Flexible Workbench is there to be taken over.
 	return settings.openIn === "same";
 }
 
@@ -131,13 +131,13 @@ export function targetLeaf(from: OpenFrom, source: OpenSource, evt?: UserEvent |
 	const h = host(from);
 	const target = openTarget(resolveOpenIn(h.settings, source), modifiers(h, evt));
 	if (target.kind === "pane") return h.app.workspace.getLeaf(target.pane);
-	// "Same tab": replace the Hearth view in its own leaf. Without a known leaf
+	// "Same tab": replace the Flexible Workbench view in its own leaf. Without a known leaf
 	// (a modal, a command) fall back to the active one, which is what Obsidian
 	// itself does for `getLeaf(false)`.
 	return h.leaf ?? h.app.workspace.getLeaf(false);
 }
 
-/** Open a file the way the user asked Hearth to open notes. */
+/** Open a file the way the user asked Flexible Workbench to open notes. */
 export async function openFile(
 	from: OpenFrom,
 	file: TFile,
@@ -149,11 +149,11 @@ export async function openFile(
 }
 
 /**
- * Open a link the way the user asked Hearth to open notes.
+ * Open a link the way the user asked Flexible Workbench to open notes.
  *
  * Link text is left to `openLinkText`, which resolves aliases, headings, block
  * references and missing notes — none of which a raw path lookup here would get
- * right. For "same tab" that means focusing the Hearth leaf first, since
+ * right. For "same tab" that means focusing the Flexible Workbench leaf first, since
  * `openLinkText` can only be told *which kind* of pane to use, not which leaf.
  */
 export async function openLink(

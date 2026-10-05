@@ -80,8 +80,8 @@ function renderAnalogClock(
 	cfg: ClockConfig,
 	lowPower: boolean,
 ): (now: Date) => void {
-	const svg = svgEl(wrap, "svg", { viewBox: "0 0 100 100" }, "hearth-analog");
-	svgEl(svg, "circle", { cx: "50", cy: "50", r: "48" }, "hearth-analog-face");
+	const svg = svgEl(wrap, "svg", { viewBox: "0 0 100 100" }, "flexible-workbench-analog");
+	svgEl(svg, "circle", { cx: "50", cy: "50", r: "48" }, "flexible-workbench-analog-face");
 	for (let i = 0; i < 12; i++) {
 		const a = (i / 12) * Math.PI * 2;
 		const major = i % 3 === 0;
@@ -95,15 +95,15 @@ function renderAnalogClock(
 				x2: String(50 + Math.sin(a) * 46),
 				y2: String(50 - Math.cos(a) * 46),
 			},
-			major ? "hearth-analog-tick-major" : "hearth-analog-tick",
+			major ? "flexible-workbench-analog-tick-major" : "flexible-workbench-analog-tick",
 		);
 	}
 	const hand = (cls: string, length: number) =>
 		svgEl(svg, "line", { x1: "50", y1: "50", x2: "50", y2: String(50 - length) }, cls);
-	const hourHand = hand("hearth-analog-hour", 26);
-	const minHand = hand("hearth-analog-min", 38);
-	const secHand = cfg.showSeconds && !lowPower ? hand("hearth-analog-sec", 42) : null;
-	svgEl(svg, "circle", { cx: "50", cy: "50", r: "2.5" }, "hearth-analog-pin");
+	const hourHand = hand("flexible-workbench-analog-hour", 26);
+	const minHand = hand("flexible-workbench-analog-min", 38);
+	const secHand = cfg.showSeconds && !lowPower ? hand("flexible-workbench-analog-sec", 42) : null;
+	svgEl(svg, "circle", { cx: "50", cy: "50", r: "2.5" }, "flexible-workbench-analog-pin");
 
 	const rotate = (el: SVGElement, deg: number) =>
 		el.setAttribute("transform", `rotate(${deg} 50 50)`);
@@ -141,8 +141,8 @@ export function renderClock(
 	const dateMode = cfg.dateMode ?? "full";
 	const analog = cfg.mode === "analog";
 
-	const wrap = body.createDiv("hearth-clock");
-	const greetingEl = showGreeting ? wrap.createDiv("hearth-clock-greeting") : null;
+	const wrap = body.createDiv("flexible-workbench-clock");
+	const greetingEl = showGreeting ? wrap.createDiv("flexible-workbench-clock-greeting") : null;
 
 	// Pick the greeting once per time bucket so playful ones don't flicker.
 	let bucket = -1;
@@ -165,8 +165,8 @@ export function renderClock(
 	const lowPower = !motionAllowed(view.plugin.settings);
 
 	const tickAnalog = analog ? renderAnalogClock(wrap, cfg, lowPower) : null;
-	const timeEl = analog ? null : wrap.createDiv("hearth-clock-time");
-	const dateEl = dateMode === "none" ? null : wrap.createDiv("hearth-clock-date");
+	const timeEl = analog ? null : wrap.createDiv("flexible-workbench-clock-time");
+	const dateEl = dateMode === "none" ? null : wrap.createDiv("flexible-workbench-clock-date");
 
 	const timeOpts: Intl.DateTimeFormatOptions = { hour: "2-digit", minute: "2-digit" };
 	const hour12 = resolveHour12(cfg);

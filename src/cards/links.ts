@@ -22,10 +22,10 @@ export function renderLinks(view: HomeView, card: DashboardCard, body: HTMLEleme
 
 	const { grid, spec } = createTileGrid(view, card, body);
 	for (const link of links) {
-		const tile = grid.createDiv("hearth-link-tile");
+		const tile = grid.createDiv("flexible-workbench-link-tile");
 		applyTileSize(tile, link, spec);
 		applyTileVisual(view, tile, link.icon, "link");
-		tile.createDiv({ cls: "hearth-link-label", text: link.label || link.target });
+		tile.createDiv({ cls: "flexible-workbench-link-label", text: link.label || link.target });
 		const open = () => openLink(view, link);
 		// In arrange mode, clicking a tile must NOT trigger its action — the
 		// click is almost always the tail end of a resize/drag gesture.
@@ -82,7 +82,7 @@ export function linksEditor(ctx: CardEditorContext, containerEl: HTMLElement): v
 		);
 
 	links.forEach((link, index) => {
-		const row = new Setting(containerEl).setClass("hearth-link-setting");
+		const row = new Setting(containerEl).setClass("flexible-workbench-link-setting");
 		row.addText((txt) =>
 			txt
 				.setPlaceholder(t().editors.links.labelPlaceholder)

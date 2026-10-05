@@ -1,9 +1,9 @@
 import { App, Component, debounce, TextFileView, TFile, WorkspaceLeaf } from "obsidian";
 
-/** Hearth's own view type — hosting it inside itself makes no sense, so it is
+/** Flexible Workbench's own view type — hosting it inside itself makes no sense, so it is
  * excluded from the leaf card's picker. Kept as a literal (rather than imported
  * from ./view) to avoid an import cycle through cards.ts. */
-const VIEW_TYPE_HOME = "hearth-home-view";
+const VIEW_TYPE_HOME = "flexible-workbench-home-view";
 
 /** A view type registered in the app, offered by the "leaf" card's picker. */
 export interface LeafViewType {
@@ -16,7 +16,7 @@ export interface LeafViewType {
 /**
  * View types the "leaf" card never offers. These are Obsidian's own document
  * surfaces — they need a concrete file and render blank (or misbehave) when
- * hosted detached from the workspace — plus Hearth's own view, which must not
+ * hosted detached from the workspace — plus Flexible Workbench's own view, which must not
  * host itself. Everything else a plugin registers (calendar, outline, kanban,
  * tag pane, …) is a fair game side-panel view.
  */
@@ -48,14 +48,14 @@ function labelForType(type: string): string {
 }
 
 /** Whether the leaf card can work at all right now (the registry is reachable).
- * Used to gate the "Add card" template so the card is only offered when Hearth
+ * Used to gate the "Add card" template so the card is only offered when Flexible Workbench
  * can actually enumerate and host views. */
 export function isLeafViewAvailable(app: App): boolean {
 	return viewByType(app) !== null;
 }
 
 /** Every hostable view type, sorted by label. Empty when the registry can't be
- * read. Excludes core document surfaces and Hearth's own view. */
+ * read. Excludes core document surfaces and Flexible Workbench's own view. */
 export function listLeafViewTypes(app: App): LeafViewType[] {
 	const byType = viewByType(app);
 	if (!byType) return [];
@@ -193,7 +193,7 @@ function teardownHostedLeaf(leaf: WorkspaceLeaf): void {
  * The hosted view is only kept alive while the card is actually on screen. An
  * IntersectionObserver mounts it when the card scrolls into view and tears it
  * down (after a short grace period, so a quick scroll-past doesn't churn it)
- * when it leaves — which also fires when the whole Hearth tab is hidden behind
+ * when it leaves — which also fires when the whole Flexible Workbench tab is hidden behind
  * another tab. This bounds the cost of heavy views like Excalidraw, whose
  * background React/autosave loops would otherwise pile up over a long session
  * until Obsidian runs out of memory.

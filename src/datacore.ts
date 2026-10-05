@@ -9,9 +9,9 @@ export type DatacoreScriptLanguage = "js" | "jsx" | "ts" | "tsx";
 
 /** How a Datacore card's `query` text is interpreted.
  *
- * - `"query"` — a Datacore query (`@page and #project`), rendered by Hearth as
+ * - `"query"` — a Datacore query (`@page and #project`), rendered by Flexible Workbench as
  *   a link list. This is the no-code option, the closest thing Datacore has to
- *   Dataview's DQL: Datacore itself ships no query-only codeblock, so Hearth
+ *   Dataview's DQL: Datacore itself ships no query-only codeblock, so Flexible Workbench
  *   wraps the query in a small JSX view (see {@link datacoreQueryScript}).
  * - the four script dialects — the text is a Datacore script, exactly as inside
  *   the matching codeblock. */
@@ -34,14 +34,14 @@ type DatacoreResult<T> =
 	| { successful: false; error: string };
 
 /**
- * The slice of Datacore's public API Hearth calls. Exposed by the plugin at
+ * The slice of Datacore's public API Flexible Workbench calls. Exposed by the plugin at
  * `app.plugins.plugins.datacore.api` once Datacore is enabled.
  *
  * Each `execute*` transpiles and runs the script, rendering it into `container`
  * with Preact and attaching a `MarkdownRenderChild` to `component` — so the
  * result re-renders itself as Datacore's index changes (Datacore's hooks, e.g.
  * `dc.useQuery`, subscribe to the index) for as long as the component lives.
- * Hearth passes the per-card component, which lives until the card is next
+ * Flexible Workbench passes the per-card component, which lives until the card is next
  * redrawn, so live updates come for free. Script errors are caught by
  * Datacore's own error boundary and rendered inline rather than thrown.
  */
@@ -81,7 +81,7 @@ interface DatacoreApi {
 }
 
 /** Reach Datacore's public API, or null when the plugin isn't installed, isn't
- * enabled, or is too old to expose the script methods Hearth uses. */
+ * enabled, or is too old to expose the script methods Flexible Workbench uses. */
 export function getDatacoreApi(app: App): DatacoreApi | null {
 	const plugin = app.plugins.plugins[DATACORE_PLUGIN_ID] as
 		| { api?: unknown }
@@ -148,7 +148,7 @@ export function datacoreQueryError(api: DatacoreApi, query: string): string | nu
  *
  * This is what makes the card's no-code "Query" mode possible. Datacore's own
  * codeblocks are all script-based — unlike Dataview, there is no query-only
- * block to hand a bare query to — so Hearth generates the view around it. The
+ * block to hand a bare query to — so Flexible Workbench generates the view around it. The
  * query is embedded as a JSON string literal, which quotes and escapes it
  * safely no matter what the user typed.
  *
@@ -160,11 +160,11 @@ export function datacoreQueryError(api: DatacoreApi, query: string): string | nu
  * `@task and !$completed` useful here rather than a column of ids. Anything
  * else falls back to its path or id, so a row is never blank.
  *
- * The one place Hearth composes Datacore's UI rather than just handing it a
+ * The one place Flexible Workbench composes Datacore's UI rather than just handing it a
  * script, so it is also the one place a Datacore release can break this card
- * without changing anything Hearth calls directly. It touches exactly four of
+ * without changing anything Flexible Workbench calls directly. It touches exactly four of
  * Datacore's surfaces — `dc.useQuery`, `dc.List` (its `rows`, `paging` and
- * `renderer` props), `dc.Link` and `dc.Markdown` — and nothing else in Hearth
+ * `renderer` props), `dc.Link` and `dc.Markdown` — and nothing else in Flexible Workbench
  * depends on them. If a card shows Datacore's error boundary after a Datacore
  * update while script cards still render, this function is the place to look.
  * Script modes pass through untouched and cannot be affected.
@@ -178,7 +178,7 @@ export function datacoreQueryScript(query: string, pageSize?: number): string {
 			? String(Math.round(pageSize))
 			: "false";
 	return [
-		"return function HearthDatacoreQuery() {",
+		"return function FlexibleWorkbenchDatacoreQuery() {",
 		`\tconst rows = dc.useQuery(${JSON.stringify(query)});`,
 		`\treturn <dc.List rows={rows} paging={${paging}} renderer={(row) =>`,
 		"\t\trow && row.$link ? <dc.Link link={row.$link} /> :",

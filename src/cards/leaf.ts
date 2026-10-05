@@ -33,16 +33,16 @@ export function renderLeaf(
 		return;
 	}
 
-	const host = body.createDiv("hearth-leaf-host");
+	const host = body.createDiv("flexible-workbench-leaf-host");
 	// Hosted views are natively interactive and manage their own scrolling, so
 	// let them fill the card edge-to-edge like canvas/Excalidraw embeds do.
-	body.addClass("hearth-card-body-live");
+	body.addClass("flexible-workbench-card-body-live");
 	// Optionally suppress the hosted view's breadcrumbs/nav/kebab header — for a
 	// single-file card that chrome is just noise.
-	if (card.leafView?.hideHeader) host.addClass("hearth-leaf-hide-header");
+	if (card.leafView?.hideHeader) host.addClass("flexible-workbench-leaf-hide-header");
 	if (!mountLeafView(view.app, type, host, component, card.leafView?.file)) {
 		host.remove();
-		body.removeClass("hearth-card-body-live");
+		body.removeClass("flexible-workbench-card-body-live");
 		emptyState(body, "layout-panel-left", t().cards.empty.leafViewMissing);
 	}
 }
@@ -50,18 +50,18 @@ export function renderLeaf(
 
 /** The performance warning shown under the type dropdown for the leaf card.
  *
- * Deliberately louder than the other editor notes (`hearth-setting-note`): this
+ * Deliberately louder than the other editor notes (`flexible-workbench-setting-note`): this
  * is the one card that can make a dashboard genuinely slow, and the quiet
  * muted-grey hint it used to be was easy to scroll straight past. It renders as
  * a titled callout with a warning tint and an alert icon, and gains a second
- * paragraph while the performance tier is stepped down — the tier turns Hearth's own effects
+ * paragraph while the performance tier is stepped down — the tier turns Flexible Workbench's own effects
  * off but cannot touch a view another plugin is running. */
 export function leafTypeNote(containerEl: HTMLElement, settings: HomeSettings): void {
 	const strings = t().editors.leaf;
 	const note = new Setting(containerEl).setName(strings.perfLabel).setDesc(strings.perfNote);
-	note.settingEl.addClass("hearth-setting-note");
-	note.settingEl.addClass("hearth-setting-warning");
-	const icon = createSpan("hearth-setting-note-icon");
+	note.settingEl.addClass("flexible-workbench-setting-note");
+	note.settingEl.addClass("flexible-workbench-setting-warning");
+	const icon = createSpan("flexible-workbench-setting-note-icon");
 	// "alert-triangle" rather than lucide's newer "triangle-alert" alias: it is
 	// the name already proven to resolve on the Obsidian versions this plugin
 	// supports (see the settings-pane error box).
@@ -69,7 +69,7 @@ export function leafTypeNote(containerEl: HTMLElement, settings: HomeSettings): 
 	note.nameEl.prepend(icon);
 	if (performanceTier(settings) !== "full") {
 		note.descEl.createDiv({
-			cls: "hearth-setting-warning-extra",
+			cls: "flexible-workbench-setting-warning-extra",
 			text: strings.perfNoteTier,
 		});
 	}

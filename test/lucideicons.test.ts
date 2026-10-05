@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { bareIconName, pickIconId } from "../src/lucide";
-import { HEARTH_ICON_ID, HEARTH_ICON_THEMED_ID, tabIconIdFor } from "../src/icon";
+import { FLEXIBLE_WORKBENCH_ICON_ID, FLEXIBLE_WORKBENCH_ICON_THEMED_ID, tabIconIdFor } from "../src/icon";
 
 /**
- * Lucide icons reach Hearth from three directions — a picker, a hand-typed id
+ * Lucide icons reach Flexible Workbench from three directions — a picker, a hand-typed id
  * and an imported settings file — so what counts as "an icon" has to be decided
  * in one place. These tests pin that decision: which id `setIcon` is handed,
  * and what happens when the value names nothing. The title icon, which takes
@@ -11,7 +11,7 @@ import { HEARTH_ICON_ID, HEARTH_ICON_THEMED_ID, tabIconIdFor } from "../src/icon
  */
 
 /** The registered ids Obsidian would report: the Lucide set is prefixed. */
-const REGISTERED = new Set(["lucide-flame", "lucide-star", "hearth-crystal"]);
+const REGISTERED = new Set(["lucide-flame", "lucide-star", "flexible-workbench-mark"]);
 const isKnown = (id: string) => REGISTERED.has(id);
 
 describe("pickIconId", () => {
@@ -24,7 +24,7 @@ describe("pickIconId", () => {
 	});
 
 	it("accepts a plugin-registered id that carries no Lucide prefix", () => {
-		expect(pickIconId("hearth-crystal", isKnown)).toBe("hearth-crystal");
+		expect(pickIconId("flexible-workbench-mark", isKnown)).toBe("flexible-workbench-mark");
 	});
 
 	it("trims what the user typed", () => {
@@ -49,16 +49,16 @@ describe("pickIconId", () => {
 describe("bareIconName", () => {
 	it("strips Obsidian's registration prefix and leaves anything else alone", () => {
 		expect(bareIconName("lucide-flame")).toBe("flame");
-		expect(bareIconName("hearth-crystal")).toBe("hearth-crystal");
+		expect(bareIconName("flexible-workbench-mark")).toBe("flexible-workbench-mark");
 	});
 });
 
 describe("tabIconIdFor", () => {
-	it("falls back to the crystal — brand or themed — with no custom icon", () => {
-		expect(tabIconIdFor("none", "")).toBe(HEARTH_ICON_ID);
-		expect(tabIconIdFor("title", undefined)).toBe(HEARTH_ICON_ID);
-		expect(tabIconIdFor("icon", "")).toBe(HEARTH_ICON_THEMED_ID);
-		expect(tabIconIdFor("both", "   ")).toBe(HEARTH_ICON_THEMED_ID);
+	it("falls back to the workbench mark — brand or themed — with no custom icon", () => {
+		expect(tabIconIdFor("none", "")).toBe(FLEXIBLE_WORKBENCH_ICON_ID);
+		expect(tabIconIdFor("title", undefined)).toBe(FLEXIBLE_WORKBENCH_ICON_ID);
+		expect(tabIconIdFor("icon", "")).toBe(FLEXIBLE_WORKBENCH_ICON_THEMED_ID);
+		expect(tabIconIdFor("both", "   ")).toBe(FLEXIBLE_WORKBENCH_ICON_THEMED_ID);
 	});
 
 	it("uses the custom icon when one is set", () => {

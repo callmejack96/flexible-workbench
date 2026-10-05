@@ -1,0 +1,1667 @@
+{
+  "favorite_folder": {
+    "id": 1129575981,
+    "fid": 11295759,
+    "mid": 1126328681,
+    "attr": 0,
+    "title": "默认收藏夹",
+    "cover": "http://i1.hdslb.com/bfs/archive/70b184def5bcec051bfd047e16eb3443cae56589.jpg",
+    "upper": {
+      "mid": 1126328681,
+      "name": "丘吉尔耳机",
+      "face": "http://i2.hdslb.com/bfs/face/dfe77fd9fb029011dbdde35e6960f652ead8ee84.jpg",
+      "followed": false,
+      "vip_type": 1,
+      "vip_statue": 0
+    },
+    "cover_type": 2,
+    "cnt_info": {
+      "collect": 0,
+      "play": 10,
+      "thumb_up": 0,
+      "share": 0
+    },
+    "type": 11,
+    "intro": "",
+    "ctime": 1608121322,
+    "mtime": 1608121322,
+    "state": 0,
+    "fav_state": 0,
+    "like_state": 0,
+    "media_count": 44,
+    "is_top": false,
+    "is_kid_playlist": false,
+    "kid_playlist_desc": ""
+  },
+  "count": 44,
+  "items": [
+    {
+      "id": 117195631889109,
+      "type": 2,
+      "title": "100万买红利ETF就能退休？我翻完1000条评论，答案出乎意料",
+      "cover": "http://i1.hdslb.com/bfs/archive/70b184def5bcec051bfd047e16eb3443cae56589.jpg",
+      "intro": "",
+      "page": 1,
+      "duration": 535,
+      "upper": {
+        "mid": 3546391683008820,
+        "name": "百万红利自由计划",
+        "face": "https://i0.hdslb.com/bfs/face/3ef8125ec3faf7007b59f65b24f2dd9746e29200.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 291,
+        "play": 20066,
+        "danmaku": 9,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "2万"
+      },
+      "link": "bilibili://video/117195631889109",
+      "ctime": 1788263690,
+      "pubtime": 1788263690,
+      "fav_time": 1791165263,
+      "bv_id": "BV1SZtg6HEMd",
+      "bvid": "BV1SZtg6HEMd",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 41495233867
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=117195631889109&otype=2"
+    },
+    {
+      "id": 117246382839719,
+      "type": 2,
+      "title": "《开放语义层AI原生数据平台的下一层基础设施》堵俊平｜Datastrato 创始人兼CEO；Apache Gravitino 项目原始发起人",
+      "cover": "http://i0.hdslb.com/bfs/archive/3f9864f4c450bf7d5313771c0c5fb637132c6caa.jpg",
+      "intro": "《开放语义层  AI原生数据平台的下一层基础设施》\n\n堵俊平｜Datastrato 创始人兼 CEO  Apache Gravitino 项目原始发起人\n\n本次分享从“数据接口正在由 SQL 转向意图”出发，介绍 Apache Ossie 的可移植语义契约、Gravitino 的元数据与治理控制面，以及 Agent 在执行前如何解析受治理的业务含义。",
+      "page": 1,
+      "duration": 2257,
+      "upper": {
+        "mid": 3691008466356264,
+        "name": "Data_for_AI",
+        "face": "https://i0.hdslb.com/bfs/face/1fe06b8f71c9fe803472474cbd59b495c58b3412.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 78,
+        "play": 1121,
+        "danmaku": 0,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "1121"
+      },
+      "link": "bilibili://video/117246382839719",
+      "ctime": 1789038168,
+      "pubtime": 1789038168,
+      "fav_time": 1791128387,
+      "bv_id": "BV1TNYg6xEnF",
+      "bvid": "BV1TNYg6xEnF",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 41761177609
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=117246382839719&otype=2"
+    },
+    {
+      "id": 117286027662501,
+      "type": 2,
+      "title": "豪用GPT-6 Astra！Codex神级skill Codex 额度总是不够用？这次试试让 ChatGPT 负责思考和规划，Codex 专心执行。 #Code",
+      "cover": "http://i1.hdslb.com/bfs/archive/2578d596b69a3ed468b040c11a860cfe001a47a3.jpg",
+      "intro": "",
+      "page": 1,
+      "duration": 97,
+      "upper": {
+        "mid": 3546829037766974,
+        "name": "青青王-AI",
+        "face": "https://i2.hdslb.com/bfs/face/f90d83ae658792b688630978122c8170ffd19eae.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 2764,
+        "play": 41541,
+        "danmaku": 3,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "4.2万"
+      },
+      "link": "bilibili://video/117286027662501",
+      "ctime": 1789642938,
+      "pubtime": 1789642938,
+      "fav_time": 1791126835,
+      "bv_id": "BV1pyeG6bERn",
+      "bvid": "BV1pyeG6bERn",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 41973517627
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=117286027662501&otype=2"
+    },
+    {
+      "id": 116444180257360,
+      "type": 2,
+      "title": "[基于skill的Agent进化]01期-SkillX-将强Agent的成功轨迹构建为分层Skill库，实现可迁移的泛用性进化",
+      "cover": "http://i0.hdslb.com/bfs/archive/c91c937bf61da84fa5f62e66278516c2dae5dc4c.jpg",
+      "intro": "基于skill的Agent进化（1）《SkillX: Automatically Constructing Skill Knowledge Bases for Agents》\nhttps://arxiv.org/abs/2604.04804\n欢迎在评论区讨论论文~",
+      "page": 1,
+      "duration": 1449,
+      "upper": {
+        "mid": 581897590,
+        "name": "Agent智能体深度研究院",
+        "face": "https://i1.hdslb.com/bfs/face/d038a7f03e9285b0af5b63cb88839a63f604bc02.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 565,
+        "play": 5105,
+        "danmaku": 0,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "5105"
+      },
+      "link": "bilibili://video/116444180257360",
+      "ctime": 1776797332,
+      "pubtime": 1776830400,
+      "fav_time": 1790433061,
+      "bv_id": "BV1dFd9B7EvW",
+      "bvid": "BV1dFd9B7EvW",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 37702403356
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=116444180257360&otype=2"
+    },
+    {
+      "id": 117196739056982,
+      "type": 2,
+      "title": "别把数仓改成JSON：AI Agent真正需要的是Agent Data Plane",
+      "cover": "http://i2.hdslb.com/bfs/archive/4dbd5afa11a9905f6ae762941627e4da468efd85.jpg",
+      "intro": "Agent时代，企业数仓是不是应该全部改成JSON或者KV？\n这是一个非常危险的架构误区。协议适合使用JSON，不代表事实数据应该存成JSON；KV适合主键访问和状态保存，也不适合替代列式数仓完成复杂聚合。\n本期从一个“区域新客GMV下降”的真实工作场景出发，完整拆解：\n为什么Agent不能拿到表名后直接生成SQL\n如何把自然语言问题编译成结构化执行合同\n指标合同应该包含哪些语义、粒度和权限信息\n数仓、KV、向量库、图数据库与JSON如何分工\n为什么向量检索不能作为企业事实来源\n如何使用Dry Run、执",
+      "page": 1,
+      "duration": 566,
+      "upper": {
+        "mid": 30341290,
+        "name": "Seven数据跃迁",
+        "face": "https://i1.hdslb.com/bfs/face/95cf1ce099a8d51bf9774cba65073960b3a6f978.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 37,
+        "play": 851,
+        "danmaku": 0,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "851"
+      },
+      "link": "bilibili://video/117196739056982",
+      "ctime": 1788280420,
+      "pubtime": 1788280419,
+      "fav_time": 1790385544,
+      "bv_id": "BV1HztG6GELX",
+      "bvid": "BV1HztG6GELX",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 41501983369
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=117196739056982&otype=2"
+    },
+    {
+      "id": 117206738342959,
+      "type": 2,
+      "title": "【DSH】挂一百个 Skill 也不占上下文：Harness 高阶知识与玩法",
+      "cover": "http://i2.hdslb.com/bfs/archive/e8cf374af423820bf6d0b08116453f3eb8cbd403.jpg",
+      "intro": "🔧这十天彻底掉进 DeepSeek Harness 的坑了。这期把 Agent 到底怎么定义（说明+配置+skill 三件套）、skill 的加载优先级链讲明白，重点是skils的 action skill：动态注入。另外 ComfyUI 插件加入了工作流绑技能包，靠的就是这个机制。让 Agent 自己改接线、换 LoRA、把文生切成图生。片尾剧透了下期的开源创意工作台。相关链接放在置顶评论。觉得有用别忘了点赞、投币、收藏、关注支持一下啦～❤️",
+      "page": 1,
+      "duration": 2063,
+      "upper": {
+        "mid": 33956397,
+        "name": "惫懒の欧阳川",
+        "face": "https://i0.hdslb.com/bfs/face/b1d96cf678059bc78b16c1bbb9a5087b7805855b.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 2310,
+        "play": 41879,
+        "danmaku": 23,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "4.2万"
+      },
+      "link": "bilibili://video/117206738342959",
+      "ctime": 1788432969,
+      "pubtime": 1788432969,
+      "fav_time": 1790385516,
+      "bv_id": "BV1y9to66Ehq",
+      "bvid": "BV1y9to66Ehq",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 41550545781
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=117206738342959&otype=2"
+    },
+    {
+      "id": 487561400,
+      "type": 2,
+      "title": "因果推断实战uplift + DML",
+      "cover": "http://i2.hdslb.com/bfs/archive/1a2483006f9a9a12632166d9388aa442eabcc6f0.jpg",
+      "intro": "一路从数据分析的实习到大厂打工人，聊聊一个初入者视角那些JD中写的所谓决策支持在干什么，怎么做，gzh \"大佬等我呀“ 看原文",
+      "page": 1,
+      "duration": 1686,
+      "upper": {
+        "mid": 605006193,
+        "name": "大佬等我呀",
+        "face": "https://i0.hdslb.com/bfs/face/e1b91b523ac0706e75d068b7c031a81f00c43aa0.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 586,
+        "play": 11337,
+        "danmaku": 4,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "1.1万"
+      },
+      "link": "bilibili://video/487561400",
+      "ctime": 1687449882,
+      "pubtime": 1687449882,
+      "fav_time": 1784562180,
+      "bv_id": "BV11N411r7TV",
+      "bvid": "BV11N411r7TV",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 1172378870
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=487561400&otype=2"
+    },
+    {
+      "id": 116906040234269,
+      "type": 2,
+      "title": "[skill使用与内化] 美团skill系列新论文-Skill0.5：把通用skill学进参数，把任务skill留在提示中，并反事实检查skill是否真被使用",
+      "cover": "http://i0.hdslb.com/bfs/archive/0c7078bf2459daddafe2a98c73263256d0d4930c.jpg",
+      "intro": "Skill0.5: Joint Skill Internalization and Utilization for Out-of-Distribution Generalization in Agentic Reinforcement Learning\nhttps://arxiv.org/abs/2605.28424\n\n1. 论文核心: Skill0.5 把稳定的通用技能内化进模型参数，把随任务变化的任务技能保留在提示中，并按任务掌握程度选择不同训练信号。\n2. 问题背景: 全外挂会让上下文越来越长并产生",
+      "page": 1,
+      "duration": 608,
+      "upper": {
+        "mid": 581897590,
+        "name": "Agent智能体深度研究院",
+        "face": "https://i1.hdslb.com/bfs/face/d038a7f03e9285b0af5b63cb88839a63f604bc02.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 260,
+        "play": 2675,
+        "danmaku": 0,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "2675"
+      },
+      "link": "bilibili://video/116906040234269",
+      "ctime": 1783844709,
+      "pubtime": 1783844708,
+      "fav_time": 1784179241,
+      "bv_id": "BV18eNg6tEdm",
+      "bvid": "BV18eNg6tEdm",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 39877675731
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=116906040234269&otype=2"
+    },
+    {
+      "id": 116876411737533,
+      "type": 2,
+      "title": "面试官：在数仓中，什么是对AI友好的模型？",
+      "cover": "http://i0.hdslb.com/bfs/archive/d5533ddf4a5c4e23d0b4bd67e7b40c8d4e620402.jpg",
+      "intro": "本期为数据开发面经讲解视频：在数仓中，什么是对AI友好的模型？\n各位看官，如果觉得视频好看，有用，辛苦一键三联，支持一下~\n涤生为大家准备了【独家】数据开发求职手册，有需要可以评论区获取哈！",
+      "page": 1,
+      "duration": 505,
+      "upper": {
+        "mid": 621235564,
+        "name": "涤生大数据",
+        "face": "https://i1.hdslb.com/bfs/face/785b7d261cd9fe23c0ee0da3915ba9310e77c42a.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 221,
+        "play": 9088,
+        "danmaku": 8,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "9088"
+      },
+      "link": "bilibili://video/116876411737533",
+      "ctime": 1783392787,
+      "pubtime": 1783392786,
+      "fav_time": 1784178841,
+      "bv_id": "BV1jeMx6sE2P",
+      "bvid": "BV1jeMx6sE2P",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 39719338552
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=116876411737533&otype=2"
+    },
+    {
+      "id": 116919025801786,
+      "type": 2,
+      "title": "🚀LangChain新神器OpenWiki打造数据飞轮！开启LLM Wiki 2.0时代！ 让Codex、Claude Code等Agent共享知识库",
+      "cover": "http://i1.hdslb.com/bfs/archive/6c6042e1a81d0bcb8349aa7c3373a590be3ff7d7.jpg",
+      "intro": "🚀LangChain新神器OpenWiki打造数据飞轮！开启LLM Wiki 2.0时代！ 让Codex、Claude Code、Hermes等Agent共享第二大脑！支持Notion！告别知识孤岛！\n\n视频简介：\n\nKarpathy提出的LLM Wiki解决了大模型知识整理问题，但实际使用时，知识库常与某个Agent或Skill深度绑定。本期视频深度实测LangChain推出的OpenWiki：配置个人模式，通过ChatGPT OAuth验证，连接Notion摄取Claude Code笔记，并生成可审阅",
+      "page": 1,
+      "duration": 705,
+      "upper": {
+        "mid": 3493277319825652,
+        "name": "AI超元域",
+        "face": "https://i1.hdslb.com/bfs/face/c6eaa43c435acaa8a7eec57e6447c2858e088c13.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 1857,
+        "play": 32117,
+        "danmaku": 2,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "3.2万"
+      },
+      "link": "bilibili://video/116919025801786",
+      "ctime": 1784042831,
+      "pubtime": 1784042831,
+      "fav_time": 1784178830,
+      "bv_id": "BV1EaN86hEhV",
+      "bvid": "BV1EaN86hEhV",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 39950945079
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=116919025801786&otype=2"
+    },
+    {
+      "id": 451202736,
+      "type": 2,
+      "title": "【极简五分化】 45分钟背部增肌训练 ⎮只需一对哑铃⎮适家里寝室",
+      "cover": "http://i1.hdslb.com/bfs/archive/1b29b299b212087ee21bf4c891ff252290da52ee.jpg",
+      "intro": "本期是极简5分化背部篇\n具体换重如下：\n动作1—低重量\n动作2—重量不变或增加1.5-1.7倍\n动作3—根据动作2重量选择双持或者双手各握一只\n动作4—如果重量2加重 则保持不变或略微增加\n动作5—如果重量2加重 则保持不变或略微增加\n动作6—如果重量2加重 则保持不变或略微增加",
+      "page": 1,
+      "duration": 3000,
+      "upper": {
+        "mid": 1613054467,
+        "name": "梅林FIT",
+        "face": "https://i1.hdslb.com/bfs/face/bbd0ae7944691aecc5cb86f550aba1cee83621b9.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 12280,
+        "play": 379602,
+        "danmaku": 899,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "38万"
+      },
+      "link": "bilibili://video/451202736",
+      "ctime": 1700547641,
+      "pubtime": 1700823600,
+      "fav_time": 1783694240,
+      "bv_id": "BV1fj411j767",
+      "bvid": "BV1fj411j767",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 1343237565
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=451202736&otype=2"
+    },
+    {
+      "id": 116804538074397,
+      "type": 2,
+      "title": "阿里一面  为什么越来越多 Agent 开始采用 Event-driven（事件驱动）架构？什么时候不应该使用传统 Agent Loop？",
+      "cover": "http://i1.hdslb.com/bfs/archive/742c92d3b3e7f7ea877179d03b39255ab2d23331.jpg",
+      "intro": "",
+      "page": 1,
+      "duration": 97,
+      "upper": {
+        "mid": 3546586445514836,
+        "name": "龙哥搞算法",
+        "face": "https://i2.hdslb.com/bfs/face/1570eab8b721a9f1c19d2be895f9b7a3de41fd23.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 398,
+        "play": 5494,
+        "danmaku": 1,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "5494"
+      },
+      "link": "bilibili://video/116804538074397",
+      "ctime": 1782297697,
+      "pubtime": 1782297697,
+      "fav_time": 1783000129,
+      "bv_id": "BV1xXjR6VEkY",
+      "bvid": "BV1xXjR6VEkY",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 39368458478
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=116804538074397&otype=2"
+    },
+    {
+      "id": 116686812354785,
+      "type": 2,
+      "title": "[Harness自动进化] 04期 | Autogenesis：南洋理工提出AGP协议，让Agent Harness进化可审计，LeetCode C++ 近满分",
+      "cover": "http://i1.hdslb.com/bfs/archive/08b714a7630631ef73b01a5fae4d63cacdf4a8b8.jpg",
+      "intro": "Autogenesis: A Self-Evolving Agent Protocol\nhttps://arxiv.org/abs/2604.15034\n\n1. 论文核心: Autogenesis 提出 AGP 双层协议，把 prompt、agent、tool、environment、memory 这些智能体内部资源注册成可版本化、可审计、可回滚的资源，再用统一闭环管理运行期自进化。\n2. Harness 边界: 这篇论文不属于狭义 Harness 自动优化；它更像上游协议层，可承载 harness 组件",
+      "page": 1,
+      "duration": 711,
+      "upper": {
+        "mid": 581897590,
+        "name": "Agent智能体深度研究院",
+        "face": "https://i1.hdslb.com/bfs/face/d038a7f03e9285b0af5b63cb88839a63f604bc02.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 586,
+        "play": 4959,
+        "danmaku": 0,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "4959"
+      },
+      "link": "bilibili://video/116686812354785",
+      "ctime": 1780500293,
+      "pubtime": 1780531200,
+      "fav_time": 1782897428,
+      "bv_id": "BV1W27R63EmC",
+      "bvid": "BV1W27R63EmC",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 38834800219
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=116686812354785&otype=2"
+    },
+    {
+      "id": 116833780762715,
+      "type": 2,
+      "title": "【开源】做了个AI日志系统，结果公司运维直接躺平了？全新版本重磅来袭。",
+      "cover": "http://i1.hdslb.com/bfs/archive/e4a56c10d8668d687acb7dfd738b50348a539528.jpg",
+      "intro": "**LCA** 是一个开源的**企业级日志收集与智能分析平台**，旨在解决传统日志管理中的三大痛点：**成本高、响应慢、查询难**。其核心定位是让日志从\"事后查证\"变成\"实时洞察\"。\n\n项目地址：`github.com/jc2255/log-collect-ai-analytics`\n\n---\n\n## 四大核心能力\n\n### 1️⃣ OSS 日志自动备份\n可视化配置 Elasticsearch 快照 SLM 策略，自动将日志备份到阿里云 OSS，降低本地磁盘压力，同时满足行业合规审计要求（日志保留 6 个",
+      "page": 1,
+      "duration": 966,
+      "upper": {
+        "mid": 1777134587,
+        "name": "LCA智能运维平台",
+        "face": "https://i2.hdslb.com/bfs/face/ca3914569e434667c5002cbd6b661e2425b52b2d.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 130,
+        "play": 2802,
+        "danmaku": 0,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "2802"
+      },
+      "link": "bilibili://video/116833780762715",
+      "ctime": 1782742515,
+      "pubtime": 1782742514,
+      "fav_time": 1782829480,
+      "bv_id": "BV1atKD6mEnb",
+      "bvid": "BV1atKD6mEnb",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 39511393501
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=116833780762715&otype=2"
+    },
+    {
+      "id": 116737714427821,
+      "type": 2,
+      "title": "ydata-OpenSpec在数据开发实践",
+      "cover": "http://i0.hdslb.com/bfs/archive/beb4071b4812921067ccd37400012f4c26a64b3d.jpg",
+      "intro": "",
+      "page": 1,
+      "duration": 1055,
+      "upper": {
+        "mid": 405479587,
+        "name": "语兴呀",
+        "face": "https://i1.hdslb.com/bfs/face/7213b471ee8757aa797e68591f899e5fa9e2339a.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 65,
+        "play": 2036,
+        "danmaku": 0,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "2036"
+      },
+      "link": "bilibili://video/116737714427821",
+      "ctime": 1781276371,
+      "pubtime": 1781276371,
+      "fav_time": 1782827698,
+      "bv_id": "BV158J56mEJS",
+      "bvid": "BV158J56mEJS",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 39069746428
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=116737714427821&otype=2"
+    },
+    {
+      "id": 116815946651011,
+      "type": 2,
+      "title": "豆瓣TOP100占了三部? 这西西里岛什么来头！",
+      "cover": "http://i2.hdslb.com/bfs/archive/97aa3afc7545f235387e8875e30fe4af5fa97080.jpg",
+      "intro": "西西里，在上一期我们讲到，在很长的一段时间里，这里都背负着一个沉重的标签——黑手党的故乡，但西西里从来不止这一面...这座小岛的温柔与浪漫，被一个叫托纳多雷的人用镜头收录在他的【时光三部曲】里。在这期视频中，我们会循着《天堂电影院》留下的痕迹，去重新发现西西里……",
+      "page": 1,
+      "duration": 1345,
+      "upper": {
+        "mid": 37029661,
+        "name": "小鹿Lawrence",
+        "face": "https://i1.hdslb.com/bfs/face/e4c9f5f6bfd8c48de684d2456e8fe3ecce8f0c6c.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 25452,
+        "play": 1960000,
+        "danmaku": 3639,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "196万"
+      },
+      "link": "bilibili://video/116815946651011",
+      "ctime": 1782470660,
+      "pubtime": 1782470660,
+      "fav_time": 1782640375,
+      "bv_id": "BV1fP756mEcC",
+      "bvid": "BV1fP756mEcC",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 39425478613
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=116815946651011&otype=2"
+    },
+    {
+      "id": 116666629363859,
+      "type": 2,
+      "title": "Agent 数据处理案例 10 用skill来标准化 大量数据调研的技巧",
+      "cover": "http://i2.hdslb.com/bfs/archive/7636ebf783447419659ffba8a021f4e5986e6630.jpg",
+      "intro": "",
+      "page": 1,
+      "duration": 1545,
+      "upper": {
+        "mid": 1220871760,
+        "name": "Ming在职AI从业者",
+        "face": "https://i1.hdslb.com/bfs/face/7ab49bd0b711cdc2b45a61dac7e9ecf23af6505e.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 109,
+        "play": 1245,
+        "danmaku": 0,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "1245"
+      },
+      "link": "bilibili://video/116666629363859",
+      "ctime": 1780191717,
+      "pubtime": 1782032700,
+      "fav_time": 1782106417,
+      "bv_id": "BV1ymVE6FEJ5",
+      "bvid": "BV1ymVE6FEJ5",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 38735316020
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=116666629363859&otype=2"
+    },
+    {
+      "id": 116447619586065,
+      "type": 2,
+      "title": "Anthropic：通过评测把skill 变成可迭代资产",
+      "cover": "http://i0.hdslb.com/bfs/archive/29522c52af93cbf249678493a704bf64dfd7d055.jpg",
+      "intro": "Anthropic：通过评测把skill 变成可迭代资产：《Improving skill-creator》①\n原文标题：Improving skill-creator\n原文链接：https://github.com/anthropics/skills/tree/main/skills/skill-creator\n                  https://github.com/anthropics/skills/tree/main/skills/skill-creator",
+      "page": 1,
+      "duration": 566,
+      "upper": {
+        "mid": 28321599,
+        "name": "慢学AI",
+        "face": "https://i0.hdslb.com/bfs/face/eff22de48bce3370bdca5545370c7773d57199d7.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 639,
+        "play": 8897,
+        "danmaku": 0,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "8897"
+      },
+      "link": "bilibili://video/116447619586065",
+      "ctime": 1776849768,
+      "pubtime": 1776857700,
+      "fav_time": 1782047855,
+      "bv_id": "BV1wyosBUEtb",
+      "bvid": "BV1wyosBUEtb",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 37719314080
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=116447619586065&otype=2"
+    },
+    {
+      "id": 116452283652963,
+      "type": 2,
+      "title": "[Agent skill编排]01-腾讯GraSP-编排skill graph，规划Agent行动路径",
+      "cover": "http://i1.hdslb.com/bfs/archive/61aec2e6607f8cc4a0dfd9031fe1e0534c93e5ab.jpg",
+      "intro": "[Agent skill编排]01-腾讯GraSP-编排skill graph，规划Agent行动路径\nhttps://arxiv.org/pdf/2604.17870",
+      "page": 1,
+      "duration": 603,
+      "upper": {
+        "mid": 581897590,
+        "name": "Agent智能体深度研究院",
+        "face": "https://i1.hdslb.com/bfs/face/d038a7f03e9285b0af5b63cb88839a63f604bc02.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 385,
+        "play": 3511,
+        "danmaku": 0,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "3511"
+      },
+      "link": "bilibili://video/116452283652963",
+      "ctime": 1776920968,
+      "pubtime": 1776922200,
+      "fav_time": 1781397733,
+      "bv_id": "BV1FwoaBhEc5",
+      "bvid": "BV1FwoaBhEc5",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 37742837869
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=116452283652963&otype=2"
+    },
+    {
+      "id": 116690570447573,
+      "type": 2,
+      "title": "Prompt可能不如if-else…大模型思维工程到底如何养成？",
+      "cover": "http://i2.hdslb.com/bfs/archive/89ddd71af278e8e0b2fc02848c493d781ab83166.jpg",
+      "intro": "",
+      "page": 1,
+      "duration": 203,
+      "upper": {
+        "mid": 3546904126294811,
+        "name": "知乎知学长",
+        "face": "https://i2.hdslb.com/bfs/face/864c4809bd5bbbc46b94454d923d000859a69a7f.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 3647,
+        "play": 294703,
+        "danmaku": 205,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "29.5万"
+      },
+      "link": "bilibili://video/116690570447573",
+      "ctime": 1780557208,
+      "pubtime": 1780557208,
+      "fav_time": 1781241845,
+      "bv_id": "BV1WQ7f6WEUn",
+      "bvid": "BV1WQ7f6WEUn",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 38848629650
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=116690570447573&otype=2"
+    },
+    {
+      "id": 116647520114152,
+      "type": 2,
+      "title": "别再只让 AI 写 SQL 了：用 SQL2Text 反向清洗几千条旧 SQL，自动沉淀数据资产",
+      "cover": "http://i1.hdslb.com/bfs/archive/c5a197d3364d685ac354087616eb8a52bc7f844f.jpg",
+      "intro": "",
+      "page": 1,
+      "duration": 475,
+      "upper": {
+        "mid": 30341290,
+        "name": "Seven数据跃迁",
+        "face": "https://i1.hdslb.com/bfs/face/95cf1ce099a8d51bf9774cba65073960b3a6f978.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 69,
+        "play": 1191,
+        "danmaku": 0,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "1191"
+      },
+      "link": "bilibili://video/116647520114152",
+      "ctime": 1779900146,
+      "pubtime": 1779900146,
+      "fav_time": 1780848068,
+      "bv_id": "BV1dhGU6bEwT",
+      "bvid": "BV1dhGU6bEwT",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 38658704046
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=116647520114152&otype=2"
+    },
+    {
+      "id": 116589588384280,
+      "type": 2,
+      "title": "大数据开发面试大模型应该如何准备，一个视频吃透6大考点，让你面试少走99%的弯路！",
+      "cover": "http://i2.hdslb.com/bfs/archive/89650feb06f8f59aa3ab74f647f17e22e65a60c3.jpg",
+      "intro": "本期讲解大数据开发面试时，面试官爱问的6个大模型问题。\n对本期视频感兴趣的朋友，欢迎在评论区留言！",
+      "page": 1,
+      "duration": 812,
+      "upper": {
+        "mid": 621235564,
+        "name": "涤生大数据",
+        "face": "https://i1.hdslb.com/bfs/face/785b7d261cd9fe23c0ee0da3915ba9310e77c42a.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 238,
+        "play": 9399,
+        "danmaku": 11,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "9399"
+      },
+      "link": "bilibili://video/116589588384280",
+      "ctime": 1779016016,
+      "pubtime": 1779016016,
+      "fav_time": 1780847943,
+      "bv_id": "BV1QuLn6DEHc",
+      "bvid": "BV1QuLn6DEHc",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 38402330504
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=116589588384280&otype=2"
+    },
+    {
+      "id": 116639349604927,
+      "type": 2,
+      "title": "104K 星的 Agent 工程 Skills：别再让 AI 瞎猜需求",
+      "cover": "http://i2.hdslb.com/bfs/archive/95c3aeb2130682a003be574d622f1f363f50a4b1.jpg",
+      "intro": "这个项目不是提示词合集，而是把需求盘问、TDD、诊断、架构维护这些真实工程流程，封装成各种主流 Agent 可复用的 skills。适合想让 Agent 少跑偏、少猜测、按工程方法协作的开发者。\n项目地址：https://github.com/mattpocock/skills\n喜欢这类 AI 工具拆解，记得一键三连加关注。",
+      "page": 1,
+      "duration": 274,
+      "upper": {
+        "mid": 44153211,
+        "name": "AIlazy俊",
+        "face": "https://i0.hdslb.com/bfs/face/be3143178f73f5fbb18ddf8770db3494171b31fb.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 2222,
+        "play": 27495,
+        "danmaku": 2,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "2.7万"
+      },
+      "link": "bilibili://video/116639349604927",
+      "ctime": 1779775309,
+      "pubtime": 1779782400,
+      "fav_time": 1780839667,
+      "bv_id": "BV1PYVc62Efw",
+      "bvid": "BV1PYVc62Efw",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 38621022259
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=116639349604927&otype=2"
+    },
+    {
+      "id": 116568264611908,
+      "type": 2,
+      "title": "[基于skill的Agent进化]阿里DreamX团队论文-SkillClaw-聚合多用户轨迹得到稳定进化方向，夜间验证保证有效性",
+      "cover": "http://i1.hdslb.com/bfs/archive/e2e9c6548d50ba7a9959ab7ba380d8179c30c762.jpg",
+      "intro": "SkillClaw: Let Skills Evolve Collectively with Agentic Evolver\nhttps://arxiv.org/pdf/2604.08377",
+      "page": 1,
+      "duration": 634,
+      "upper": {
+        "mid": 581897590,
+        "name": "Agent智能体深度研究院",
+        "face": "https://i1.hdslb.com/bfs/face/d038a7f03e9285b0af5b63cb88839a63f604bc02.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 515,
+        "play": 4666,
+        "danmaku": 0,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "4666"
+      },
+      "link": "bilibili://video/116568264611908",
+      "ctime": 1778690722,
+      "pubtime": 1778690721,
+      "fav_time": 1780795919,
+      "bv_id": "BV1dC5268Eja",
+      "bvid": "BV1dC5268Eja",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 38313266069
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=116568264611908&otype=2"
+    },
+    {
+      "id": 116600107831631,
+      "type": 2,
+      "title": "[中英采访] 住在巴厘岛的数字游民都在做什么工作？🌴",
+      "cover": "http://i1.hdslb.com/bfs/archive/3068fe11fcf8d599013609509dd4fad0a24edb43.jpg",
+      "intro": "",
+      "page": 1,
+      "duration": 724,
+      "upper": {
+        "mid": 1858003654,
+        "name": "SABRINA我是巴黎",
+        "face": "https://i1.hdslb.com/bfs/face/0cb1e3719022a093a000635034bf61faf37cf69e.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 4492,
+        "play": 300026,
+        "danmaku": 167,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "30万"
+      },
+      "link": "bilibili://video/116600107831631",
+      "ctime": 1779176569,
+      "pubtime": 1779185700,
+      "fav_time": 1780185500,
+      "bv_id": "BV1bDLq6ZEP1",
+      "bvid": "BV1bDLq6ZEP1",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 38444731664
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=116600107831631&otype=2"
+    },
+    {
+      "id": 116651580195558,
+      "type": 2,
+      "title": "被疯狂种草！入手沃集鲜网红爆款，是真香现场还是大型踩雷？",
+      "cover": "http://i0.hdslb.com/bfs/archive/51b81d383e377b1f58b44017621be53e3c280bf2.jpg",
+      "intro": "三连吗\n谢谢",
+      "page": 1,
+      "duration": 603,
+      "upper": {
+        "mid": 337521240,
+        "name": "记录生活的蛋黄派",
+        "face": "https://i0.hdslb.com/bfs/face/9ba6c7a0d3a2ebfe9db2f46219ece98e210d0269.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 12789,
+        "play": 1662333,
+        "danmaku": 1898,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "166.2万"
+      },
+      "link": "bilibili://video/116651580195558",
+      "ctime": 1779962180,
+      "pubtime": 1779962180,
+      "fav_time": 1780185282,
+      "bv_id": "BV1MNVp6LEVA",
+      "bvid": "BV1MNVp6LEVA",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 38672990886
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=116651580195558&otype=2"
+    },
+    {
+      "id": 116630289913877,
+      "type": 2,
+      "title": "聊聊Harness时代AI-First的组织架构：从信任人到信任AI【硅谷101播客】",
+      "cover": "http://i2.hdslb.com/bfs/archive/7987bfbc94585bc83aa15333ded437edbd9a3e57.jpg",
+      "intro": "“Harness Engineering”（挽具工程）正在成为硅谷的新共识，Anthropic、OpenAI等公司都在探索这一工程范式。但真正理解Harness的人还不多。前不久，一篇题为《Why Your “AI-First” Strategy Is Probably Wrong》的文章在X上获得百万级阅读和热议，作者是来自硅谷CreaoAI（🔗creao.ai）的Peter Pang。在这篇文章里，Peter展示了Harness Agent系统激发出的极致效率：99%的代码由AI完成，每天平均3到8次",
+      "page": 1,
+      "duration": 3960,
+      "upper": {
+        "mid": 3546860354538082,
+        "name": "硅谷101播客",
+        "face": "https://i1.hdslb.com/bfs/face/1ced3d5b3600201f2747cbc346748a7e6655597d.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 1748,
+        "play": 35165,
+        "danmaku": 12,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "3.5万"
+      },
+      "link": "bilibili://video/116630289913877",
+      "ctime": 1779637065,
+      "pubtime": 1779667200,
+      "fav_time": 1779806463,
+      "bv_id": "BV1YsGH6UEZz",
+      "bvid": "BV1YsGH6UEZz",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 38585958747
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=116630289913877&otype=2"
+    },
+    {
+      "id": 116489210433953,
+      "type": 2,
+      "title": "韩成龙Jackie对话陈辰：一份AI时代的生存指南（45分钟完整版）",
+      "cover": "http://i0.hdslb.com/bfs/archive/0216b926d181503c354172e1931044c2734ec783.jpg",
+      "intro": "20多年前，当我在电视机前看陈辰姐主持的我型我秀、加油好男儿等节目时，我是不可能会想到20多年后，我胆敢以“主持人”的身份去采访最专业的主持人。\n\n内容的制作和传播方式悄然已变。正如陈辰姐在本期播客中所提到的，“主持人”的定义也正在发生变化，与其称为职业，不如叫作专家型角色。AI时代，很多传统意义上的“职业”也会被重新定义，那些涉及到人的信任、情绪和体验的职业，可能才是最不容易被AI取代的。\n\nAI是个巨大的引力场，把不同背景和履历的你我相连。AI也是杠杆，撬动并放大人的能力，但不会凭空让人变强。在AI日",
+      "page": 1,
+      "duration": 2642,
+      "upper": {
+        "mid": 3691007587649752,
+        "name": "韩成龙Jackie",
+        "face": "https://i1.hdslb.com/bfs/face/8ecd69aa2e571173ddd003f2990ba5e2fd395e73.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 1989,
+        "play": 76742,
+        "danmaku": 13,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "7.7万"
+      },
+      "link": "bilibili://video/116489210433953",
+      "ctime": 1777484667,
+      "pubtime": 1777500000,
+      "fav_time": 1777999253,
+      "bv_id": "BV1Cs9tBEEME",
+      "bvid": "BV1Cs9tBEEME",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 37953604421
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=116489210433953&otype=2"
+    },
+    {
+      "id": 116491760572977,
+      "type": 2,
+      "title": "【硬核】爆肝1.4万字提前退休可行性计划 |23岁如何通过投资赚钱？新手投资指南",
+      "cover": "http://i1.hdslb.com/bfs/archive/18ab2b4b7444667f757b3a1e6e4ff51d424e549a.jpg",
+      "intro": "我没啥要说的。",
+      "page": 1,
+      "duration": 2253,
+      "upper": {
+        "mid": 315846984,
+        "name": "歌白说Geslook",
+        "face": "https://i0.hdslb.com/bfs/face/f91220c5c8c07a97e5fe5fb15c96e7d792e54a3f.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 136871,
+        "play": 1486169,
+        "danmaku": 2373,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "148.6万"
+      },
+      "link": "bilibili://video/116491760572977",
+      "ctime": 1777523370,
+      "pubtime": 1777523370,
+      "fav_time": 1777999243,
+      "bv_id": "BV1Vb9hBVE4C",
+      "bvid": "BV1Vb9hBVE4C",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 37936435113
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=116491760572977&otype=2"
+    },
+    {
+      "id": 116421010922762,
+      "type": 2,
+      "title": "数据开发如何使用AI在日常工作中提效-SKILL",
+      "cover": "http://i1.hdslb.com/bfs/archive/303bdef717794fdb3b8aed7946f11a714f441389.jpg",
+      "intro": "",
+      "page": 1,
+      "duration": 1122,
+      "upper": {
+        "mid": 405479587,
+        "name": "语兴呀",
+        "face": "https://i1.hdslb.com/bfs/face/7213b471ee8757aa797e68591f899e5fa9e2339a.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 386,
+        "play": 5565,
+        "danmaku": 0,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "5565"
+      },
+      "link": "bilibili://video/116421010922762",
+      "ctime": 1776443702,
+      "pubtime": 1776443702,
+      "fav_time": 1777076762,
+      "bv_id": "BV1yGdLBREkJ",
+      "bvid": "BV1yGdLBREkJ",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 37590468035
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=116421010922762&otype=2"
+    },
+    {
+      "id": 116190961795729,
+      "type": 2,
+      "title": "北漂青年做量化两年狂赚1500万，极速暴富后人生陷入虚无，差点精神失常，只能靠吃米其林来排忧解难",
+      "cover": "http://i1.hdslb.com/bfs/archive/a1f7d5fe5b0ed328c9300708aaff28bbf29a7771.jpg",
+      "intro": "",
+      "page": 1,
+      "duration": 2370,
+      "upper": {
+        "mid": 3493117728656046,
+        "name": "摩的司机徐师傅",
+        "face": "https://i0.hdslb.com/bfs/face/5c62273a893cd5a4ddfd30d2790888250283cae2.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 92339,
+        "play": 4366036,
+        "danmaku": 1075,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "436.6万"
+      },
+      "link": "bilibili://video/116190961795729",
+      "ctime": 1772934221,
+      "pubtime": 1773532800,
+      "fav_time": 1773939603,
+      "bv_id": "BV1w7NTzXEqQ",
+      "bvid": "BV1w7NTzXEqQ",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 36539336932
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=116190961795729&otype=2"
+    },
+    {
+      "id": 115808491538202,
+      "type": 2,
+      "title": "已失效视频",
+      "cover": "http://i0.hdslb.com/bfs/archive/be27fd62c99036dce67efface486fb0a88ffed06.jpg",
+      "intro": "",
+      "page": 1,
+      "duration": 1096,
+      "upper": {
+        "mid": 42512815,
+        "name": "摸金大校",
+        "face": "https://i1.hdslb.com/bfs/face/480539d2ca93a72ce936eed3aaa2b1517a022cda.jpg",
+        "jump_link": ""
+      },
+      "attr": 1,
+      "cnt_info": {
+        "collect": 1132,
+        "play": 63408,
+        "danmaku": 24,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "6.3万"
+      },
+      "link": "bilibili://video/115808491538202",
+      "ctime": 1767097583,
+      "pubtime": 1767097583,
+      "fav_time": 1767630859,
+      "bv_id": "BV1aNvvBzEhx",
+      "bvid": "BV1aNvvBzEhx",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 35080372304
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=115808491538202&otype=2"
+    },
+    {
+      "id": 115830167705028,
+      "type": 2,
+      "title": "2026年A股牛市哪些会成为主线？",
+      "cover": "http://i0.hdslb.com/bfs/archive/47964f8fe96e616481e6d948f6177d6731932dd7.jpg",
+      "intro": "-",
+      "page": 1,
+      "duration": 1938,
+      "upper": {
+        "mid": 518495360,
+        "name": "ETF基金波段王",
+        "face": "https://i2.hdslb.com/bfs/face/ee4ddbd54b498a795058ad80e9bd9b97be2a38c1.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 230,
+        "play": 21101,
+        "danmaku": 41,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "2.1万"
+      },
+      "link": "bilibili://video/115830167705028",
+      "ctime": 1767428395,
+      "pubtime": 1767428395,
+      "fav_time": 1767630847,
+      "bv_id": "BV1g6ivBzEx2",
+      "bvid": "BV1g6ivBzEx2",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 35161050326
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=115830167705028&otype=2"
+    },
+    {
+      "id": 115801847825978,
+      "type": 2,
+      "title": "2025经济为何这么差？下一个能抓住的暴富拐点就在2026年？康波周期的真相",
+      "cover": "http://i1.hdslb.com/bfs/archive/6774b98cb086971f6349d1cd2ece18bd2c23be10.jpg",
+      "intro": "为什么很多业内人士都说，下一个能抓住的暴富拐点就在2026年？今天我们来聊聊康波周期的故事",
+      "page": 1,
+      "duration": 2069,
+      "upper": {
+        "mid": 368229902,
+        "name": "脑洞乌托邦",
+        "face": "https://i2.hdslb.com/bfs/face/9f766fa188d6f69b2a2b383b45bb304a7829063a.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 6656,
+        "play": 314802,
+        "danmaku": 930,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "31.5万"
+      },
+      "link": "bilibili://video/115801847825978",
+      "ctime": 1766996811,
+      "pubtime": 1767006000,
+      "fav_time": 1767630720,
+      "bv_id": "BV1QCvHBKEai",
+      "bvid": "BV1QCvHBKEai",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 35058551666
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=115801847825978&otype=2"
+    },
+    {
+      "id": 115637179389993,
+      "type": 2,
+      "title": "【耗时2月制作】日美为镜，你也能读懂，房价涨跌逻辑",
+      "cover": "http://i0.hdslb.com/bfs/archive/36546a8885bdab444b257475ac80cf56ddaff206.jpg",
+      "intro": "本期以日美为镜，借鉴日本1990-2020之间房价走势，美国2008-2020之间房价走势，对比国内情况，帮大家建立预判房价走势的逻辑框架。\n本期【非常 非常 需要耐心】前40min日美房价历史，建立房价分析逻辑，40min开始渐入佳境，大量数据分析国内情况，精华部分在78min+，重建房价分析思维。\n\n1、统计局-202508房价涨跌幅\nhttps://www.stats.gov.cn/sj/zxfb/202509/t20250915_1961175.html\n\n2、日本劳动人口变化走势\nhttp://",
+      "page": 1,
+      "duration": 5085,
+      "upper": {
+        "mid": 21262795,
+        "name": "钞能力毛毛",
+        "face": "https://i1.hdslb.com/bfs/face/5e3a3e295d30a28c401ba53404a4917d957a0422.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 18883,
+        "play": 558879,
+        "danmaku": 66,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "55.9万"
+      },
+      "link": "bilibili://video/115637179389993",
+      "ctime": 1764483502,
+      "pubtime": 1764496800,
+      "fav_time": 1767630702,
+      "bv_id": "BV1hvSKB4EgK",
+      "bvid": "BV1hvSKB4EgK",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 34383529045
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=115637179389993&otype=2"
+    },
+    {
+      "id": 115807887562392,
+      "type": 2,
+      "title": "2025年终盘点：中美休兵，欧日傻眼，未来会怎样？世界变革2.0来了【王骁年度分享】",
+      "cover": "http://i2.hdslb.com/bfs/archive/081a62d76de879a63e81cc657b94d8d1be7f83c8.jpg",
+      "intro": "一键三连推荐给更多朋友！",
+      "page": 1,
+      "duration": 2001,
+      "upper": {
+        "mid": 1140672573,
+        "name": "小王Albert",
+        "face": "https://i0.hdslb.com/bfs/face/f9bb5dc9b5dcb3c90f9662e44fca9a7506584151.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 84962,
+        "play": 4584717,
+        "danmaku": 19428,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "458.4万"
+      },
+      "link": "bilibili://video/115807887562392",
+      "ctime": 1767088391,
+      "pubtime": 1767088391,
+      "fav_time": 1767630681,
+      "bv_id": "BV1ryvaBLEry",
+      "bvid": "BV1ryvaBLEry",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 35075328002
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=115807887562392&otype=2"
+    },
+    {
+      "id": 115817266024268,
+      "type": 2,
+      "title": "2026已来！新年三大商业趋势，和每个人息息相关",
+      "cover": "http://i0.hdslb.com/bfs/archive/b94ffc43145a8193c9cc3b0c65d23f5a0460ff5b.jpg",
+      "intro": "体验化，健康化，圈层化，三大趋势将如何影响每一个人？",
+      "page": 1,
+      "duration": 1018,
+      "upper": {
+        "mid": 1163425648,
+        "name": "投资人黄海",
+        "face": "https://i1.hdslb.com/bfs/face/372d256cc8dc1fefbc81fe907bd0d592a602cf92.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 774,
+        "play": 36316,
+        "danmaku": 98,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "3.6万"
+      },
+      "link": "bilibili://video/115817266024268",
+      "ctime": 1767231424,
+      "pubtime": 1767515400,
+      "fav_time": 1767630662,
+      "bv_id": "BV1WviLB3E7u",
+      "bvid": "BV1WviLB3E7u",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 35112878455
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=115817266024268&otype=2"
+    },
+    {
+      "id": 115773209124161,
+      "type": 2,
+      "title": "连吃高油高糖食物一周，这是我们身体发生的变化...",
+      "cover": "http://i2.hdslb.com/bfs/archive/37b3b2c8e153457e4c99ae6e439fe04fbd5c0a2f.jpg",
+      "intro": "汉堡、薯条、火锅……这些东西你喜欢吃吗？你有没有想过，如果让你连续吃一周这些高油高糖高盐的食物，你的身体会发生什么变化？这次我们公司两位同事参与了这个神奇的测试，想和你一起看看这样的吃法下，我们的身体到底会发生什么！如果你喜欢这期节目，请多多支持我们，并把视频分享给你的朋友们一起看看！",
+      "page": 1,
+      "duration": 703,
+      "upper": {
+        "mid": 407054668,
+        "name": "亿点点不一样",
+        "face": "https://i1.hdslb.com/bfs/face/9a2c23800387d9c871f3b5dd3620dc1c3c50d2f9.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 96257,
+        "play": 11251064,
+        "danmaku": 17480,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "1125.1万"
+      },
+      "link": "bilibili://video/115773209124161",
+      "ctime": 1766559175,
+      "pubtime": 1766653200,
+      "fav_time": 1767630647,
+      "bv_id": "BV186BLBREUM",
+      "bvid": "BV186BLBREUM",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 34945632861
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=115773209124161&otype=2"
+    },
+    {
+      "id": 115754938664075,
+      "type": 2,
+      "title": "赤马红羊年真的是大灾之年吗？99%的人都没看懂其中的真相！徐玉兰采访视频完整版",
+      "cover": "http://i1.hdslb.com/bfs/archive/0e18f62d4a6ab475bc2fbc3151d946caca6dc9dc.jpg",
+      "intro": "徐玉兰老师的采访视频完整版来了，这里有更加详尽的关于赤马红羊年的解读，以及更多有趣的八字 命理知识",
+      "page": 1,
+      "duration": 2958,
+      "upper": {
+        "mid": 368229902,
+        "name": "脑洞乌托邦",
+        "face": "https://i2.hdslb.com/bfs/face/9f766fa188d6f69b2a2b383b45bb304a7829063a.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 1026,
+        "play": 69984,
+        "danmaku": 34,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "7万"
+      },
+      "link": "bilibili://video/115754938664075",
+      "ctime": 1766280757,
+      "pubtime": 1766314800,
+      "fav_time": 1767630587,
+      "bv_id": "BV1q9q2BpE7p",
+      "bvid": "BV1q9q2BpE7p",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 35183987276
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=115754938664075&otype=2"
+    },
+    {
+      "id": 115774081537379,
+      "type": 2,
+      "title": "【巫师】财经跨年：中国财经年度盘点Top10",
+      "cover": "http://i1.hdslb.com/bfs/archive/1d204a18df5725adeb9953816dbfa52febb5800d.jpg",
+      "intro": "",
+      "page": 1,
+      "duration": 3154,
+      "upper": {
+        "mid": 472747194,
+        "name": "巫师财经",
+        "face": "https://i0.hdslb.com/bfs/face/c518dc95663850d075a90897de617cc634151f7a.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 22982,
+        "play": 1221029,
+        "danmaku": 3427,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "122.1万"
+      },
+      "link": "bilibili://video/115774081537379",
+      "ctime": 1766572532,
+      "pubtime": 1766653200,
+      "fav_time": 1767630556,
+      "bv_id": "BV12GB7BQEJz",
+      "bvid": "BV12GB7BQEJz",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 34980694395
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=115774081537379&otype=2"
+    },
+    {
+      "id": 115826359273640,
+      "type": 2,
+      "title": "年终总结！百城楼市数据出炉，新房昂首阔步迈入全新年度！",
+      "cover": "http://i1.hdslb.com/bfs/archive/0d5f522c0fe1a3140ea2a3f727e05f56e2662800.jpg",
+      "intro": "新房昂首！百城数据跨年收尾，年终如何总结",
+      "page": 1,
+      "duration": 1165,
+      "upper": {
+        "mid": 301342726,
+        "name": "金融民工吉胖子",
+        "face": "https://i1.hdslb.com/bfs/face/678c76411f6d77ec4274f6d72cb7c4350500dbbd.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 229,
+        "play": 56590,
+        "danmaku": 108,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "5.7万"
+      },
+      "link": "bilibili://video/115826359273640",
+      "ctime": 1767370257,
+      "pubtime": 1767409500,
+      "fav_time": 1767630527,
+      "bv_id": "BV1uqicBCEb6",
+      "bvid": "BV1uqicBCEb6",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 35149056907
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=115826359273640&otype=2"
+    },
+    {
+      "id": 115785037059324,
+      "type": 2,
+      "title": "【年度总结】一口气了解过去一年的全球经济｜关税战新格局",
+      "cover": "http://i0.hdslb.com/bfs/archive/eb1ec2865dc70633540ae791ad0dcbf1b0a5cb4d.jpg",
+      "intro": "2025年，这么多杂乱的头条新闻，到底拼凑出怎么样新的贸易格局？\n美国、中国内部经济面临怎么样的困境？\n经济动荡怎么催生了德国、日本的政治动荡？\n谁，又是全球经济的最强发动机？",
+      "page": 1,
+      "duration": 2604,
+      "upper": {
+        "mid": 520819684,
+        "name": "小Lin说",
+        "face": "https://i1.hdslb.com/bfs/face/cf895b86c955e4ce62b28b3c2bb5bbc77f9fd410.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 95911,
+        "play": 4819238,
+        "danmaku": 18315,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "481.9万"
+      },
+      "link": "bilibili://video/115785037059324",
+      "ctime": 1766739887,
+      "pubtime": 1766977200,
+      "fav_time": 1767630498,
+      "bv_id": "BV111BeBPEaD",
+      "bvid": "BV111BeBPEaD",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 35045576155
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=115785037059324&otype=2"
+    },
+    {
+      "id": 115718213407516,
+      "type": 2,
+      "title": "【巫师】吃透中国房价，但是主神视角",
+      "cover": "http://i2.hdslb.com/bfs/archive/b0ed87dfdc2e540ac6e634e31e3e249554a521e4.jpg",
+      "intro": "",
+      "page": 1,
+      "duration": 3064,
+      "upper": {
+        "mid": 472747194,
+        "name": "巫师财经",
+        "face": "https://i0.hdslb.com/bfs/face/c518dc95663850d075a90897de617cc634151f7a.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 77630,
+        "play": 2407625,
+        "danmaku": 18642,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "240.7万"
+      },
+      "link": "bilibili://video/115718213407516",
+      "ctime": 1765720077,
+      "pubtime": 1765720077,
+      "fav_time": 1767630432,
+      "bv_id": "BV1fqmiBSE1y",
+      "bvid": "BV1fqmiBSE1y",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 34736244362
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=115718213407516&otype=2"
+    },
+    {
+      "id": 115587955033994,
+      "type": 2,
+      "title": "Eleni Fit - 10分钟新手腹肌训练 | 精准激活下腹·上腹·侧腹+核心 | 无重复·零器械",
+      "cover": "http://i1.hdslb.com/bfs/archive/2264b1b8ba4feb6c464c57bae9326c502560317b.jpg",
+      "intro": "这套10分钟腹肌训练适合所有健身基础，每天跟练效果更佳！希望你喜欢～\n❀ 腹肌专项\n❀ 节奏：30秒持续训练/无间歇\n【免责声明】若您初次接触运动训练，需知存在身体受伤的可能性。请注意，当您进行任何锻炼或训练计划时，即代表您同意自行承担相关风险。本频道提供的健康、健身及营养信息均旨在分享知识，不能替代专业医疗建议、诊断或治疗方案。",
+      "page": 1,
+      "duration": 620,
+      "upper": {
+        "mid": 3546961800072012,
+        "name": "EleniFit伊莉妮",
+        "face": "https://i0.hdslb.com/bfs/face/12b648f8aabe039d4135eaf6e48f52592c9d2950.jpg",
+        "jump_link": ""
+      },
+      "attr": 0,
+      "cnt_info": {
+        "collect": 6323,
+        "play": 87143,
+        "danmaku": 26,
+        "vt": 0,
+        "play_switch": 0,
+        "reply": 0,
+        "view_text_1": "8.7万"
+      },
+      "link": "bilibili://video/115587955033994",
+      "ctime": 1763732440,
+      "pubtime": 1763776800,
+      "fav_time": 1767532817,
+      "bv_id": "BV1u1ULBmEgf",
+      "bvid": "BV1u1ULBmEgf",
+      "season": null,
+      "ogv": null,
+      "ugc": {
+        "first_cid": 34163393132
+      },
+      "media_list_link": "bilibili://music/playlist/playpage/2255904581?page_type=3&oid=115587955033994&otype=2"
+    }
+  ]
+}

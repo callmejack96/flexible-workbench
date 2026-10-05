@@ -6,7 +6,7 @@
  * `DOMParser`. Both RSS 2.0 (`<item>`) and Atom (`<entry>`) are understood.
  *
  * Results are cached in memory per URL for a card-configurable window, so a
- * board with several feed cards (and Hearth's frequent full re-renders) makes at
+ * board with several feed cards (and Flexible Workbench's frequent full re-renders) makes at
  * most one request per feed per refresh window. Everything degrades gracefully
  * offline: a failed fetch keeps the last good items, and the one outbound
  * request is skipped entirely when the user has disabled external calls.

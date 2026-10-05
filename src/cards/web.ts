@@ -20,8 +20,8 @@ export function renderWeb(card: DashboardCard, body: HTMLElement, component: Com
 		return;
 	}
 
-	body.addClass("hearth-web-body");
-	const frame = body.createEl("iframe", { cls: "hearth-web" });
+	body.addClass("flexible-workbench-web-body");
+	const frame = body.createEl("iframe", { cls: "flexible-workbench-web" });
 	frame.setAttribute("src", url);
 	frame.setAttribute("loading", "lazy");
 	frame.setAttribute("referrerpolicy", "no-referrer");
@@ -39,7 +39,7 @@ export function renderWeb(card: DashboardCard, body: HTMLElement, component: Com
 	// X-Frame-Options / CSP, which can't be detected reliably cross-origin).
 	const openExternally = () => window.open(url, "_blank");
 	const ext = body.createEl("button", {
-		cls: "hearth-web-external",
+		cls: "flexible-workbench-web-external",
 		attr: { "aria-label": t().cards.web.openInBrowser },
 	});
 	setIcon(ext, "external-link");
@@ -48,20 +48,20 @@ export function renderWeb(card: DashboardCard, body: HTMLElement, component: Com
 	let loaded = false;
 	frame.addEventListener("load", () => {
 		loaded = true;
-		body.removeClass("hearth-web-blocked");
+		body.removeClass("flexible-workbench-web-blocked");
 		// A slow but successful load can arrive after the fallback showed — clear it.
-		body.querySelector(".hearth-web-fallback")?.remove();
+		body.querySelector(".flexible-workbench-web-fallback")?.remove();
 	});
 	const timer = window.setTimeout(() => {
 		if (loaded) return;
-		body.addClass("hearth-web-blocked");
-		const fallback = body.createDiv("hearth-web-fallback");
-		setIcon(fallback.createDiv("hearth-card-empty-icon"), "globe");
+		body.addClass("flexible-workbench-web-blocked");
+		const fallback = body.createDiv("flexible-workbench-web-fallback");
+		setIcon(fallback.createDiv("flexible-workbench-card-empty-icon"), "globe");
 		fallback.createDiv({
-			cls: "hearth-card-empty-text",
+			cls: "flexible-workbench-card-empty-text",
 			text: t().cards.web.mayRefuse,
 		});
-		const open = fallback.createEl("button", { cls: "hearth-daily-create", text: t().cards.web.openInBrowser });
+		const open = fallback.createEl("button", { cls: "flexible-workbench-daily-create", text: t().cards.web.openInBrowser });
 		open.addEventListener("click", openExternally);
 	}, 4000);
 	component.register(() => window.clearTimeout(timer));
@@ -106,7 +106,7 @@ export function refreshSetting(ctx: CardEditorContext, containerEl: HTMLElement)
 			ctx.opts.save();
 		});
 		txt.inputEl.type = "number";
-		txt.inputEl.addClass("hearth-count-input");
+		txt.inputEl.addClass("flexible-workbench-count-input");
 		txt.inputEl.setAttribute(
 			"aria-label",
 			t().editors.web.refreshIntervalAria,

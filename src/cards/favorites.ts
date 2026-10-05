@@ -19,21 +19,21 @@ export function renderFavorites(view: HomeView, body: HTMLElement): void {
 		return;
 	}
 
-	const grid = body.createDiv("hearth-favorites");
+	const grid = body.createDiv("flexible-workbench-favorites");
 	const icons = fileIconOptions(view.plugin.settings);
 	for (const path of paths) {
 		const file = view.app.vault.getAbstractFileByPath(path);
-		const card = grid.createDiv("hearth-fav-card");
+		const card = grid.createDiv("flexible-workbench-fav-card");
 		if (file instanceof TFile) {
-			applyFileIcon(card.createDiv("hearth-fav-icon"), resolveFileIcon(view.app, file, icons));
-			card.createDiv({ cls: "hearth-fav-name", text: file.basename });
+			applyFileIcon(card.createDiv("flexible-workbench-fav-icon"), resolveFileIcon(view.app, file, icons));
+			card.createDiv({ cls: "flexible-workbench-fav-name", text: file.basename });
 			const open = () => void openFile(view, file, "card");
 			card.addEventListener("click", open);
 			makeClickable(card, open, file.basename);
 		} else {
 			card.addClass("is-missing");
-			setIcon(card.createDiv("hearth-fav-icon"), "file-x");
-			card.createDiv({ cls: "hearth-fav-name", text: path });
+			setIcon(card.createDiv("flexible-workbench-fav-icon"), "file-x");
+			card.createDiv({ cls: "flexible-workbench-fav-name", text: path });
 		}
 	}
 }
@@ -92,7 +92,7 @@ export function favoritesEditor(ctx: CardEditorContext, containerEl: HTMLElement
 	);
 }
 
-/** The user's starred notes (a Hearth-global list). */
+/** The user's starred notes (a Flexible Workbench-global list). */
 export const favoritesCard: CardDefinition<"favorites"> = {
 	kind: "favorites",
 	templates: [

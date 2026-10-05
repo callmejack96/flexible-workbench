@@ -76,7 +76,7 @@ const POSITION_ALIGN: Record<EmbedImagePosition, string> = {
 };
 
 /** The fit mode a view is set to, falling back to "natural" for anything a
- * hand-edited `data.json` (or an older Hearth) left behind. */
+ * hand-edited `data.json` (or an older Flexible Workbench) left behind. */
 export function embedImageFit(view: Pick<EmbedView, "imageFit">): EmbedImageFit {
 	const fit = view.imageFit;
 	return fit && EMBED_IMAGE_FITS.includes(fit) ? fit : "natural";
@@ -91,7 +91,7 @@ export function embedImagePosition(
 }
 
 /**
- * Whether this fit mode frames the picture itself — i.e. whether Hearth draws
+ * Whether this fit mode frames the picture itself — i.e. whether Flexible Workbench draws
  * the `<img>` and sizes it, rather than handing the file to Obsidian's own
  * transclusion. False only for "natural", which is left exactly as it was
  * before the formatting options existed.
@@ -103,7 +103,7 @@ export function framesEmbedImage(fit: EmbedImageFit): boolean {
 /**
  * Whether the anchor point means anything for this fit mode. "stretch" pins
  * all four edges to the card, so there is nothing left to position; "natural"
- * isn't framed by Hearth at all.
+ * isn't framed by Flexible Workbench at all.
  */
 export function embedImagePositionApplies(fit: EmbedImageFit): boolean {
 	return fit === "contain" || fit === "cover" || fit === "width";
@@ -137,10 +137,10 @@ export function embedImageStyle(
 	const anchor = embedImagePositionApplies(fit) ? position : "center";
 	const zoom = embedImageZoomMode(fit) === "none" ? 1 : embedImageScale(scale);
 	return {
-		"--hearth-embed-img-pos": POSITION_CSS[anchor],
-		"--hearth-embed-img-justify": POSITION_JUSTIFY[anchor],
-		"--hearth-embed-img-align": POSITION_ALIGN[anchor],
-		"--hearth-embed-img-scale": String(zoom),
+		"--flexible-workbench-embed-img-pos": POSITION_CSS[anchor],
+		"--flexible-workbench-embed-img-justify": POSITION_JUSTIFY[anchor],
+		"--flexible-workbench-embed-img-align": POSITION_ALIGN[anchor],
+		"--flexible-workbench-embed-img-scale": String(zoom),
 	};
 }
 

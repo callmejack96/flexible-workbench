@@ -1,9 +1,9 @@
 /**
- * The Periodic Notes integration: everything Hearth knows about the
+ * The Periodic Notes integration: everything Flexible Workbench knows about the
  * [Periodic Notes](https://github.com/liamcain/obsidian-periodic-notes)
  * community plugin (issue #116).
  *
- * Same rule as Dataview, Templater and obsidian-git: **Hearth never does the
+ * Same rule as Dataview, Templater and obsidian-git: **Flexible Workbench never does the
  * work itself.** It does not invent a weekly-note convention, and it never
  * writes a periodic note — creation goes through Periodic Notes, so the user's
  * own folder, filename format, template and its `{{monday:…}}`/`{{sunday:…}}`
@@ -77,7 +77,7 @@ export const DEFAULT_PERIODIC_FORMATS: Record<Granularity, string> = {
 	year: "YYYY",
 };
 
-/** What Hearth needs to resolve one granularity's note, as read from the 0.x
+/** What Flexible Workbench needs to resolve one granularity's note, as read from the 0.x
  * settings. Both strings are normalized: the format is never empty, and the
  * folder carries no leading or trailing slash. */
 export interface PeriodicConfig {
@@ -105,7 +105,7 @@ export function now(): PeriodicDate {
 	return moment();
 }
 
-/** The slice of the Periodic Notes plugin instance Hearth touches. Every
+/** The slice of the Periodic Notes plugin instance Flexible Workbench touches. Every
  * member is optional — see the module comment. */
 export interface PeriodicNotesPlugin {
 	/** 0.x: a plain object keyed by periodicity. 1.0: a Svelte store, which
@@ -311,7 +311,7 @@ const GRANULARITY_WORDS: Record<Granularity, string[]> = {
  * differently (`periodic-notes:open-weekly-note` against a granularity-derived
  * id), and because the navigation commands sit right beside them: anything
  * that steps to another period, or that names the fiscal year (1.0 only, and
- * not a granularity Hearth offers), is excluded.
+ * not a granularity Flexible Workbench offers), is excluded.
  */
 export function periodicOpenCommandId(
 	ids: readonly string[],

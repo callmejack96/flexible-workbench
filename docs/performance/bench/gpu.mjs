@@ -18,7 +18,7 @@ await page.goto(`file://${HERE}/index.html`);
 const bs = await browser.newBrowserCDPSession();
 
 async function trace(scenario) {
-	await page.evaluate((s) => window.hearthBench.build(s), scenario);
+	await page.evaluate((s) => window.flexibleWorkbenchBench.build(s), scenario);
 	await page.waitForTimeout(1200);
 
 	// Browser-level session, so the GPU and viz processes are in the trace too.

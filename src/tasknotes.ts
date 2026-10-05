@@ -45,6 +45,17 @@ export function taskNotesEnabled(app: App): boolean {
 	return app.plugins.enabledPlugins.has(TASKNOTES_PLUGIN_ID);
 }
 
+/** Run TaskNotes' own create-task command. Command ids have changed between
+ * TaskNotes versions, so resolve the live command first and retain the
+ * conventional id as a fallback. */
+export function createTaskNotesTask(app: App): boolean {
+	const commands = app.commands.listCommands();
+	const match =
+		commands.find((c) => /^tasknotes[:.]/i.test(c.id) && /create.*task/i.test(c.name)) ??
+		commands.find((c) => /tasknotes/i.test(c.id) && /create.*task/i.test(c.name));
+	return app.commands.executeCommandById(match?.id ?? "tasknotes:create-new-task");
+}
+
 
 // ---- TaskNotes settings ---------------------------------------------------
 
@@ -118,7 +129,7 @@ export interface TaskNotesSubscription {
 
 
 /** Which layers TaskNotes' own calendar view is showing. Used as the default
- * for the card's per-layer toggles, so an unconfigured Hearth calendar mirrors
+ * for the card's per-layer toggles, so an unconfigured Flexible Workbench calendar mirrors
  * whatever the user already set up inside TaskNotes. */
 export interface TaskNotesCalendarDefaults {
 	scheduled: boolean;

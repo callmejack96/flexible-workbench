@@ -3,13 +3,13 @@ import { App, Component } from "obsidian";
 /** The community-plugin id Dataview registers itself under. */
 export const DATAVIEW_PLUGIN_ID = "dataview";
 
-/** The slice of Dataview's public API Hearth calls. Exposed by the plugin at
+/** The slice of Dataview's public API Flexible Workbench calls. Exposed by the plugin at
  * `app.plugins.plugins.dataview.api` once Dataview is enabled.
  *
  * Both methods render into `container` using Dataview's own renderers (tables,
  * lists, task lists, calendars) and attach a refreshable render-child to
  * `component`, so the result updates itself whenever Dataview's index changes —
- * as long as the component stays alive. Hearth passes the per-card component,
+ * as long as the component stays alive. Flexible Workbench passes the per-card component,
  * which lives until the card is next redrawn, so live updates come for free. */
 interface DataviewApi {
 	/** Run a Dataview Query Language block (TABLE / LIST / TASK / CALENDAR). */
@@ -19,7 +19,7 @@ interface DataviewApi {
 }
 
 /** Reach Dataview's public API, or null when the plugin isn't installed, isn't
- * enabled, or is too old to expose the render methods Hearth uses. */
+ * enabled, or is too old to expose the render methods Flexible Workbench uses. */
 export function getDataviewApi(app: App): DataviewApi | null {
 	const plugin = app.plugins.plugins[DATAVIEW_PLUGIN_ID] as
 		| { api?: unknown }

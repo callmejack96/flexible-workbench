@@ -67,7 +67,7 @@ import { type CardDefinition, type CardEditorContext } from "./definition";
  *   elements exist: the one on screen and the one coming in. A card pointed at a
  *   folder of 500 photos therefore decodes two of them, not 500, and every
  *   transition is a plain CSS animation between that pair (see the
- *   `.hearth-slide` rules in styles.css).
+ *   `.flexible-workbench-slide` rules in styles.css).
  * - **The pure parts live next door.** Ordering, the folder-scope test, the
  *   interval clamps, the daily arithmetic and the redraw predicate are data-only
  *   functions in `src/slideshow.ts`, unit-tested there; this module is the vault
@@ -154,7 +154,7 @@ export function collectSlideshowPictures(
  * seconds for a position nobody asked to keep, so it keeps its in-memory resume
  * (`slideshowState`) and starts from the top after a restart.
  */
-const POSITIONS_KEY = "hearth:slideshow-positions";
+const POSITIONS_KEY = "flexible-workbench:slideshow-positions";
 
 /** Whether an advance's position is worth keeping between sessions. */
 function remembersPosition(advance: SlideshowAdvance): boolean {
@@ -234,24 +234,24 @@ export function renderSlideshow(
 	const order = slideshowOrder(cfg);
 	const count = pictures.length;
 
-	body.addClass("hearth-slideshow-host");
-	const stage = body.createDiv("hearth-slideshow");
+	body.addClass("flexible-workbench-slideshow-host");
+	const stage = body.createDiv("flexible-workbench-slideshow");
 	stage.addClass(`is-trans-${cfg.transition ?? "fade"}`);
 	stage.addClass(cfg.fit === "contain" ? "is-fit-contain" : "is-fit-cover");
 	if (cfg.kenBurns) stage.addClass("is-kenburns");
-	stage.style.setProperty("--hearth-slide-ms", `${slideshowTransitionMs(cfg)}ms`);
+	stage.style.setProperty("--flexible-workbench-slide-ms", `${slideshowTransitionMs(cfg)}ms`);
 	// The slow zoom runs for exactly as long as the picture is held, so it never
 	// finishes early and sits still, nor gets cut off halfway.
 	stage.style.setProperty(
-		"--hearth-slide-hold",
+		"--flexible-workbench-slide-hold",
 		`${holdMs || SLIDESHOW_DEFAULT_INTERVAL_SEC * 1000}ms`,
 	);
 
 	// Two layers for any number of pictures: the one on screen and the one coming
 	// in. Swapping which is "active" is the whole transition.
-	const layers = [0, 1].map(() => stage.createDiv("hearth-slide"));
+	const layers = [0, 1].map(() => stage.createDiv("flexible-workbench-slide"));
 	const images = layers.map((layer) => {
-		const img = layer.createEl("img", { cls: "hearth-slide-img" });
+		const img = layer.createEl("img", { cls: "flexible-workbench-slide-img" });
 		// A picture is decoration here, not something to drag out of the card —
 		// the native image drag would otherwise fight the card's own in arrange mode.
 		img.draggable = false;
@@ -299,11 +299,11 @@ export function renderSlideshow(
 		img.alt = pictureLabel(picture);
 	};
 
-	const caption = cfg.showCaption ? stage.createDiv("hearth-slide-caption") : null;
+	const caption = cfg.showCaption ? stage.createDiv("flexible-workbench-slide-caption") : null;
 	// A single picture has nothing to step through, so it gets no chrome — such a
 	// card is just an image embed, and dead buttons would suggest otherwise.
 	const controls =
-		cfg.controls === false || count < 2 ? null : stage.createDiv("hearth-slideshow-controls");
+		cfg.controls === false || count < 2 ? null : stage.createDiv("flexible-workbench-slideshow-controls");
 	let pauseButton: HTMLButtonElement | null = null;
 	let counter: HTMLElement | null = null;
 
@@ -465,7 +465,7 @@ export function renderSlideshow(
 		if (!controls) return;
 		const button = (icon: string, label: string, onClick: () => void): HTMLButtonElement => {
 			const el = controls.createEl("button", {
-				cls: "hearth-slideshow-btn",
+				cls: "flexible-workbench-slideshow-btn",
 				attr: { "aria-label": label, title: label },
 			});
 			setIcon(el, icon);
@@ -488,7 +488,7 @@ export function renderSlideshow(
 			});
 		}
 		button("chevron-right", t().cards.slideshow.next, () => step(1));
-		counter = controls.createDiv({ cls: "hearth-slideshow-count" });
+		counter = controls.createDiv({ cls: "flexible-workbench-slideshow-count" });
 		counter.setAttribute("aria-hidden", "true");
 	}
 }
@@ -571,7 +571,7 @@ export function slideshowEditor(ctx: CardEditorContext, containerEl: HTMLElement
 					ctx.opts.save();
 				});
 			txt.inputEl.type = "number";
-			txt.inputEl.addClass("hearth-count-input");
+			txt.inputEl.addClass("flexible-workbench-count-input");
 			txt.inputEl.setAttribute("aria-label", strings.intervalAria);
 		});
 		interval.addExtraButton((b) =>
@@ -599,7 +599,7 @@ export function slideshowEditor(ctx: CardEditorContext, containerEl: HTMLElement
 				ctx.opts.save();
 			});
 			txt.inputEl.type = "number";
-			txt.inputEl.addClass("hearth-count-input");
+			txt.inputEl.addClass("flexible-workbench-count-input");
 			txt.inputEl.setAttribute("aria-label", strings.daysAria);
 		});
 		days.addExtraButton((b) =>
@@ -752,7 +752,7 @@ function listSection(
 	}
 
 	slides.forEach((slide, index) => {
-		const row = new Setting(containerEl).setClass("hearth-link-setting");
+		const row = new Setting(containerEl).setClass("flexible-workbench-link-setting");
 		row.addText((txt) =>
 			txt
 				.setPlaceholder(strings.picturePlaceholder)

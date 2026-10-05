@@ -10,7 +10,7 @@ import type { OperonAccess, OperonSession } from "./api";
 import type { OperonCatalog, OperonTask, OperonTimerState } from "./types";
 
 /**
- * Thin, never-throwing wrappers over the Operon reads Hearth uses.
+ * Thin, never-throwing wrappers over the Operon reads Flexible Workbench uses.
  *
  * Two rules run through all of them:
  *
@@ -66,7 +66,7 @@ const CONTRACT_VERSION = 1 as const;
 function requestId(): string {
 	const uuid = activeWindow.crypto?.randomUUID?.();
 	if (uuid) return uuid;
-	return `hearth-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+	return `flexible-workbench-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
 }
 
 function freshnessOf(freshness: FreshnessV1 | undefined): OperonFreshness {
@@ -77,7 +77,7 @@ function freshnessOf(freshness: FreshnessV1 | undefined): OperonFreshness {
 	};
 }
 
-/** Narrow a structured error to the three fields Hearth acts on. Typed
+/** Narrow a structured error to the three fields Flexible Workbench acts on. Typed
  * structurally rather than as the DTO so an immutable snapshot passes without a
  * cast, and so a field added upstream never breaks this call site. */
 function failure(
@@ -167,7 +167,7 @@ export function queryTasks(
 /**
  * Operon's own scoped views ("overdue", "happens-today", ...). Preferred over a
  * hand-rolled date filter because what counts as happening today — across due,
- * scheduled and recurrence — is Operon's definition to make, not Hearth's.
+ * scheduled and recurrence — is Operon's definition to make, not Flexible Workbench's.
  */
 export function findTasks(
 	session: OperonSession,
